@@ -1,5 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <style name="Theme.Tbank" parent="android:Theme.Material.Light.NoActionBar" />
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.Tbank" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">#0069ED</item>
+        <item name="colorPrimaryVariant">#1127E7</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorSecondary">#DCC606</item>
+        <item name="colorOnSecondary">@android:color/black</item>
+    </style>
 </resources>
