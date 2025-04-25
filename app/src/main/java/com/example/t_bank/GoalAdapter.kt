@@ -1,45 +1,48 @@
 package com.example.t_bank
 
-import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.t_bank.databinding.ItemGoalBinding
 
 class GoalAdapter(private val goals: List<Goal>) :
     RecyclerView.Adapter<GoalAdapter.GoalViewHolder>() {
 
-    class GoalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val goalName: TextView = itemView.findViewById(R.id.textViewGoalName)
-        val goalAmount: TextView = itemView.findViewById(R.id.textViewAmount)
-        val goalEndDate: TextView = itemView.findViewById(R.id.textViewEndDate)
-        val progressBar: ProgressBar = itemView.findViewById(R.id.progressBar)
-        val goalStatus: TextView = itemView.findViewById(R.id.textViewStatus)
+    class GoalViewHolder(private val binding: ItemGoalBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(goal: Goal) {
+            binding.textViewGoalName.text = goal.name
+
+            binding.textViewAmount.text = itemView.context.getString(
+                R.string.amount_format_2,
+                goal.amount
+            )
+
+            binding.textViewEndDate.text = itemView.context.getString(
+                R.string.end_date_format,
+                goal.endDate
+            )
+
+            binding.progressBar.progress = if (goal.isAchieved) 100 else 50
+
+            if (goal.isAchieved) {
+                binding.textViewStatus.text = itemView.context.getString(R.string.goal_achieved_2)
+                binding.textViewStatus.setTextColor(itemView.context.getColor(R.color.green))
+            } else {
+                binding.textViewStatus.text = itemView.context.getString(R.string.goal_not_achieved)
+                binding.textViewStatus.setTextColor(itemView.context.getColor(R.color.red))
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GoalViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_goal, parent, false)
-        return GoalViewHolder(view)
+        val binding = ItemGoalBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return GoalViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: GoalViewHolder, position: Int) {
-        val goal = goals[position]
-
-        holder.goalName.text = goal.name
-        holder.goalAmount.text = "${goal.amount}"
-        holder.goalEndDate.text = "Окончание: ${goal.endDate}"
-        holder.progressBar.progress = if (goal.isAchieved) 100 else 50
-
-        if (goal.isAchieved) {
-            holder.goalStatus.text = "Цель достигнута!"
-            holder.goalStatus.setTextColor(Color.GREEN)
-        } else {
-            holder.goalStatus.text = "Цель не достигнута"
-            holder.goalStatus.setTextColor(Color.RED)
-        }
+        holder.bind(goals[position])
     }
 
     override fun getItemCount(): Int {
