@@ -1,5 +1,26 @@
 <resources>
     <string name="app_name">t-bank</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="check_sms_title">Проверьте свои СМС</string>
+    <string name="confirm_button">Подтвердить</string>
+    <string name="confirm_password_hint">Введите пароль еще раз</string>
+    <string name="continue_button">Продолжить</string>
+    <string name="create_account_button">Создать аккаунт</string>
+    <string name="did_not_receive_code">Еще не получили код?</string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="forgot_password_subtitle">Введите свой номер телефона, чтобы сбросить пароль</string>
+    <string name="get_code_button">Получить код</string>
+    <string name="login_existing_account_button">Войти в аккаунт</string>
+    <string name="login_title">Войдите в свой профиль</string>
+    <string name="login_with_button">Войти с T-id</string>
+    <string name="or_text">или</string>
+    <string name="password_hint">Пароль</string>
+    <string name="phone_hint">Номер телефона</string>
+    <string name="registration_title">Регистрация</string>
+    <string name="register_button">Зарегистрироваться</string>
+    <string name="reset_password_subtitle">Создайте новый пароль. Убедитесь, что он отличается от предыдущих в целях безопасности</string>
+    <string name="reset_password_title">Придумайте новый пароль</string>
+    <string name="resend_code">Отправить код повторно</string>
+    <string name="set_password_title">Придумайте новый пароль</string>
+    <string name="sms_verification_subtitle">Мы отправили СМС с кодом на номер +7 (XXX) XXX-XX-XX. Введите 5-значный код, указанный в СМС.</string>
+    <string name="submit_button">Отправить код</string>
 </resources>
