@@ -1,24 +1,16 @@
 <resources>
     <string name="app_name">t-bank</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="products">Продукты</string>
     <string name="communal_services">Коммунальные услуги</string>
     <string name="my_spendings">Мои расходы</string>
     <string name="my_financial_goals">Мои финансовые цели</string>
     <string name="category">Категория</string>
-    <string name="_10_000">10 000 ₽</string>
-    <string name="_10_000_spended">10 000 ₽ потрачено</string>
-    <string name="_10_000_left">10 000 ₽ осталось</string>
-    <string name="_26_03_2026">Окончание: 26.03.2026</string>
-    <string name="_3_556">3 556</string>
     <string name="goal_name">Название цели</string>
     <string name="goal_achieved">Цель достигнута!</string>
     <string name="amount_format">%d ₽</string>
     <string name="spent_amount_format">%d ₽ потрачено</string>
     <string name="remaining_amount_format">%d ₽ осталось</string>
-    <string name="amount_format_2">%s</string>
     <string name="end_date_format">Окончание: %s</string>
-    <string name="goal_achieved_2">Цель достигнута!</string>
     <string name="goal_not_achieved">Цель не достигнута</string>
     <string name="language">Язык</string>
     <string name="dark_theme">Темная тема</string>

@@ -14,10 +14,9 @@ class GoalAdapter(private val goals: List<Goal>) :
         fun bind(goal: Goal) {
             binding.textViewGoalName.text = goal.name
 
-            binding.textViewAmount.text = itemView.context.getString(
-                R.string.amount_format_2,
+            binding.textViewAmount.text = "%s"
                 goal.amount
-            )
+
 
             binding.textViewEndDate.text = itemView.context.getString(
                 R.string.end_date_format,
@@ -27,7 +26,7 @@ class GoalAdapter(private val goals: List<Goal>) :
             binding.progressBar.progress = if (goal.isAchieved) 100 else 50
 
             if (goal.isAchieved) {
-                binding.textViewStatus.text = itemView.context.getString(R.string.goal_achieved_2)
+                binding.textViewStatus.text = itemView.context.getString(R.string.goal_achieved)
                 binding.textViewStatus.setTextColor(itemView.context.getColor(R.color.green))
             } else {
                 binding.textViewStatus.text = itemView.context.getString(R.string.goal_not_achieved)
