@@ -1,5 +1,21 @@
 <resources>
     <string name="app_name">t-bank</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="products">Продукты</string>
+    <string name="communal_services">Коммунальные услуги</string>
+    <string name="my_spendings">Мои расходы</string>
+    <string name="my_financial_goals">Мои финансовые цели</string>
+    <string name="category">Категория</string>
+    <string name="goal_name">Название цели</string>
+    <string name="goal_achieved">Цель достигнута!</string>
+    <string name="amount_format">%d ₽</string>
+    <string name="spent_amount_format">%d ₽ потрачено</string>
+    <string name="remaining_amount_format">%d ₽ осталось</string>
+    <string name="end_date_format">Окончание: %s</string>
+    <string name="goal_not_achieved">Цель не достигнута</string>
+    <string name="language">Язык</string>
+    <string name="dark_theme">Темная тема</string>
+    <string name="change_profile">Редактировать профиль</string>
+    <string name="spending_history">История расходов</string>
+    <string name="my_financials">Мои финансы</string>
+    <string name="name">Имя фамилия</string>
 </resources>
