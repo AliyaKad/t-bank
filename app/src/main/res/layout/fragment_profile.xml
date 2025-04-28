@@ -6,14 +6,12 @@
     android:padding="16dp">
 
     <ScrollView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="16dp"
-                android:text="Имя фамилия"
+                android:text="@string/name"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -61,7 +59,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
-                        android:text="Мои финансы"
+                        android:text="@string/my_financials"
                         android:textSize="16sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -89,7 +87,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
-                        android:text="История расходов"
+                        android:text="@string/spending_history"
                         android:textSize="16sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -117,7 +115,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
-                        android:text="Редактировать профиль"
+                        android:text="@string/change_profile"
                         android:textSize="16sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -145,7 +143,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
-                        android:text="Темная тема"
+                        android:text="@string/dark_theme"
                         android:textSize="16sp" />
 
                     <Switch
@@ -177,7 +175,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
-                        android:text="Язык"
+                        android:text="@string/language"
                         android:textSize="16sp" />
 
                     <Spinner

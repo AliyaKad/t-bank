@@ -1,64 +1,86 @@
 package com.example.t_bank
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-
+import com.example.t_bank.databinding.FragmentExpensesBinding
 
 class ExpensesFragment : Fragment() {
+
+    private var _binding: FragmentExpensesBinding? = null
+
+    private val binding get() = requireNotNull(_binding) { "Binding is null" }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_expenses, container, false)
-
-        val pieChart = view.findViewById<PieChart>(R.id.pieChart)
-        setupPieChart(pieChart)
-
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = ExpenseAdapter(getExpenseData())
-
-        return view
+        _binding = FragmentExpensesBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    private fun setupPieChart(pieChart: PieChart) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupPieChart()
+
+        setupRecyclerView()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setupPieChart() {
         val entries = listOf(
             PieEntry(20f, "Категория 1"),
             PieEntry(30f, "Категория 2"),
             PieEntry(50f, "Категория 3")
         )
 
-        pieChart.setUsePercentValues(false)
-        pieChart.description.isEnabled = false
-        pieChart.legend.isEnabled = false
+        with(binding.pieChart) {
+            setUsePercentValues(false)
+            description.isEnabled = false
+            legend.isEnabled = false
 
-        pieChart.centerText = "35 000 ₽\nпотрачено"
+            centerText = "35 000 ₽\nпотрачено"
+            holeRadius = 70f
 
-        pieChart.holeRadius = 70f
+            val dataSet = PieDataSet(entries, "").apply {
+                colors = listOf(
+                    getClr(R.color.yellow),
+                    getClr(R.color.pink),
+                    getClr(R.color.blue)
+                )
+            }
+            data = PieData(dataSet)
+            invalidate()
+        }
+    }
 
-        val dataSet = com.github.mikephil.charting.data.PieDataSet(entries, "")
-        dataSet.colors = listOf(
-            Color.parseColor("#FFC107"),
-            Color.parseColor("#2196F3"),
-            Color.parseColor("#E91E63")
-        )
-        pieChart.data = com.github.mikephil.charting.data.PieData(dataSet)
-        pieChart.invalidate()
+    private fun setupRecyclerView() {
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = ExpenseAdapter(getExpenseData())
+        }
     }
 
     private fun getExpenseData(): List<Expense> {
         return listOf(
-            Expense("Продукты", 20000f, 10000f),
-            Expense("Коммунальные услуги", 20000f, 10000f)
+            Expense(getString(R.string.products), 20000f, 10000f),
+            Expense(getString(R.string.communal_services), 20000f, 10000f)
         )
+    }
+
+    private fun getClr(colorResId: Int): Int {
+        return resources.getColor(colorResId, null)
     }
 }
