@@ -2,6 +2,7 @@
     <string name="amount_format">%d ₽</string>
     <string name="app_name">t-bank</string>
     <string name="category">Категория</string>
+    <string name="change_profile">Редактировать профиль</string>
     <string name="check_sms_title">Проверьте свои СМС</string>
     <string name="communal_services">Коммунальные услуги</string>
     <string name="confirm_button">Подтвердить</string>
@@ -40,5 +41,4 @@
     <string name="spent_amount_format">%d ₽ потрачено</string>
     <string name="spending_history">История расходов</string>
     <string name="submit_button">Отправить код</string>
-    <string name="change_profile">Редактировать профиль</string>
 </resources>
