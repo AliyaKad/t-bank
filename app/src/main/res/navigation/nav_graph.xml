@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/expensesFragment">
+
+    <fragment
+        android:id="@+id/expensesFragment"
+        android:name="com.example.t_bank.ExpensesFragment"
+        android:label="ExpensesFragment" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.t_bank.ProfileFragment"
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_profileRedactionFragment"
+            app:destination="@id/profileRedactionFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_spendingsHistoryFragment"
+            app:destination="@id/spendingsHistoryFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_distributionOfFinancesFragment"
+            app:destination="@id/distributionOfFinancesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/numberCheckingFragment"
+        android:name="com.example.t_bank.NumberCheckingFragment"
+        android:label="NumberCheckingFragment" >
+        <action
+            android:id="@+id/action_numberCheckingFragment_to_passwordCreatingFragment"
+            app:destination="@id/passwordCreatingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordCreatingFragment"
+        android:name="com.example.t_bank.PasswordCreatingFragment"
+        android:label="PasswordCreatingFragment" >
+        <action
+            android:id="@+id/action_passwordCreatingFragment_to_firstSettingsFragment"
+            app:destination="@id/firstSettingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/firstSettingsFragment"
+        android:name="com.example.t_bank.FirstSettingsFragment"
+        android:label="FirstSettingsFragment" >
+        <action
+            android:id="@+id/action_firstSettingsFragment_to_percentageDistributionFragment"
+            app:destination="@id/percentageDistributionFragment" />
+        <action
+            android:id="@+id/action_firstSettingsFragment_to_newCategoryFragment"
+            app:destination="@id/newCategoryFragment" />
+        <action
+            android:id="@+id/action_firstSettingsFragment_to_changeCategorySettingsFragment"
+            app:destination="@id/changeCategorySettingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.t_bank.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_passwordRecoveryFragment"
+            app:destination="@id/passwordRecoveryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordRecoveryFragment"
+        android:name="com.example.t_bank.PasswordRecoveryFragment"
+        android:label="fragment_password_recovery"
+        tools:layout="@layout/fragment_password_recovery" >
+        <action
+            android:id="@+id/action_passwordRecoveryFragment_to_resetPasswordFragment"
+            app:destination="@id/resetPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="com.example.t_bank.ResetPasswordFragment"
+        android:label="fragment_reset_password"
+        tools:layout="@layout/fragment_reset_password" >
+        <action
+            android:id="@+id/action_resetPasswordFragment_to_firstSettingsFragment"
+            app:destination="@id/firstSettingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.example.t_bank.RegistrationFragment"
+        android:label="RegistrationFragment" >
+        <action
+            android:id="@+id/action_registrationFragment_to_numberCheckingFragment"
+            app:destination="@id/numberCheckingFragment" />
+        <action
+            android:id="@+id/action_registrationFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addingMoneyToBankFragment"
+        android:name="com.example.t_bank.AddingMoneyToBankFragment"
+        android:label="fragment_adding_money_to_bank"
+        tools:layout="@layout/fragment_adding_money_to_bank" />
+    <fragment
+        android:id="@+id/distributionOfFinancesFragment"
+        android:name="com.example.t_bank.DistributionOfFinancesFragment"
+        android:label="fragment_distribution_of_finances"
+        tools:layout="@layout/fragment_distribution_of_finances" />
+    <fragment
+        android:id="@+id/newGoalMakingFragment"
+        android:name="com.example.t_bank.NewGoalMakingFragment"
+        android:label="fragment_new_goal_making"
+        tools:layout="@layout/fragment_new_goal_making" />
+    <fragment
+        android:id="@+id/profileRedactionFragment"
+        android:name="com.example.t_bank.ProfileRedactionFragment"
+        android:label="fragment_profile_redaction"
+        tools:layout="@layout/fragment_profile_redaction" />
+    <fragment
+        android:id="@+id/spendingsHistoryFragment"
+        android:name="com.example.t_bank.SpendingsHistoryFragment"
+        android:label="fragment_spendings_history"
+        tools:layout="@layout/fragment_spendings_history" />
+    <fragment
+        android:id="@+id/financialGoalsFragment"
+        android:name="com.example.t_bank.FinancialGoalsFragment"
+        android:label="FinancialGoalsFragment" >
+        <action
+            android:id="@+id/action_financialGoalsFragment_to_newGoalMakingFragment"
+            app:destination="@id/newGoalMakingFragment" />
+        <action
+            android:id="@+id/action_financialGoalsFragment_to_addingMoneyToBankFragment"
+            app:destination="@id/addingMoneyToBankFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/percentageDistributionFragment"
+        android:name="com.example.t_bank.PercentageDistributionFragment"
+        android:label="fragment_percentage_distribution"
+        tools:layout="@layout/fragment_percentage_distribution" >
+        <action
+            android:id="@+id/action_percentageDistributionFragment_to_expensesFragment"
+            app:destination="@id/expensesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newCategoryFragment"
+        android:name="com.example.t_bank.NewCategoryFragment"
+        android:label="fragment_new_category"
+        tools:layout="@layout/fragment_new_category" />
+    <fragment
+        android:id="@+id/changeCategorySettingsFragment"
+        android:name="com.example.t_bank.ChangeCategorySettingsFragment"
+        android:label="fragment_change_category_settings"
+        tools:layout="@layout/fragment_change_category_settings" />
+</navigation>
