@@ -9,4 +9,7 @@
     <color name="green">#8BC34A</color>
     <color name="red">#F20000</color>
     <color name="gray">#E2E1E1</color>
+    <color name="orange">#FF9800</color>
+    <color name="purple">#9C27B0</color>
+    <color name="brown">#795548</color>
 </resources>

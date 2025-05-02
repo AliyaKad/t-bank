@@ -1,8 +1,10 @@
-package com.example.t_bank
+package com.example.t_bank.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.t_bank.Expense
+import com.example.t_bank.R
 import com.example.t_bank.databinding.ItemExpenseBinding
 
 class ExpenseAdapter(private val expenses: List<Expense>) :
@@ -51,3 +53,4 @@ class ExpenseAdapter(private val expenses: List<Expense>) :
         return expenses.size
     }
 }
+

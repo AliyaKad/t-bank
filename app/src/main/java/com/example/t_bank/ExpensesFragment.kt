@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.mikephil.charting.charts.PieChart
+import com.example.t_bank.adapter.ExpenseAdapter
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -84,3 +84,4 @@ class ExpensesFragment : Fragment() {
         return resources.getColor(colorResId, null)
     }
 }
+

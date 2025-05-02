@@ -1,8 +1,10 @@
-package com.example.t_bank
+package com.example.t_bank.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.t_bank.Goal
+import com.example.t_bank.R
 import com.example.t_bank.databinding.ItemGoalBinding
 
 class GoalAdapter(private val goals: List<Goal>) :
