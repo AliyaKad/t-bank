@@ -16,7 +16,11 @@ class CategoryAdapter(private var categories: List<Category>) :
         private val adapter: CategoryAdapter
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        private var currentCategory: Category? = null
+
         fun bind(category: Category) {
+            currentCategory = category
+
             binding.tvCategoryName.text = category.name
             binding.etPercentage.setText(category.percentage.toString())
 
@@ -27,6 +31,8 @@ class CategoryAdapter(private var categories: List<Category>) :
                     adapter.onCategoryUpdated?.invoke()
                 }
             }
+
+            binding.etPercentage.setOnFocusChangeListener(null)
         }
     }
 

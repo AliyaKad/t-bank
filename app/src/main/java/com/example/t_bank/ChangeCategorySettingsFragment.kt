@@ -48,7 +48,6 @@ class ChangeCategorySettingsFragment : Fragment() {
         )
 
         val adapter = ColorAdapter(colors) { selectedColor ->
-            println("Selected color: $selectedColor")
         }
 
         binding.recyclerViewColors.apply {

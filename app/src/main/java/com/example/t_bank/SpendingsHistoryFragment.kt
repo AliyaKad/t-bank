@@ -65,7 +65,6 @@ class SpendingsHistoryFragment : Fragment() {
         if (::adapter.isInitialized) {
             adapter.updateData(getSpendingData(currentMonthIndex))
         } else {
-            println("Adapter is not initialized yet!")
         }
     }
 

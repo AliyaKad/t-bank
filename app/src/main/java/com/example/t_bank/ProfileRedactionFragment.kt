@@ -54,13 +54,13 @@ class ProfileRedactionFragment : Fragment() {
             return
         }
 
-        println("Phone: $phoneNumber, Old Password: $oldPassword, New Password: $newPassword")
 
         Snackbar.make(binding.root, getString(R.string.changes_saved), Snackbar.LENGTH_SHORT).show()
     }
 
     private fun isValidPhoneNumber(phoneNumber: String): Boolean {
-        return phoneNumber.matches(Regex("^\\+7-\\d{3}-\\d{3}-\\d{2}-\\d{2}$"))
+        val cleaned = phoneNumber.replace("[^\\d]".toRegex(), "")
+        return cleaned.matches(Regex("^7\\d{10}$"))
     }
 
     override fun onDestroyView() {
