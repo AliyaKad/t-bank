@@ -5,3 +5,4 @@ data class Expense(
     val totalAmount: Float,
     val spentAmount: Float
 )
+
