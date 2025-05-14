@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.ksp)
+    id("com.google.dagger.hilt.android") version "2.56.1" apply false
 }
 buildscript {
     repositories {

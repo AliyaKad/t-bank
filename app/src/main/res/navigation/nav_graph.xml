@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/expensesFragment">
+    app:startDestination="@id/distributionOfFinancesFragment">
 
     <fragment
         android:id="@+id/expensesFragment"
-        android:name="com.example.t_bank.ExpensesFragment"
+        android:name="com.example.t_bank.presentation.ui.ExpensesFragment"
         android:label="ExpensesFragment" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.t_bank.ProfileFragment"
+        android:name="com.example.t_bank.presentation.ui.ProfileFragment"
         android:label="ProfileFragment" >
         <action
             android:id="@+id/action_profileFragment_to_profileRedactionFragment"
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/numberCheckingFragment"
-        android:name="com.example.t_bank.NumberCheckingFragment"
+        android:name="com.example.t_bank.presentation.ui.NumberCheckingFragment"
         android:label="NumberCheckingFragment" >
         <action
             android:id="@+id/action_numberCheckingFragment_to_passwordCreatingFragment"
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/passwordCreatingFragment"
-        android:name="com.example.t_bank.PasswordCreatingFragment"
+        android:name="com.example.t_bank.presentation.ui.PasswordCreatingFragment"
         android:label="PasswordCreatingFragment" >
         <action
             android:id="@+id/action_passwordCreatingFragment_to_firstSettingsFragment"
@@ -41,8 +41,11 @@
     </fragment>
     <fragment
         android:id="@+id/firstSettingsFragment"
-        android:name="com.example.t_bank.FirstSettingsFragment"
+        android:name="com.example.t_bank.presentation.ui.FirstSettingsFragment"
         android:label="FirstSettingsFragment" >
+        <argument
+            android:name="updatedCategory"
+            app:argType="com.example.t_bank.presentation.model.Category" />
         <action
             android:id="@+id/action_firstSettingsFragment_to_percentageDistributionFragment"
             app:destination="@id/percentageDistributionFragment" />
@@ -55,7 +58,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.t_bank.LoginFragment"
+        android:name="com.example.t_bank.presentation.ui.LoginFragment"
         android:label="LoginFragment" >
         <action
             android:id="@+id/action_loginFragment_to_passwordRecoveryFragment"
@@ -63,7 +66,7 @@
     </fragment>
     <fragment
         android:id="@+id/passwordRecoveryFragment"
-        android:name="com.example.t_bank.PasswordRecoveryFragment"
+        android:name="com.example.t_bank.presentation.ui.PasswordRecoveryFragment"
         android:label="fragment_password_recovery"
         tools:layout="@layout/fragment_password_recovery" >
         <action
@@ -72,7 +75,7 @@
     </fragment>
     <fragment
         android:id="@+id/resetPasswordFragment"
-        android:name="com.example.t_bank.ResetPasswordFragment"
+        android:name="com.example.t_bank.presentation.ui.ResetPasswordFragment"
         android:label="fragment_reset_password"
         tools:layout="@layout/fragment_reset_password" >
         <action
@@ -81,7 +84,7 @@
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
-        android:name="com.example.t_bank.RegistrationFragment"
+        android:name="com.example.t_bank.presentation.ui.RegistrationFragment"
         android:label="RegistrationFragment" >
         <action
             android:id="@+id/action_registrationFragment_to_numberCheckingFragment"
@@ -92,32 +95,32 @@
     </fragment>
     <fragment
         android:id="@+id/addingMoneyToBankFragment"
-        android:name="com.example.t_bank.AddingMoneyToBankFragment"
+        android:name="com.example.t_bank.presentation.ui.AddingMoneyToBankFragment"
         android:label="fragment_adding_money_to_bank"
         tools:layout="@layout/fragment_adding_money_to_bank" />
     <fragment
         android:id="@+id/distributionOfFinancesFragment"
-        android:name="com.example.t_bank.DistributionOfFinancesFragment"
+        android:name="com.example.t_bank.presentation.ui.DistributionOfFinancesFragment"
         android:label="fragment_distribution_of_finances"
         tools:layout="@layout/fragment_distribution_of_finances" />
     <fragment
         android:id="@+id/newGoalMakingFragment"
-        android:name="com.example.t_bank.NewGoalMakingFragment"
+        android:name="com.example.t_bank.presentation.ui.NewGoalMakingFragment"
         android:label="fragment_new_goal_making"
         tools:layout="@layout/fragment_new_goal_making" />
     <fragment
         android:id="@+id/profileRedactionFragment"
-        android:name="com.example.t_bank.ProfileRedactionFragment"
+        android:name="com.example.t_bank.presentation.ui.ProfileRedactionFragment"
         android:label="fragment_profile_redaction"
         tools:layout="@layout/fragment_profile_redaction" />
     <fragment
         android:id="@+id/spendingsHistoryFragment"
-        android:name="com.example.t_bank.SpendingsHistoryFragment"
+        android:name="com.example.t_bank.presentation.ui.SpendingsHistoryFragment"
         android:label="fragment_spendings_history"
         tools:layout="@layout/fragment_spendings_history" />
     <fragment
         android:id="@+id/financialGoalsFragment"
-        android:name="com.example.t_bank.FinancialGoalsFragment"
+        android:name="com.example.t_bank.presentation.ui.FinancialGoalsFragment"
         android:label="FinancialGoalsFragment" >
         <action
             android:id="@+id/action_financialGoalsFragment_to_newGoalMakingFragment"
@@ -128,21 +131,32 @@
     </fragment>
     <fragment
         android:id="@+id/percentageDistributionFragment"
-        android:name="com.example.t_bank.PercentageDistributionFragment"
+        android:name="com.example.t_bank.presentation.ui.PercentageDistributionFragment"
         android:label="fragment_percentage_distribution"
         tools:layout="@layout/fragment_percentage_distribution" >
         <action
             android:id="@+id/action_percentageDistributionFragment_to_expensesFragment"
             app:destination="@id/expensesFragment" />
+        <argument
+            android:name="totalBudget"
+            app:argType="float" />
+        <argument
+            android:name="categories"
+            app:argType="com.example.t_bank.presentation.model.Category[]" />
     </fragment>
     <fragment
         android:id="@+id/newCategoryFragment"
-        android:name="com.example.t_bank.NewCategoryFragment"
+        android:name="com.example.t_bank.presentation.ui.NewCategoryFragment"
         android:label="fragment_new_category"
         tools:layout="@layout/fragment_new_category" />
     <fragment
         android:id="@+id/changeCategorySettingsFragment"
-        android:name="com.example.t_bank.ChangeCategorySettingsFragment"
-        android:label="fragment_change_category_settings"
-        tools:layout="@layout/fragment_change_category_settings" />
+        android:name="com.example.t_bank.presentation.ui.ChangeCategorySettingsFragment">
+        <argument
+            android:name="category"
+            app:argType="com.example.t_bank.presentation.model.Category" />
+        <action
+            android:id="@+id/action_changeCategorySettingsFragment_to_firstSettingsFragment"
+            app:destination="@id/firstSettingsFragment" />
+    </fragment>
 </navigation>
