@@ -1,8 +1,11 @@
 package com.example.t_bank.di
 
+import com.example.t_bank.data.repository.FinancialGoalRepository
 import com.example.t_bank.data.repository.SettingsRepository
+import com.example.t_bank.domain.usecase.GetAllFinancialGoalsUseCase
 import com.example.t_bank.domain.usecase.GetCategoriesUseCase
 import com.example.t_bank.domain.usecase.SaveDefaultCategoriesUseCase
+import com.example.t_bank.domain.usecase.SaveFinancialGoalUseCase
 import com.example.t_bank.domain.usecase.SaveMonthlyBudgetUseCase
 import dagger.Module
 import dagger.Provides
@@ -30,5 +33,21 @@ object UseCaseModule {
     @Singleton
     fun provideGetCategoriesUseCase(repository: SettingsRepository): GetCategoriesUseCase {
         return GetCategoriesUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSaveFinancialGoalUseCase(
+        financialGoalRepository: FinancialGoalRepository
+    ): SaveFinancialGoalUseCase {
+        return SaveFinancialGoalUseCase(financialGoalRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetAllFinancialGoalsUseCase(
+        financialGoalRepository: FinancialGoalRepository
+    ): GetAllFinancialGoalsUseCase {
+        return GetAllFinancialGoalsUseCase(financialGoalRepository)
     }
 }

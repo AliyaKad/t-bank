@@ -6,25 +6,32 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.t_bank.data.local.dao.CategoryDao
 import com.example.t_bank.data.local.dao.CategoryDistributionDao
+import com.example.t_bank.data.local.dao.FinancialGoalDao
 import com.example.t_bank.data.local.dao.MonthlyBudgetDao
 import com.example.t_bank.data.local.entity.CategoryDistributionEntity
 import com.example.t_bank.data.local.entity.CategoryEntity
 import com.example.t_bank.data.local.entity.MonthlyBudgetEntity
+import com.example.t_bank.data.local.entity.FinancialGoalEntity
+import javax.inject.Singleton
 
 @Database(
     entities = [
         CategoryEntity::class,
         CategoryDistributionEntity::class,
-        MonthlyBudgetEntity::class
+        MonthlyBudgetEntity::class,
+        FinancialGoalEntity::class
     ],
     version = 1,
     exportSchema = false
 )
+
+@Singleton
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun categoryDao(): CategoryDao
     abstract fun categoryDistributionDao(): CategoryDistributionDao
     abstract fun monthlyBudgetDao(): MonthlyBudgetDao
+    abstract fun financialGoalDao(): FinancialGoalDao
 
     companion object {
         @Volatile
