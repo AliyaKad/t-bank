@@ -1,8 +1,8 @@
 package com.example.t_bank.data.repository
 
 import com.example.t_bank.data.local.dao.BudgetCategoryResult
-import com.example.t_bank.data.local.dao.BudgetWithCategories
 import com.example.t_bank.data.local.dao.MonthlyBudgetDao
+import com.example.t_bank.domain.usecase.model.BudgetWithCategories
 import com.example.t_bank.presentation.model.Category
 import javax.inject.Inject
 

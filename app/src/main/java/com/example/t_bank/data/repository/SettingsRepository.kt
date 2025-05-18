@@ -16,13 +16,6 @@ class SettingsRepository @Inject constructor(
     private val monthlyBudgetDao: MonthlyBudgetDao,
     private val categoryDistributionDao: CategoryDistributionDao
 ) {
-
-    suspend fun saveDefaultCategories(categories: List<CategoryEntity>) {
-        Log.d("SettingsRepository", "Saving default categories to database...")
-        categoryDao.insertCategories(*categories.toTypedArray())
-        Log.d("SettingsRepository", "Inserted ${categories.size} default categories into the database.")
-    }
-
     @Transaction
     suspend fun saveMonthlyBudget(month: String, totalBudget: Float, categories: List<CategoryEntity>) {
         try {
@@ -84,11 +77,6 @@ class SettingsRepository @Inject constructor(
         distributions.forEach { distribution ->
             Log.d("SettingsRepository", "Distribution ID: ${distribution.id}, Budget ID: ${distribution.budgetId}, Category ID: ${distribution.categoryId}")
         }
-    }
-
-
-    suspend fun updateCategory(category: CategoryEntity) {
-        categoryDao.updateCategory(category)
     }
 
     fun getDefaultCategories(): List<CategoryEntity> {

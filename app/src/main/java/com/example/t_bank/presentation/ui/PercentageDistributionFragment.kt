@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.t_bank.R
 import com.example.t_bank.presentation.model.Category
 import com.example.t_bank.presentation.adapter.CategoryAdapter
 import com.example.t_bank.databinding.FragmentPercentageDistributionBinding
@@ -20,7 +21,9 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 @AndroidEntryPoint
 class PercentageDistributionFragment : Fragment() {
@@ -46,7 +49,7 @@ class PercentageDistributionFragment : Fragment() {
             it as Category
         } ?: emptyList()
 
-        binding.pieChart.centerText = "${totalBudget.toInt()} ₽"
+        binding.pieChart.centerText = context?.getString(R.string.amount_format, totalBudget.toInt())
         viewModel.loadCategories(categories)
 
         setupRecyclerView()
@@ -101,9 +104,8 @@ class PercentageDistributionFragment : Fragment() {
 
     private fun getCurrentMonth(): String {
         val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH) + 1
-        return String.format("%d-%02d", year, month)
+        val dateFormat = SimpleDateFormat("yyyy-MM", Locale.getDefault())
+        return dateFormat.format(calendar.time)
     }
 
     private fun setupSaveButton() {

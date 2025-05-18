@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.t_bank.data.local.entity.MonthlyBudgetEntity
-import com.example.t_bank.presentation.model.Category
 
 @Dao
 interface MonthlyBudgetDao {
@@ -20,9 +19,6 @@ interface MonthlyBudgetDao {
 
     @Query("SELECT * FROM monthly_budgets")
     suspend fun getAllMonthlyBudgets(): List<MonthlyBudgetEntity>
-
-    @Query("SELECT COUNT(*) FROM monthly_budgets")
-    suspend fun isDatabaseEmpty(): Boolean
 
     @Query("""
         SELECT mb.totalBudget, c.name AS categoryName, c.iconResId AS categoryIconResId, 
@@ -43,7 +39,3 @@ data class BudgetCategoryResult(
     val categoryPercentage: Float
 )
 
-data class BudgetWithCategories(
-    val totalBudget: Float,
-    val categories: List<Category>
-)

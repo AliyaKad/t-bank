@@ -38,10 +38,14 @@ class AddingMoneyToBankFragment : Fragment() {
 
     private fun setupClickListeners() {
         binding.btnAddAmount.setOnClickListener {
-            val amount = binding.tlAmount.editText?.text.toString()
-            viewModel.updateAmount(amount)
-            viewModel.onAddAmountClicked()
+            handleAddAmount()
         }
+    }
+
+    private fun handleAddAmount() {
+        val amount = binding.tlAmount.editText?.text.toString()
+        viewModel.updateAmount(amount)
+        viewModel.onAddAmountClicked()
     }
 
     private fun observeViewModel() {

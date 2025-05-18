@@ -12,12 +12,4 @@ data class CategoryEntity(
     val colorResId: Int,
     val percentage: Float
 ) {
-    fun toDomainModel(): Category {
-        return Category(
-            name = name,
-            iconResId = iconResId,
-            colorResId = colorResId,
-            percentage = percentage
-        )
-    }
 }

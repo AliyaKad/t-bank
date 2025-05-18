@@ -3,7 +3,7 @@ package com.example.t_bank.presentation.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.t_bank.R
-import com.example.t_bank.domain.usecase.SaveAllDataUseCase
+import com.example.t_bank.domain.usecase.SaveAllSettingsUseCase
 import com.example.t_bank.presentation.model.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,8 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PercentageDistributionViewModel @Inject constructor(
-    private val saveAllDataUseCase: SaveAllDataUseCase,
-    private val context: android.content.Context
+    private val saveAllDataUseCase: SaveAllSettingsUseCase,
 ) : ViewModel() {
 
     private val _categories = MutableStateFlow<List<Category>>(emptyList())
@@ -36,7 +35,7 @@ class PercentageDistributionViewModel @Inject constructor(
                 if (validatePercentages(currentCategories)) {
                     _categories.value = currentCategories
                 } else {
-                    throw IllegalArgumentException(context.getString(R.string.error_percentage_sum))
+                    throw IllegalArgumentException("Сумма процентов должна быть равна 100%")
                 }
             }
         }

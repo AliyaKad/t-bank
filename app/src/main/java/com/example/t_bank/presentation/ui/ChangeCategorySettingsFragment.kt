@@ -14,13 +14,9 @@ import com.example.t_bank.databinding.FragmentChangeCategorySettingsBinding
 import com.example.t_bank.presentation.model.Category
 import com.example.t_bank.presentation.viewModel.ChangeCategorySettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.t_bank.R
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import com.example.t_bank.launchAndCollectIn
 
 
 @AndroidEntryPoint
@@ -43,20 +39,15 @@ class ChangeCategorySettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val category = arguments?.getParcelable<Category>("category")
-        if (category != null) {
-            viewModel.loadCategory(category.name)
-        }
+            ?: requireNotNull(null) { "Category argument is required but was not provided." }
+        viewModel.loadCategory(category.name)
 
         setupRecyclerView()
         setupSaveButton()
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.selectedCategory.collect { selectedCategory ->
-                    if (selectedCategory != null) {
-                        updateCategoryUI(selectedCategory)
-                    }
-                }
+        launchAndCollectIn(viewModel.selectedCategory) { selectedCategory ->
+            if (selectedCategory != null) {
+                updateCategoryUI(selectedCategory)
             }
         }
     }
@@ -75,24 +66,20 @@ class ChangeCategorySettingsFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.colors.collectLatest { colors ->
-                    val adapter = ColorAdapter(colors) { selectedColor ->
-                        val category = viewModel.selectedCategory.value
-                        if (category != null) {
-                            val updatedCategory = category.copy(colorResId = selectedColor)
-                            viewModel.updateCategoryColor(updatedCategory)
+        launchAndCollectIn(viewModel.colors) { colors ->
+            val adapter = ColorAdapter(colors) { selectedColor ->
+                val category = viewModel.selectedCategory.value
+                if (category != null) {
+                    val updatedCategory = category.copy(colorResId = selectedColor)
+                    viewModel.updateCategoryColor(updatedCategory)
 
-                            updateCircleColor(selectedColor)
-                        }
-                    }
-
-                    binding.recyclerViewColors.apply {
-                        layoutManager = GridLayoutManager(requireContext(), 5)
-                        this.adapter = adapter
-                    }
+                    updateCircleColor(selectedColor)
                 }
+            }
+
+            binding.recyclerViewColors.apply {
+                layoutManager = GridLayoutManager(requireContext(), 5)
+                this.adapter = adapter
             }
         }
     }

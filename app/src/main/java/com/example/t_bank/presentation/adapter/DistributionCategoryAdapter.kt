@@ -3,6 +3,7 @@ package com.example.t_bank.presentation.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.t_bank.R
 import com.example.t_bank.databinding.ItemDistributionCategoryBinding
 import com.example.t_bank.presentation.model.Category
 
@@ -16,7 +17,7 @@ class DistributionCategoryAdapter(private val categories: List<Category>) :
         fun bind(category: Category) {
             binding.ivIcon.setImageResource(category.iconResId)
             binding.tvCategoryName.text = category.name
-            binding.tvPercentage.text = "${category.percentage}%"
+            binding.tvPercentage.text = binding.root.context.getString(R.string.percentage_format, category.percentage.toInt())
         }
     }
 

@@ -6,17 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.t_bank.databinding.FragmentFirstSettingsBinding
 import com.example.t_bank.presentation.adapter.FirstSettingsAdapter
 import com.example.t_bank.presentation.viewModel.FirstSettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
 import com.example.t_bank.R
+import com.example.t_bank.launchAndCollectIn
 import com.example.t_bank.presentation.model.Category
 
 @AndroidEntryPoint
@@ -36,10 +33,10 @@ class FirstSettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val updatedCategory = arguments?.getParcelable<Category>("updatedCategory")
-        if (updatedCategory != null) {
-            viewModel.updateCategory(updatedCategory)
-        }
+        updatedCategory?.let { viewModel.updateCategory(it) }
+
 
         setupRecyclerView()
         observeCategories()
@@ -47,7 +44,6 @@ class FirstSettingsFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-
         val adapter = FirstSettingsAdapter { category ->
             val action = FirstSettingsFragmentDirections.actionFirstSettingsFragmentToChangeCategorySettingsFragment(category)
             findNavController().navigate(action)
@@ -60,23 +56,15 @@ class FirstSettingsFragment : Fragment() {
     }
 
     private fun observeCategories() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.categories.collect { categories ->
-
-                    (binding.recyclerView.adapter as? FirstSettingsAdapter)?.submitList(categories)
-                }
-            }
+        launchAndCollectIn(viewModel.categories) { categories ->
+            (binding.recyclerView.adapter as? FirstSettingsAdapter)?.submitList(categories)
         }
     }
 
     private fun setupNextButton() {
         binding.btnNext.setOnClickListener {
             val totalBudgetInput = binding.tlAmount.editText?.text.toString()
-            val totalBudget = totalBudgetInput.toFloatOrNull() ?: run {
-                binding.tlAmount.error = getString(R.string.enter_budget)
-                return@setOnClickListener
-            }
+            val totalBudget = validateBudgetInput(totalBudgetInput) ?: return@setOnClickListener
 
             val categories = viewModel.categories.value.toTypedArray()
             val action = FirstSettingsFragmentDirections.actionFirstSettingsFragmentToPercentageDistributionFragment(
@@ -84,6 +72,13 @@ class FirstSettingsFragment : Fragment() {
                 categories = categories
             )
             findNavController().navigate(action)
+        }
+    }
+
+    private fun validateBudgetInput(input: String): Float? {
+        return input.toFloatOrNull() ?: run {
+            binding.tlAmount.error = getString(R.string.enter_budget)
+            null
         }
     }
 

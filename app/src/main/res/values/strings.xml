@@ -31,7 +31,6 @@
     <string name="error_empty_old_password">Введите старый пароль</string>
     <string name="error_empty_phone">Введите номер телефона</string>
     <string name="error_invalid_phone">Некорректный номер телефона</string>
-    <string name="error_percentage_sum">Сумма процентов должна быть равна 100%</string>
     <string name="forgot_password">Забыли пароль?</string>
     <string name="forgot_password_subtitle">Введите свой номер телефона, чтобы сбросить пароль</string>
     <string name="get_code_button">Получить код</string>

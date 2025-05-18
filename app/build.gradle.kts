@@ -52,6 +52,7 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
@@ -104,7 +105,4 @@ dependencies {
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
-
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
 }

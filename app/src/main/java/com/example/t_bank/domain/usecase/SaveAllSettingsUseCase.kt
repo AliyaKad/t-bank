@@ -4,7 +4,7 @@ import com.example.t_bank.data.local.entity.CategoryEntity
 import com.example.t_bank.data.repository.SettingsRepository
 import javax.inject.Inject
 
-class SaveAllDataUseCase @Inject constructor(
+class SaveAllSettingsUseCase @Inject constructor(
     private val repository: SettingsRepository
 ) {
     suspend operator fun invoke(month: String, totalBudget: Float, categories: List<CategoryEntity>) {

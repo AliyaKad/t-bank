@@ -1,7 +1,7 @@
 package com.example.t_bank.domain.usecase
 
-import com.example.t_bank.data.local.dao.BudgetWithCategories
 import com.example.t_bank.data.repository.MonthlyBudgetRepository
+import com.example.t_bank.domain.usecase.model.BudgetWithCategories
 import javax.inject.Inject
 
 class GetBudgetAndCategoriesUseCase @Inject constructor(
