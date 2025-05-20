@@ -21,6 +21,7 @@ mpandroidchart = "v3.1.0"
 room = "2.6.0"
 hilt = "2.56.1"
 ksp = "2.0.21-1.0.28"
+retrofit = "2.9.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -78,6 +79,9 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 # Hilt
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+
+retrofit = {group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit"}
+converter-gson = {group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
