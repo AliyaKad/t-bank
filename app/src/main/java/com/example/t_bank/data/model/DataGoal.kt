@@ -1,6 +1,6 @@
 package com.example.t_bank.data.model
 
-data class Goal(
+data class DataGoal(
     val name: String,
     val targetAmount: Double,
     val savedAmount: Double,
