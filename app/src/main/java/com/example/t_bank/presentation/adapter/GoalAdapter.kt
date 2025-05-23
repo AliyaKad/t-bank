@@ -7,7 +7,7 @@ import com.example.t_bank.presentation.model.Goal
 import com.example.t_bank.R
 import com.example.t_bank.databinding.ItemGoalBinding
 
-class GoalAdapter(private val goals: List<Goal>) :
+class GoalAdapter(private var goals: List<Goal>) :
     RecyclerView.Adapter<GoalAdapter.GoalViewHolder>() {
 
     class GoalViewHolder(private val binding: ItemGoalBinding) :
@@ -48,5 +48,10 @@ class GoalAdapter(private val goals: List<Goal>) :
 
     override fun getItemCount(): Int {
         return goals.size
+    }
+
+    fun updateData(newGoals: List<Goal>) {
+        goals = newGoals
+        notifyDataSetChanged()
     }
 }

@@ -5,15 +5,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.t_bank.presentation.adapter.GoalAdapter
 import com.example.t_bank.databinding.FragmentFinancialGoalsBinding
 import com.example.t_bank.presentation.model.Goal
+import com.example.t_bank.presentation.viewModel.FinancialGoalsViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class FinancialGoalsFragment : Fragment() {
 
-    private var _binding: FragmentFinancialGoalsBinding? = null
+    private val viewModel: FinancialGoalsViewModel by viewModels()
 
+    private var _binding: FragmentFinancialGoalsBinding? = null
     private val binding get() = requireNotNull(_binding) { "Binding is null" }
 
     override fun onCreateView(
@@ -28,6 +35,7 @@ class FinancialGoalsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
+        loadGoals()
     }
 
     override fun onDestroyView() {
@@ -36,15 +44,18 @@ class FinancialGoalsFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val goals = listOf(
-            Goal("Цель 1", "3 556 ₽", "26.03.2026", true),
-            Goal("Цель 2", "10 000 ₽", "01.01.2027", false),
-            Goal("Цель 3", "5 000 ₽", "15.08.2025", true)
-        )
-
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GoalAdapter(goals)
+            adapter = GoalAdapter(emptyList())
+        }
+    }
+
+    private fun loadGoals() {
+        lifecycleScope.launch {
+            viewModel.loadGoals(userId = 1)
+            viewModel.goals.collect { goals ->
+                (binding.recyclerView.adapter as? GoalAdapter)?.updateData(goals)
+            }
         }
     }
 }

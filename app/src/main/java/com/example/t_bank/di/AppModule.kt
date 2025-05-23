@@ -1,13 +1,18 @@
 package com.example.t_bank.di
 
+import android.content.Context
 import com.example.t_bank.data.local.AppDatabase
 import com.example.t_bank.data.local.dao.CategoryDao
 import com.example.t_bank.data.local.dao.CategoryDistributionDao
 import com.example.t_bank.data.local.dao.MonthlyBudgetDao
+import com.example.t_bank.data.remote.api.SmartBudgetApiService
+import com.example.t_bank.data.remote.datasource.GoalDataSource
+import com.example.t_bank.data.repository.GoalRepository
 import com.example.t_bank.data.repository.SettingsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -31,6 +36,20 @@ object AppModule {
     @Singleton
     fun provideMonthlyBudgetDao(appDatabase: AppDatabase): MonthlyBudgetDao {
         return appDatabase.monthlyBudgetDao()
+    }
+
+    @Provides
+    fun provideGoalDataSource(
+        apiService: SmartBudgetApiService,
+        @ApplicationContext context: Context
+    ): GoalDataSource {
+        return GoalDataSource(apiService, context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGoalRepository(goalDataSource: GoalDataSource): GoalRepository {
+        return GoalRepository(goalDataSource)
     }
 
     @Provides
