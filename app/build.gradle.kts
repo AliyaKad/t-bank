@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
+    id("com.google.dagger.hilt.android")
     id("androidx.navigation.safeargs.kotlin")
 }
 
@@ -51,6 +52,7 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
@@ -96,4 +98,11 @@ dependencies {
 
     // MPAndroidChart
     implementation(libs.mpandroidchart)
+
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
 }
