@@ -10,14 +10,26 @@ import com.example.t_bank.data.local.entity.MonthlyBudgetEntity
 import javax.inject.Inject
 import android.util.Log
 import androidx.room.Transaction
+import com.example.t_bank.data.remote.datasource.BudgetRemoteDataSource
+import com.example.t_bank.data.model.BudgetRequest
+import com.example.t_bank.domain.usecase.model.Category
+import com.example.t_bank.toApiModel
+import com.example.t_bank.toEntity
 
 class SettingsRepository @Inject constructor(
-    private val categoryDao: CategoryDao,
     private val monthlyBudgetDao: MonthlyBudgetDao,
-    private val categoryDistributionDao: CategoryDistributionDao
+    private val categoryDao: CategoryDao,
+    private val categoryDistributionDao: CategoryDistributionDao,
+    private val budgetRemoteDataSource: BudgetRemoteDataSource,
 ) {
+
     @Transaction
-    suspend fun saveMonthlyBudget(month: String, totalBudget: Float, categories: List<CategoryEntity>) {
+    suspend fun saveMonthlyBudget(
+        userId: Int,
+        month: String,
+        totalBudget: Float,
+        categories: List<Category>
+    ) {
         try {
             Log.d("SettingsRepository", "Saving monthly budget for month: $month, totalBudget: $totalBudget")
 
@@ -25,13 +37,14 @@ class SettingsRepository @Inject constructor(
             val budgetId = monthlyBudgetDao.insertMonthlyBudget(monthlyBudget)
             Log.d("SettingsRepository", "Inserted monthly budget with ID: $budgetId")
 
-            categoryDao.insertCategories(*categories.toTypedArray())
+            val categoryEntities = categories.map { it.toEntity() }
+            categoryDao.insertCategories(*categoryEntities.toTypedArray())
             Log.d("SettingsRepository", "Inserted ${categories.size} categories.")
 
             val allCategories = categoryDao.getAllCategories()
             val categoryMap = allCategories.associateBy { it.name }
 
-            val distributions = categories.mapNotNull { category ->
+            val distributions = categoryEntities.mapNotNull { category ->
                 categoryMap[category.name]?.let { savedCategory ->
                     CategoryDistributionEntity(
                         id = 0,
@@ -41,22 +54,31 @@ class SettingsRepository @Inject constructor(
                 }
             }
 
-            if (distributions.isEmpty()) {
+            if (distributions.isNotEmpty()) {
+                categoryDistributionDao.insertCategoryDistributions(distributions)
+                Log.d("SettingsRepository", "Inserted ${distributions.size} category distributions.")
+            } else {
                 Log.e("SettingsRepository", "No valid distributions found")
                 return
             }
-            categoryDistributionDao.insertCategoryDistributions(distributions)
-            Log.d("SettingsRepository", "Inserted ${distributions.size} category distributions.")
 
             Log.d("SettingsRepository", "Saved monthly budget and distributions.")
 
             logDatabaseContent()
+
+            val apiBudget = BudgetRequest(
+                userId = userId,
+                income = totalBudget.toDouble(),
+                categories = categories.map { it.toApiModel() }
+            )
+            budgetRemoteDataSource.setBudget(apiBudget)
+            Log.d("SettingsRepository", "Saved monthly budget to API.")
         } catch (e: Exception) {
             Log.e("SettingsRepository", "Error while saving monthly budget", e)
+            throw RuntimeException("Failed to save budget", e)
         }
     }
 
-    //метод для логирования записи данных в бд
     suspend fun logDatabaseContent() {
         Log.d("SettingsRepository", "Logging database content...")
 
@@ -88,5 +110,4 @@ class SettingsRepository @Inject constructor(
             CategoryEntity(5, "Другое", R.drawable.ic_other, R.color.purple, 30f)
         )
     }
-
 }

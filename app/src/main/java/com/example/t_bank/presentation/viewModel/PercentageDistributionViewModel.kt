@@ -2,9 +2,9 @@ package com.example.t_bank.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.t_bank.R
 import com.example.t_bank.domain.usecase.SaveAllSettingsUseCase
 import com.example.t_bank.presentation.model.Category
+import com.example.t_bank.toDomainModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -52,8 +52,8 @@ class PercentageDistributionViewModel @Inject constructor(
 
     fun saveDataToDatabase(month: String, totalBudget: Float) {
         viewModelScope.launch {
-            val categories = _categories.value.map { it.toEntity() }
-            saveAllDataUseCase(month, totalBudget, categories)
+            val categories = _categories.value.map { it.toDomainModel() }
+            saveAllDataUseCase(1, month, totalBudget, categories)
         }
     }
 }

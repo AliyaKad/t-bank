@@ -99,10 +99,17 @@ dependencies {
     // MPAndroidChart
     implementation(libs.mpandroidchart)
 
+    implementation(libs.room.ktx)
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
-    implementation(libs.room.ktx)
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    implementation(libs.logger)
+    implementation(libs.okhttp)
+
 }
