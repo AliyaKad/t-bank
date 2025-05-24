@@ -1,3 +1,5 @@
+package com.example.t_bank.di
+
 import com.example.t_bank.data.remote.datasource.*
 import com.example.t_bank.data.remote.api.*
 import dagger.Module
