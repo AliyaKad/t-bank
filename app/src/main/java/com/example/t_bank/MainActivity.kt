@@ -32,8 +32,14 @@ class MainActivity : AppCompatActivity() {
     private fun setupBottomNavigationVisibility(navController: NavController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.firstSettingsFragment -> binding.bottomNavigation.visibility = View.GONE
-                else -> binding.bottomNavigation.visibility = View.VISIBLE
+                R.id.expensesFragment,
+                R.id.profileFragment,
+                R.id.financialGoalsFragment -> {
+                    binding.bottomNavigation.visibility = View.VISIBLE
+                }
+                else -> {
+                    binding.bottomNavigation.visibility = View.GONE
+                }
             }
         }
     }
