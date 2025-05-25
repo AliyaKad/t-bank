@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.t_bank.R
 import com.example.t_bank.databinding.FragmentNewGoalMakingBinding
 import com.example.t_bank.presentation.viewModel.NewGoalMakingViewModel
@@ -85,6 +86,7 @@ class NewGoalMakingFragment : Fragment() {
             when (result) {
                 is Result.Success -> {
                     showSuccess(getString(R.string.goal_created_successfully))
+                    findNavController().navigateUp()
                 }
                 is Result.Failure -> {
                     showError(getString(R.string.failed_to_create_goal, result.exception.message))

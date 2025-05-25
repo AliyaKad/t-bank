@@ -1,5 +1,6 @@
 package com.example.t_bank.di
 
+import com.example.t_bank.data.remote.api.GoalApiService
 import com.example.t_bank.data.remote.api.SmartBudgetApiService
 import dagger.Module
 import dagger.Provides
@@ -15,16 +16,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("https://virtserver.swaggerhub.com/LizaMusina/Smart_Budget/1.0.0/ ")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideSmartBudgetApiService(retrofit: Retrofit): SmartBudgetApiService {
-        return retrofit.create(SmartBudgetApiService::class.java)
+    fun provideGoalApiService(retrofit: Retrofit): GoalApiService {
+        return retrofit.create(GoalApiService::class.java)
     }
 }

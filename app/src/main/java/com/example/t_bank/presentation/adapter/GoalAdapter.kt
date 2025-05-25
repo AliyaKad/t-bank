@@ -7,18 +7,21 @@ import com.example.t_bank.presentation.model.Goal
 import com.example.t_bank.R
 import com.example.t_bank.databinding.ItemGoalBinding
 
-class GoalAdapter(private var goals: List<Goal>) :
-    RecyclerView.Adapter<GoalAdapter.GoalViewHolder>() {
+class GoalAdapter(
+    private var goals: List<Goal>,
+    private val onLongClick: (Goal) -> Unit
+) : RecyclerView.Adapter<GoalAdapter.GoalViewHolder>() {
 
     class GoalViewHolder(private val binding: ItemGoalBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(goal: Goal) {
+        fun bind(goal: Goal, onLongClick: (Goal) -> Unit) {
             binding.textViewGoalName.text = goal.name
 
-            binding.textViewAmount.text = "%s"
+            binding.textViewAmount.text = itemView.context.getString(
+                R.string.amount_format_float,
                 goal.amount
-
+            )
 
             binding.textViewEndDate.text = itemView.context.getString(
                 R.string.end_date_format,
@@ -34,6 +37,11 @@ class GoalAdapter(private var goals: List<Goal>) :
                 binding.textViewStatus.text = itemView.context.getString(R.string.goal_not_achieved)
                 binding.textViewStatus.setTextColor(itemView.context.getColor(R.color.red))
             }
+
+            itemView.setOnLongClickListener {
+                onLongClick(goal)
+                true
+            }
         }
     }
 
@@ -43,7 +51,7 @@ class GoalAdapter(private var goals: List<Goal>) :
     }
 
     override fun onBindViewHolder(holder: GoalViewHolder, position: Int) {
-        holder.bind(goals[position])
+        holder.bind(goals[position], onLongClick)
     }
 
     override fun getItemCount(): Int {

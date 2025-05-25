@@ -7,6 +7,7 @@ import com.example.t_bank.data.local.dao.CategoryDistributionDao
 import com.example.t_bank.data.local.dao.MonthlyBudgetDao
 import com.example.t_bank.data.remote.api.SmartBudgetApiService
 import com.example.t_bank.data.remote.datasource.GoalDataSource
+import com.example.t_bank.data.remote.datasource.GoalDataSourceImpl
 import com.example.t_bank.data.repository.GoalRepository
 import com.example.t_bank.data.repository.SettingsRepository
 import dagger.Module
@@ -38,17 +39,10 @@ object AppModule {
         return appDatabase.monthlyBudgetDao()
     }
 
-    @Provides
-    fun provideGoalDataSource(
-        apiService: SmartBudgetApiService,
-        @ApplicationContext context: Context
-    ): GoalDataSource {
-        return GoalDataSource(apiService, context)
-    }
 
     @Provides
     @Singleton
-    fun provideGoalRepository(goalDataSource: GoalDataSource): GoalRepository {
+    fun provideGoalRepository(goalDataSource: GoalDataSourceImpl): GoalRepository {
         return GoalRepository(goalDataSource)
     }
 
