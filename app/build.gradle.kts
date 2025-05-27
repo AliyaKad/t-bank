@@ -108,4 +108,9 @@ dependencies {
 
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+
+    implementation(libs.logger)
+
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
+    implementation("androidx.hilt:hilt-work:1.1.0-alpha01")
 }
