@@ -4,7 +4,14 @@ import com.example.t_bank.data.local.AppDatabase
 import com.example.t_bank.data.local.dao.CategoryDao
 import com.example.t_bank.data.local.dao.CategoryDistributionDao
 import com.example.t_bank.data.local.dao.MonthlyBudgetDao
+import com.example.t_bank.data.remote.datasource.CategoryDataSource
+import com.example.t_bank.data.remote.datasource.TransactionDataSource
+import com.example.t_bank.data.repository.CategoryForTransactionsRepository
 import com.example.t_bank.data.repository.SettingsRepository
+import com.example.t_bank.data.repository.TransactionRepository
+import com.example.t_bank.domain.usecase.GetCategoriesForTransactionsUseCase
+import com.example.t_bank.domain.usecase.GetTransactionsUseCase
+import com.example.t_bank.presentation.model.CategoryRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,4 +49,17 @@ object AppModule {
     ): SettingsRepository {
         return SettingsRepository(categoryDao, monthlyBudgetDao, categoryDistributionDao)
     }
+
+    @Provides
+    @Singleton
+    fun provideTransactionRepository(dataSource: TransactionDataSource): TransactionRepository {
+        return TransactionRepository(dataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCategoryRepository(dataSource: CategoryDataSource): CategoryForTransactionsRepository {
+        return CategoryForTransactionsRepository(dataSource)
+    }
+
 }

@@ -10,9 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.t_bank.R
+import com.example.t_bank.presentation.model.CategoryRepository
 import com.example.t_bank.presentation.model.Transaction
 import com.example.t_bank.presentation.viewModel.TransactionViewModel
-import com.example.t_bank.presentation.model.CategoryRepository
+import com.example.t_bank.presentation.adapter.CategoryForTransactionAdapter
 
 class TransactionAdapter(
     private val viewModel: TransactionViewModel,
@@ -51,16 +52,14 @@ class TransactionAdapter(
                 categoryAdapter = CategoryForTransactionAdapter().apply {
                     submitList(CategoryRepository.categories)
                     onCategorySelected = { categoryId ->
-                        val updated = transaction.copy(categoryId = categoryId)
-                        viewModel.assignCategoryToTransaction(updated, categoryId)
+                        val categoryName = CategoryRepository.getCategoryNameById(categoryId)
+                        val updated = transaction.copy(category = categoryName)
+                        viewModel.assignCategoryToTransaction(updated, categoryName ?: "Другое")
                         notifyItemChanged(bindingAdapterPosition)
                     }
                 }
                 recyclerViewCategories.adapter = categoryAdapter
                 recyclerViewCategories.layoutManager = LinearLayoutManager(itemView.context)
-            }
-            itemView.setOnClickListener {
-                onItemClickListener(transaction)
             }
 
             buttonChoose.setOnClickListener {
@@ -70,8 +69,9 @@ class TransactionAdapter(
 
             buttonSave.setOnClickListener {
                 val selectedId = categoryAdapter.selectedCategoryId
-                if (selectedId != null) {
-                    viewModel.assignCategoryToTransaction(transaction, selectedId)
+                val categoryName = CategoryRepository.getCategoryNameById(selectedId)
+                if (categoryName != null) {
+                    viewModel.assignCategoryToTransaction(transaction, categoryName)
                     transaction.isExpanded = false
                     notifyItemChanged(adapterPosition)
                 }

@@ -4,6 +4,6 @@ data class Transaction(
     val date: String,
     val description: String,
     val amount: Int,
-    var categoryId: Int? = null,
+    var category: String? = null,
     var isExpanded: Boolean = false
 )

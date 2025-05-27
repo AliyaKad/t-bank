@@ -1,9 +1,11 @@
 package com.example.t_bank.di
+import android.content.Context
 import com.example.t_bank.data.remote.datasource.*
 import com.example.t_bank.data.remote.api.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -19,8 +21,8 @@ object DataSourceModule {
 
     @Provides
     @Singleton
-    fun provideCategoryDataSource(apiService: CategoryApiService): CategoryDataSource {
-        return CategoryDataSourceImpl(apiService)
+    fun provideCategoryDataSource(apiService: CategoryApiService, @ApplicationContext context: Context): CategoryDataSource {
+        return CategoryDataSourceImpl(apiService, context)
     }
 
     @Provides
@@ -43,7 +45,7 @@ object DataSourceModule {
 
     @Provides
     @Singleton
-    fun provideTransactionDataSource(apiService: TransactionApiService): TransactionDataSource {
-        return TransactionDataSourceImpl(apiService)
+    fun provideTransactionDataSource(apiService: TransactionApiService, @ApplicationContext context: Context): TransactionDataSource {
+        return TransactionDataSourceImpl(apiService, context)
     }
 }

@@ -1,5 +1,6 @@
 package com.example.t_bank.di
 
+import com.example.t_bank.mapper.CategoryDomainMapper
 import com.example.t_bank.mapper.CategoryMapper
 import com.example.t_bank.mapper.CategoryUiMapper
 import dagger.Module
@@ -14,9 +15,10 @@ object MapperModule {
 
     @Provides
     @Singleton
-    fun provideCategoryMapper(): CategoryMapper {
-        return CategoryMapper()
+    fun provideCategoryMapper(): CategoryDomainMapper {
+        return CategoryDomainMapper()
     }
+
     @Provides
     @Singleton
     fun provideCategoryUiMapper(): CategoryUiMapper {
