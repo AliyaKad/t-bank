@@ -4,6 +4,7 @@ import com.example.t_bank.data.local.AppDatabase
 import com.example.t_bank.data.local.dao.CategoryDao
 import com.example.t_bank.data.local.dao.CategoryDistributionDao
 import com.example.t_bank.data.local.dao.MonthlyBudgetDao
+import com.example.t_bank.data.remote.datasource.BudgetRemoteDataSource
 import com.example.t_bank.data.repository.SettingsRepository
 import dagger.Module
 import dagger.Provides
@@ -38,8 +39,9 @@ object AppModule {
     fun provideSettingsRepository(
         categoryDao: CategoryDao,
         monthlyBudgetDao: MonthlyBudgetDao,
-        categoryDistributionDao: CategoryDistributionDao
+        categoryDistributionDao: CategoryDistributionDao,
+        budgetRemoteDataSource: BudgetRemoteDataSource,
     ): SettingsRepository {
-        return SettingsRepository(categoryDao, monthlyBudgetDao, categoryDistributionDao)
+        return SettingsRepository(monthlyBudgetDao, categoryDao, categoryDistributionDao, budgetRemoteDataSource)
     }
 }

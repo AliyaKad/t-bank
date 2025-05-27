@@ -22,6 +22,7 @@ room = "2.6.0"
 hilt = "2.56.1"
 ksp = "2.0.21-1.0.28"
 retrofit = "2.9.0"
+okhttp = "4.11.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -82,6 +83,10 @@ hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-comp
 
 retrofit = {group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit"}
 converter-gson = {group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit"}
+
+
+okhttp = {group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp"}
+logger = {group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
