@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/firstSettingsFragment">
+    app:startDestination="@id/transactionTabsFragment">
 
     <fragment
         android:id="@+id/expensesFragment"
@@ -159,4 +159,8 @@
             android:id="@+id/action_changeCategorySettingsFragment_to_firstSettingsFragment"
             app:destination="@id/firstSettingsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/transactionTabsFragment"
+        android:name="com.example.t_bank.presentation.ui.TransactionTabsFragment"
+        android:label="TransactionTabsFragment" />
 </navigation>
