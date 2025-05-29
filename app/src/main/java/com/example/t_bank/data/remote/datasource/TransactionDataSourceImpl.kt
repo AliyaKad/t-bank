@@ -1,6 +1,7 @@
 package com.example.t_bank.data.remote.datasource
 
 import android.content.Context
+import android.util.Log
 import com.example.t_bank.data.model.Transaction
 import com.example.t_bank.data.remote.api.TransactionApiService
 import com.google.gson.Gson
@@ -18,12 +19,20 @@ class TransactionDataSourceImpl(private val apiService: TransactionApiService, @
 //    }
 
     override suspend fun getTransactions(userId: Int): List<Transaction> {
-        val json = withContext(Dispatchers.IO) {
-            context.assets.open("transactions.json").bufferedReader().use { it.readText() }
-        }
+        return try {
+            val json = withContext(Dispatchers.IO) {
+                context.assets.open("transactions.json").bufferedReader().use { it.readText() }
+            }
+            Log.d("TransactionDataSource", "JSON data loaded: $json")
 
-        val typeToken = object : TypeToken<List<Transaction>>() {}.type
-        return Gson().fromJson(json, typeToken) ?: emptyList()
+            val typeToken = object : TypeToken<List<Transaction>>() {}.type
+            val transactions = Gson().fromJson<List<Transaction>>(json, typeToken) ?: emptyList()
+            Log.d("TransactionDataSource", "Parsed transactions: $transactions")
+            transactions
+        } catch (e: Exception) {
+            Log.e("TransactionDataSource", "Error loading transactions", e)
+            emptyList()
+        }
     }
 
     override suspend fun updateTransactionCategory(userId: Int, transactionId: Int, category: String) {

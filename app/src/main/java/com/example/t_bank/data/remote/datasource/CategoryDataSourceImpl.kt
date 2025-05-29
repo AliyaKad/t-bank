@@ -1,6 +1,7 @@
 package com.example.t_bank.data.remote.datasource
 
 import android.content.Context
+import android.util.Log
 import com.example.t_bank.data.model.BudgetCategory
 import com.example.t_bank.data.model.BudgetCategoryWithId
 import com.example.t_bank.data.remote.api.CategoryApiService
@@ -19,12 +20,20 @@ class CategoryDataSourceImpl(private val apiService: CategoryApiService,  @Appli
 //    }
 
     override suspend fun getCategories(userId: Int): List<BudgetCategoryWithId> {
-        val json = withContext(Dispatchers.IO) {
-            context.assets.open("categories.json").bufferedReader().use { it.readText() }
-        }
+        return try {
+            val json = withContext(Dispatchers.IO) {
+                context.assets.open("categories.json").bufferedReader().use { it.readText() }
+            }
+            Log.d("CategoryDataSource", "JSON data loaded: $json")
 
-        val typeToken = object : TypeToken<List<BudgetCategoryWithId>>() {}.type
-        return Gson().fromJson(json, typeToken) ?: emptyList()
+            val typeToken = object : TypeToken<List<BudgetCategoryWithId>>() {}.type
+            val categories = Gson().fromJson<List<BudgetCategoryWithId>>(json, typeToken) ?: emptyList()
+            Log.d("CategoryDataSource", "Parsed categories: $categories")
+            categories
+        } catch (e: Exception) {
+            Log.e("CategoryDataSource", "Error loading categories", e)
+            emptyList()
+        }
     }
 
     override suspend fun createCategory(userId: Int, category: BudgetCategory) {

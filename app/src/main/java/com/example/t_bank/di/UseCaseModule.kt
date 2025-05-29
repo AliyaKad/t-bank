@@ -10,27 +10,33 @@ import com.example.t_bank.mapper.CategoryDomainMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.components.ActivityRetainedComponent
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(ActivityRetainedComponent::class)
 object UseCaseModule {
 
     @Provides
-    fun provideGetCategoriesUseCase(repository: SettingsRepository, categoryMapper: CategoryDomainMapper): GetCategoriesUseCase {
+    fun provideGetCategoriesUseCase(
+        repository: SettingsRepository,
+        categoryMapper: CategoryDomainMapper
+    ): GetCategoriesUseCase {
         return GetCategoriesUseCase(repository, categoryMapper)
     }
 
     @Provides
-    @Singleton
+    @ActivityRetainedScoped
     fun provideGetTransactionsUseCase(repository: TransactionRepository): GetTransactionsUseCase {
         return GetTransactionsUseCase(repository)
     }
 
     @Provides
-    @Singleton
-    fun provideGetCategoriesUseCase(repository: CategoryForTransactionsRepository): GetCategoriesForTransactionsUseCase {
+    @ActivityRetainedScoped
+    fun provideGetCategoriesForTransactionsUseCase(
+        repository: CategoryForTransactionsRepository
+    ): GetCategoriesForTransactionsUseCase {
         return GetCategoriesForTransactionsUseCase(repository)
     }
 }

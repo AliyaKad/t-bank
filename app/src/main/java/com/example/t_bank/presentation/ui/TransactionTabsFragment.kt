@@ -10,7 +10,9 @@ import com.example.t_bank.R
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.example.t_bank.presentation.adapter.TransactionPagerAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TransactionTabsFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager2

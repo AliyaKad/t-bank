@@ -35,12 +35,21 @@ class TransactionViewModel @Inject constructor(
     init {
         loadTransactions()
         loadCategories()
+
+
+        _transactions.observeForever { transactions ->
+            Log.d("TransactionViewModel", "Transactions observed: $transactions")
+            updateFilteredLists()
+        }
     }
 
     private fun loadTransactions() {
         viewModelScope.launch {
             try {
+                Log.d("TransactionViewModel", "Loading transactions...")
                 val domainList = getTransactionsUseCase.invoke(userId)
+                Log.d("TransactionViewModel", "Loaded transactions: $domainList")
+
                 val presentationList = domainList.map {
                     Transaction(
                         date = it.date,
@@ -49,7 +58,11 @@ class TransactionViewModel @Inject constructor(
                         category = it.category
                     )
                 }
-                _transactions.postValue(presentationList)
+                Log.d("TransactionViewModel", "Mapped transactions: $presentationList")
+
+                _transactions.value = presentationList
+                Log.d("TransactionViewModel", "Transactions set to LiveData: $presentationList")
+
                 updateFilteredLists()
             } catch (e: Exception) {
                 Log.e("TransactionViewModel", "Ошибка загрузки транзакций", e)
@@ -60,7 +73,9 @@ class TransactionViewModel @Inject constructor(
     private fun loadCategories() {
         viewModelScope.launch {
             try {
+                Log.d("TransactionViewModel", "Loading categories...")
                 val categories = getCategoriesUseCase.invoke(userId)
+                Log.d("TransactionViewModel", "Loaded categories: $categories")
                 CategoryRepository.categories = CategoryMapper.mapListFromDomain(categories)
             } catch (e: Exception) {
                 Log.e("TransactionViewModel", "Ошибка загрузки категорий", e)
@@ -77,14 +92,27 @@ class TransactionViewModel @Inject constructor(
             }
         } ?: return
 
-        _transactions.postValue(updatedList)
+        _transactions.value = updatedList
+        Log.d("TransactionViewModel", "Updated transactions: $updatedList")
         updateFilteredLists()
     }
 
     private fun updateFilteredLists() {
         val list = _transactions.value ?: emptyList()
+        Log.d("TransactionViewModel", "Original transactions in updateFilteredLists: $list")
 
-        _unallocatedTransactions.postValue(list.filter { it.category.isNullOrBlank() })
-        _allocatedTransactions.postValue(list.filter { !it.category.isNullOrBlank() })
+        if (list.isEmpty()) {
+            Log.w("TransactionViewModel", "No transactions available for filtering.")
+            return
+        }
+
+        val unallocated = list.filter { it.category.isNullOrEmpty() }
+        val allocated = list.filter { !it.category.isNullOrEmpty() }
+
+        Log.d("TransactionViewModel", "Unallocated transactions: $unallocated")
+        Log.d("TransactionViewModel", "Allocated transactions: $allocated")
+
+        _unallocatedTransactions.value = unallocated
+        _allocatedTransactions.value = allocated
     }
 }

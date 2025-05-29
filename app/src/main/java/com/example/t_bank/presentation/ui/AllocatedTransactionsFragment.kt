@@ -9,7 +9,10 @@ import androidx.fragment.app.viewModels
 import com.example.t_bank.databinding.FragmentAllocatedBinding
 import com.example.t_bank.presentation.adapter.TransactionAdapter
 import com.example.t_bank.presentation.viewModel.TransactionViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class AllocatedTransactionsFragment : Fragment() {
 
     private lateinit var adapter: TransactionAdapter

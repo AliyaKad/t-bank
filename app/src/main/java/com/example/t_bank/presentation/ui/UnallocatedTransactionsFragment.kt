@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.t_bank.databinding.FragmentUnallocatedBinding
 import com.example.t_bank.presentation.adapter.TransactionAdapter
 import com.example.t_bank.presentation.viewModel.TransactionViewModel
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
 
 class UnallocatedTransactionsFragment : Fragment() {
 
@@ -26,9 +29,9 @@ class UnallocatedTransactionsFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.unallocatedTransactions.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-            Log.d("UnallocatedFrag", "Received ${it.size} items")
+        viewModel.unallocatedTransactions.observe(viewLifecycleOwner) { transactions ->
+            Log.d("UnallocatedFrag", "Received ${transactions.size} unallocated transactions: $transactions")
+            adapter.submitList(transactions)
         }
 
         return binding.root
