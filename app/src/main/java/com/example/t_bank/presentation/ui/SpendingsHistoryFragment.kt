@@ -1,28 +1,32 @@
 package com.example.t_bank.presentation.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.t_bank.presentation.model.Category
-import com.example.t_bank.presentation.model.Expense
 import com.example.t_bank.R
-import com.example.t_bank.presentation.adapter.SpendingAdapter
 import com.example.t_bank.databinding.FragmentSpendingsHistoryBinding
+import com.example.t_bank.domain.usecase.model.BudgetForAllMonths
+import com.example.t_bank.presentation.adapter.SpendingAdapter
+import com.example.t_bank.presentation.model.CategoryForMonths
+import com.example.t_bank.presentation.viewModel.SpendingsHistoryViewModel
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SpendingsHistoryFragment : Fragment() {
 
     private var _binding: FragmentSpendingsHistoryBinding? = null
     private val binding get() = _binding!!
 
     private var currentMonthIndex = 0
-    private val months = listOf("Январь", "Февраль", "Март", "Апрель", "Май", "Июнь")
-
+    private lateinit var viewModel: SpendingsHistoryViewModel
     private lateinit var adapter: SpendingAdapter
 
     override fun onCreateView(
@@ -36,20 +40,25 @@ class SpendingsHistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
-        //setupPieChart()
+        viewModel = ViewModelProvider(this).get(SpendingsHistoryViewModel::class.java)
+
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        viewModel.budgetsForAllMonths.observe(viewLifecycleOwner) { budgets ->
+            updateUI(budgets)
+        }
 
         binding.btnPreviousMonth.setOnClickListener {
             if (currentMonthIndex > 0) {
                 currentMonthIndex--
-                updateUI()
+                updateUI(viewModel.budgetsForAllMonths.value ?: emptyList())
             }
         }
 
         binding.btnNextMonth.setOnClickListener {
-            if (currentMonthIndex < months.lastIndex) {
+            if (currentMonthIndex < viewModel.budgetsForAllMonths.value?.size?.minus(1) ?: 0) {
                 currentMonthIndex++
-                updateUI()
+                updateUI(viewModel.budgetsForAllMonths.value ?: emptyList())
             }
         }
     }
@@ -59,89 +68,68 @@ class SpendingsHistoryFragment : Fragment() {
         _binding = null
     }
 
-    private fun updateUI() {
-        binding.tvCurrentMonth.text = months[currentMonthIndex]
+    private fun updateUI(budgets: List<BudgetForAllMonths>) {
+        val currentMonthData = budgets.getOrNull(currentMonthIndex)
 
-        //setupPieChart()
-        setupRecyclerView()
+        if (currentMonthData != null) {
+            val categoriesWithPercentages = viewModel.getCategoryData(currentMonthData.categories)
+            setupPieChart(budgets, categoriesWithPercentages)
 
-        if (::adapter.isInitialized) {
-            adapter.updateData(getSpendingData(currentMonthIndex))
+            val expenses = viewModel.getSpendingData(currentMonthData.categories)
+            Log.d("SpendingsHistoryFrag", "Setting up RecyclerView with ${expenses.size} expenses.")
+
+            if (!::adapter.isInitialized) {
+                adapter = SpendingAdapter(expenses)
+                binding.recyclerView.adapter = adapter
+            } else {
+                adapter.submitList(expenses)
+            }
         } else {
+            Log.e("SpendingsHistoryFrag", "No data for the selected month.")
         }
     }
 
-//    private fun setupPieChart() {
-//        val entries = getCategoryData(currentMonthIndex).map { PieEntry(it.percentage, it.name) }
-//
-//        with(binding.pieChart) {
-//            setUsePercentValues(true)
-//            description.isEnabled = false
-//            legend.isEnabled = false
-//
-//            centerText = "${months[currentMonthIndex]}\n75 433 ₽"
-//            holeRadius = 70f
-//
-//            val dataSet = PieDataSet(entries, "").apply {
-//                colors = listOf(
-//                    requireContext().getColor(R.color.yellow),
-//                    requireContext().getColor(R.color.blue),
-//                    requireContext().getColor(R.color.green),
-//                    requireContext().getColor(R.color.red)
-//                )
-//            }
-//            data = PieData(dataSet)
-//            invalidate()
-//        }
-//    }
+    private fun setupPieChart(budgets: List<BudgetForAllMonths>, categories: List<CategoryForMonths>) {
+        val currentMonthData = budgets.getOrNull(currentMonthIndex)
+        val totalSpent = categories.sumOf { it.amountSpent.toDouble() }
+        val entries = categories.map { PieEntry(it.percentage.toFloat(), it.name) }
 
-    private fun setupRecyclerView() {
-        adapter = SpendingAdapter(getSpendingData(currentMonthIndex))
+        with(binding.pieChart) {
+            setUsePercentValues(true)
+            description.isEnabled = false
+            legend.isEnabled = false
 
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = SpendingAdapter(getSpendingData(currentMonthIndex))
-            this.adapter = adapter
+            val formattedMonth = formatMonth(currentMonthData?.month ?: "2025-05")
+            centerText = getString(R.string.pie_chart_center_text, formattedMonth, totalSpent)
+            holeRadius = 70f
+
+            val dataSet = PieDataSet(entries, "").apply {
+                colors = categories.map { requireContext().getColor(it.colorResId) }
+            }
+            data = PieData(dataSet)
+            invalidate()
         }
     }
 
-//    private fun getCategoryData(monthIndex: Int): List<Category> {
-//        return when (monthIndex) {
-//            0 -> listOf(
-//                Category("Продукты", R.drawable.ic_food, 25f),
-//                Category("Коммунальные услуги", R.drawable.ic_utilities, 15f),
-//                Category("Развлечения", R.drawable.ic_entertainment, 10f),
-//                Category("Другое", R.drawable.ic_other, 50f)
-//            )
-//            1 -> listOf(
-//                Category("Продукты", R.drawable.ic_food, 30f),
-//                Category("Коммунальные услуги", R.drawable.ic_utilities, 20f),
-//                Category("Развлечения", R.drawable.ic_entertainment, 15f),
-//                Category("Другое", R.drawable.ic_other, 35f)
-//            )
-//            else -> listOf(
-//                Category("Продукты", R.drawable.ic_food, 20f),
-//                Category("Коммунальные услуги", R.drawable.ic_utilities, 25f),
-//                Category("Развлечения", R.drawable.ic_entertainment, 10f),
-//                Category("Другое", R.drawable.ic_other, 45f)
-//            )
-//        }
-//    }
-
-    private fun getSpendingData(monthIndex: Int): List<Expense> {
-        return when (monthIndex) {
-            0 -> listOf(
-                Expense("Продукты", 20000f, 10000f),
-                Expense("Коммунальные услуги", 15000f, 7500f)
-            )
-            1 -> listOf(
-                Expense("Продукты", 25000f, 12500f),
-                Expense("Коммунальные услуги", 18000f, 9000f)
-            )
-            else -> listOf(
-                Expense("Продукты", 18000f, 9000f),
-                Expense("Коммунальные услуги", 16000f, 8000f)
-            )
+    private fun formatMonth(month: String): String {
+        val parts = month.split("-")
+        val year = parts[0]
+        val monthNumber = parts[1].toIntOrNull() ?: 1
+        val monthName = when (monthNumber) {
+            1 -> "Январь"
+            2 -> "Февраль"
+            3 -> "Март"
+            4 -> "Апрель"
+            5 -> "Май"
+            6 -> "Июнь"
+            7 -> "Июль"
+            8 -> "Август"
+            9 -> "Сентябрь"
+            10 -> "Октябрь"
+            11 -> "Ноябрь"
+            12 -> "Декабрь"
+            else -> "Неизвестный месяц"
         }
+        return "$monthName $year"
     }
 }
