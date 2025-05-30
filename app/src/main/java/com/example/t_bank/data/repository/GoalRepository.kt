@@ -29,4 +29,14 @@ class GoalRepository(private val goalDataSource: GoalDataSourceImpl) {
     suspend fun getGoals(userId: Int): List<DataGoal> {
         return goalDataSource.getGoals(userId) ?: emptyList()
     }
+
+    suspend fun updateGoal(userId: Int, goalId: Int, goalRequest: GoalRequest): Result<Unit> {
+        return try {
+            goalDataSource.updateGoal(userId, goalId, goalRequest)
+            Result.Success(Unit)
+        } catch (e: Exception) {
+            Result.Failure(e)
+        }
+    }
+
 }

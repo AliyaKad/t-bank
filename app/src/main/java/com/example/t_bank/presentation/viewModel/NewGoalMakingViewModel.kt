@@ -7,6 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.t_bank.domain.usecase.CreateGoalParams
 import com.example.t_bank.domain.usecase.CreateGoalUseCase
 import com.example.t_bank.Result
+import com.example.t_bank.domain.usecase.UpdateGoalUseCase
+import com.example.t_bank.mapper.GoalMapper
+import com.example.t_bank.presentation.model.Goal
 import com.example.t_bank.presentation.model.UiGoalParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewGoalMakingViewModel @Inject constructor(
-    private val createGoalUseCase: CreateGoalUseCase
+    private val createGoalUseCase: CreateGoalUseCase,
+    private val updateGoalUseCase: UpdateGoalUseCase
 ) : ViewModel() {
 
     private val _createGoalResult = MutableLiveData<Result<Unit>>()
@@ -35,6 +39,29 @@ class NewGoalMakingViewModel @Inject constructor(
             _createGoalResult.value = result
         }
     }
+
+    fun updateGoal(goalId: Int, name: String, targetAmount: Double, endDate: String, userId: Int) {
+        viewModelScope.launch {
+            try {
+                val presentationGoal = Goal(
+                    id = goalId,
+                    name = name,
+                    amount = targetAmount,
+                    endDate = endDate
+                )
+
+                val domainGoal = GoalMapper.mapToDomain(presentationGoal)
+
+                updateGoalUseCase(userId, goalId, domainGoal)
+                _updateGoalResult.postValue(Result.Success(Unit))
+            } catch (e: Exception) {
+                _updateGoalResult.postValue(Result.Failure(e))
+            }
+        }
+    }
+
+    private val _updateGoalResult = MutableLiveData<Result<Unit>>()
+    val updateGoalResult: LiveData<Result<Unit>> get() = _updateGoalResult
 
     private fun UiGoalParams.toDomain(): CreateGoalParams {
         return CreateGoalParams(

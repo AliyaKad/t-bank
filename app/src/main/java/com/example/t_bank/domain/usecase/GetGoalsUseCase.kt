@@ -13,6 +13,7 @@ class GetGoalsUseCase(private val goalRepository: GoalRepository) {
 
     private fun mapToDomainGoal(dataGoal: DataGoal): DomainGoal {
         return DomainGoal(
+            id = dataGoal.id,
             name = dataGoal.name,
             targetAmount = dataGoal.targetAmount,
             savedAmount = dataGoal.savedAmount,

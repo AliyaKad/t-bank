@@ -13,13 +13,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DataSourceModule {
 
-
     @Provides
     @Singleton
-    fun provideGoalDataSource(context: Context, apiService: GoalApiService): GoalDataSource {
-        return GoalDataSourceImpl(apiService, context)
-    }
-
     fun provideBudgetRemoteDataSource(apiService: BudgetApiService): BudgetRemoteDataSource {
         return BudgetRemoteDataSourceImpl(apiService)
     }

@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "name": "Travel",
     "targetAmount": 5000.0,
     "savedAmount": 2000.0,
@@ -8,6 +9,7 @@
     "status": "IN_PROGRESS"
   },
   {
+    "id": 2,
     "name": "New Laptop",
     "targetAmount": 1000.0,
     "savedAmount": 800.0,

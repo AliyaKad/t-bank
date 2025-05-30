@@ -2,7 +2,6 @@ package com.example.t_bank.presentation.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.t_bank.R
 import com.example.t_bank.domain.usecase.DeleteGoalUseCase
@@ -51,14 +50,19 @@ class FinancialGoalsViewModel @Inject constructor(
 
     private fun mapToUiGoals(domainGoals: List<DomainGoal>): List<Goal> {
         return domainGoals.map { domainGoal ->
+            val progress = if (domainGoal.targetAmount > 0) {
+                ((domainGoal.savedAmount / domainGoal.targetAmount) * 100).toInt()
+            } else {
+                0
+            }
             Goal(
+                id = domainGoal.id,
                 name = domainGoal.name,
-                amount = getApplication<Application>().getString(
-                    R.string.amount_format_float,
-                    domainGoal.targetAmount
-                ),
+                amount = domainGoal.targetAmount,
+                saved = domainGoal.savedAmount,
                 endDate = domainGoal.deadline,
-                isAchieved = domainGoal.status == DomainGoal.Status.COMPLETED
+                isAchieved = domainGoal.status == DomainGoal.Status.COMPLETED,
+                progress = progress
             )
         }
     }

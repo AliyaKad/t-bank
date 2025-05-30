@@ -2,6 +2,7 @@ package com.example.t_bank.presentation.ui
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,9 +54,15 @@ class FinancialGoalsFragment : Fragment() {
     private fun setupRecyclerView() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = GoalAdapter(emptyList()) { goal ->
-                showDeleteConfirmationDialog(goal)
-            }
+            adapter = GoalAdapter(
+                emptyList(),
+                onItemClick = { goal ->
+                    navigateToAddMoneyToBankFragment(goal)
+                },
+                onLongClick = { goal ->
+                    showEditOrDeleteDialog(goal)
+                }
+            )
         }
     }
 
@@ -68,6 +75,43 @@ class FinancialGoalsFragment : Fragment() {
             }
             .setNegativeButton("Отмена", null)
             .show()
+    }
+
+    private fun showEditOrDeleteDialog(goal: Goal) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Выберите действие")
+            .setItems(arrayOf("Изменить", "Удалить")) { _, which ->
+                when (which) {
+                    0 -> navigateToEditGoal(goal)
+                    1 -> showDeleteConfirmationDialog(goal)
+                }
+            }
+            .show()
+    }
+
+    private fun navigateToEditGoal(goal: Goal) {
+        Log.d("NavigateToEditGoal", "Navigating to edit goal with data: $goal")
+        val action = FinancialGoalsFragmentDirections
+            .actionFinancialGoalsFragmentToNewGoalMakingFragment(
+                goalId = goal.id,
+                goalName = goal.name,
+                goalAmount = goal.amount.toFloat(),
+                goalDate = goal.endDate
+            )
+        Log.d("NavigateToEditGoal", "Navigation action created: $action")
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToAddMoneyToBankFragment(goal: Goal) {
+        Log.d("NavigateToAddMoney", "Navigating to AddingMoneyToBankFragment with data: $goal")
+        val action = FinancialGoalsFragmentDirections
+            .actionFinancialGoalsFragmentToAddingMoneyToBankFragment(
+                goalId = goal.id,
+                goalName = goal.name,
+                goalAmount = goal.amount.toFloat(),
+                goalDate = goal.endDate
+            )
+        findNavController().navigate(action)
     }
 
     private fun loadGoals() {

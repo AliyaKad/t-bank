@@ -1,6 +1,7 @@
 package com.example.t_bank.domain.usecase.model
 
 data class DomainGoal(
+    val id: Int,
     val name: String,
     val targetAmount: Double,
     val savedAmount: Double,

@@ -1,7 +1,7 @@
 <resources>
     <string name="add_amount">внести сумму</string>
     <string name="amount_format">%d ₽</string>
-    <string name="amount_format_float">%.2f ₽</string>
+    <string name="amount_format_float">%.2s ₽</string>
     <string name="amount_hint">0 ₽</string>
     <string name="apply_changes">Внести изменения</string>
     <string name="app_name">t-bank</string>
@@ -25,6 +25,7 @@
     <string name="create_account_button">Создать аккаунт</string>
     <string name="dark_theme">Темная тема</string>
     <string name="did_not_receive_code">Еще не получили код?</string>
+    <string name="edit_goal_title">Измените цель</string>
     <string name="end_date_format">Окончание: %s</string>
     <string name="enter_amount">Введите сумму</string>
     <string name="enter_budget">Введите бюджет</string>
@@ -33,6 +34,7 @@
     <string name="error_empty_phone">Введите номер телефона</string>
     <string name="error_invalid_phone">Некорректный номер телефона</string>
     <string name="failed_to_create_goal">Не удалось создать цель: %1$s</string>
+    <string name="failed_to_update_goal">Не удалось изменить цель</string>
     <string name="forgot_password">Забыли пароль?</string>
     <string name="forgot_password_subtitle">Введите свой номер телефона, чтобы сбросить пароль</string>
     <string name="get_code_button">Получить код</string>
@@ -40,6 +42,7 @@
     <string name="goal_created_successfully">Цель успешно сохранена!</string>
     <string name="goal_name">Название цели</string>
     <string name="goal_not_achieved">Цель не достигнута</string>
+    <string name="goal_updated_successfully">Цель обновлена успешно</string>
     <string name="header_category_setup">Настройте категории</string>
     <string name="header_color_selection">Выберите цвет категории</string>
     <string name="hint_goal_name">Название</string>
@@ -80,4 +83,5 @@
     <string name="title_new_category">Новая категория</string>
     <string name="title_new_goal">Новая цель</string>
     <string name="title_setup_category">Настройте категорию</string>
+    <string name="update_goal">Обновить цель</string>
 </resources>
