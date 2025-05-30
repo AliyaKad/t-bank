@@ -2,6 +2,7 @@ package com.example.t_bank.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.recyclerview.widget.RecyclerView
 import com.example.t_bank.presentation.model.Category
 import com.example.t_bank.databinding.ItemCategoryBinding
@@ -16,16 +17,37 @@ class CategoryAdapter(
 
         fun bind(category: Category, onCategoryUpdated: ((Category) -> Unit)?) {
             binding.tvCategoryName.text = category.name
-            binding.etPercentage.setText(category.percentage.toString())
             binding.ivIcon.setImageResource(category.iconResId)
             binding.cvIconContainer.setCardBackgroundColor(itemView.context.getColor(category.colorResId))
-            binding.etPercentage.setOnFocusChangeListener { _, hasFocus ->
-                if (!hasFocus) {
-                    val newPercentage = binding.etPercentage.text.toString().toFloatOrNull() ?: category.percentage
+
+            binding.seekBarPercentage.progress = category.percentage.toInt()
+            binding.tvPercentage.text = "${category.percentage}%"
+
+            binding.seekBarPercentage.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                    if (fromUser) {
+                        val newPercentage = progress.toFloat()
+
+                        val currentCategories = (bindingAdapter as? CategoryAdapter)?.getCategories() ?: emptyList()
+                        val totalPercentage = currentCategories.sumOf { it.percentage.toDouble() } - category.percentage + newPercentage
+
+                        if (totalPercentage <= 100.0) {
+                            binding.tvPercentage.text = "$newPercentage%"
+                        } else {
+                            seekBar?.progress = (100 - (currentCategories.sumOf { it.percentage.toDouble() } - category.percentage)).toInt()
+                            binding.tvPercentage.text = "${seekBar?.progress}%"
+                        }
+                    }
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    val newPercentage = seekBar?.progress?.toFloat() ?: category.percentage
                     val updatedCategory = category.copy(percentage = newPercentage)
                     onCategoryUpdated?.invoke(updatedCategory)
                 }
-            }
+            })
         }
     }
 

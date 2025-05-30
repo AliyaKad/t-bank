@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.SeekBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -44,6 +45,8 @@ class ChangeCategorySettingsFragment : Fragment() {
 
         setupRecyclerView()
         setupSaveButton()
+        binding.cardCategory.findViewById<TextView>(R.id.tvPercentage).visibility = View.GONE
+        binding.cardCategory.findViewById<SeekBar>(R.id.seekBarPercentage).visibility = View.GONE
 
         launchAndCollectIn(viewModel.selectedCategory) { selectedCategory ->
             if (selectedCategory != null) {
@@ -93,7 +96,17 @@ class ChangeCategorySettingsFragment : Fragment() {
         binding.btnApplyChanges.setOnClickListener {
             val updatedCategory = viewModel.selectedCategory.value
             if (updatedCategory != null) {
-                val action = ChangeCategorySettingsFragmentDirections.actionChangeCategorySettingsFragmentToFirstSettingsFragment(updatedCategory)
+                val emptyCategory = Category(
+                    name = "",
+                    colorResId = 0,
+                    iconResId = 0,
+                    percentage = 0f
+                )
+                val action =
+                    ChangeCategorySettingsFragmentDirections.actionChangeCategorySettingsFragmentToFirstSettingsFragment(
+                        updatedCategory = updatedCategory,
+                        newCategory = emptyCategory
+                    )
                 findNavController().navigate(action)
             }
         }

@@ -1,8 +1,10 @@
 package com.example.t_bank.presentation.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.t_bank.domain.usecase.GetCategoriesUseCase
+import com.example.t_bank.presentation.adapter.FirstSettingsAdapter
 import com.example.t_bank.presentation.model.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FirstSettingsViewModel @Inject constructor(
-    private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val getCategoriesUseCase: GetCategoriesUseCase
 ) : ViewModel() {
 
     private val _categories = MutableStateFlow<List<Category>>(emptyList())
@@ -26,6 +28,7 @@ class FirstSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             val savedCategories = getCategoriesUseCase()
             _categories.value = savedCategories
+            Log.d("FirstSettingsViewModel", "Loaded initial categories: $savedCategories")
         }
     }
 
@@ -36,5 +39,11 @@ class FirstSettingsViewModel @Inject constructor(
             currentCategories[index] = updatedCategory
             _categories.value = currentCategories
         }
+    }
+
+    fun addCategory(newCategory: Category) {
+        val currentCategories = _categories.value.toMutableList()
+        currentCategories.add(newCategory)
+        _categories.value = currentCategories
     }
 }

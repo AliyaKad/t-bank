@@ -25,41 +25,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <EditText
         android:id="@+id/tlName"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_button_background"
+        android:backgroundTint="@color/gray"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
         app:hintEnabled="false"
+        android:hint="@string/enter_category_name"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
+    </EditText>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="0 р"
-            android:inputType="numberDecimal"
-            android:maxLines="1"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tlPercentage"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:hintEnabled="false"
-        app:layout_constraintTop_toBottomOf="@id/tlName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="0 %"
-            android:inputType="numberDecimal"
-            android:maxLines="1"/>
-    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/tvColorHeader"
@@ -68,7 +47,7 @@
         android:text="@string/header_color_selection"
         android:textSize="16sp"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tlPercentage"
+        app:layout_constraintTop_toBottomOf="@id/tlName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

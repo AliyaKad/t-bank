@@ -1,6 +1,7 @@
 package com.example.t_bank.presentation.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,12 @@ class FirstSettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val newCategory = findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Category>("newCategory")?.value
+        newCategory?.let {
+            Log.d("FirstSettingsFragment", "Received new category from NewCategoryFragment: $it")
+            updateCategoryList(it)
+        }
+
         val updatedCategory = arguments?.getParcelable<Category>("updatedCategory")
         updatedCategory?.let { viewModel.updateCategory(it) }
 
@@ -41,6 +48,11 @@ class FirstSettingsFragment : Fragment() {
         setupRecyclerView()
         observeCategories()
         setupNextButton()
+        setupAddCategoryButton()
+    }
+
+    private fun updateCategoryList(newCategory: Category) {
+        viewModel.addCategory(newCategory)
     }
 
     private fun setupRecyclerView() {
@@ -63,7 +75,7 @@ class FirstSettingsFragment : Fragment() {
 
     private fun setupNextButton() {
         binding.btnNext.setOnClickListener {
-            val totalBudgetInput = binding.tlAmount.editText?.text.toString()
+            val totalBudgetInput = binding.tlAmount?.text.toString()
             val totalBudget = validateBudgetInput(totalBudgetInput) ?: return@setOnClickListener
 
             val categories = viewModel.categories.value.toTypedArray()
@@ -71,6 +83,13 @@ class FirstSettingsFragment : Fragment() {
                 totalBudget = totalBudget,
                 categories = categories
             )
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun setupAddCategoryButton() {
+        binding.btnAddCategory.setOnClickListener {
+            val action = FirstSettingsFragmentDirections.actionFirstSettingsFragmentToNewCategoryFragment()
             findNavController().navigate(action)
         }
     }

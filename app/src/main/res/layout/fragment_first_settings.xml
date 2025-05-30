@@ -30,22 +30,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.google.android.material.textfield.TextInputLayout
+            <EditText
                 android:id="@+id/tlAmount"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
+                android:background="@drawable/rounded_button_background"
+                android:backgroundTint="@color/gray"
                 android:layout_marginTop="16dp"
                 app:hintEnabled="false"
+                android:hint="@string/enter_budget"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="0 р"
-                    android:inputType="numberDecimal"
-                    android:maxLines="1"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/tvCategoryHeader">
+            </EditText>
 
             <TextView
                 android:id="@+id/tvCategoryHeader"

@@ -1,6 +1,7 @@
 package com.example.t_bank.presentation.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.t_bank.presentation.model.Category
@@ -10,7 +11,7 @@ class FirstSettingsAdapter(
     private val onItemClick: (Category) -> Unit
 ) : RecyclerView.Adapter<FirstSettingsAdapter.ViewHolder>() {
 
-    private var categories: List<Category> = emptyList()
+    public var categories: List<Category> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -34,6 +35,8 @@ class FirstSettingsAdapter(
         fun bind(category: Category, onItemClick: (Category) -> Unit) {
 
             binding.ivIcon.setImageResource(category.iconResId)
+            binding.seekBarPercentage.visibility = View.GONE
+            binding.tvPercentage.visibility = View.GONE
 
             binding.tvCategoryName.text = category.name
 
