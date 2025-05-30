@@ -26,6 +26,7 @@
     <string name="did_not_receive_code">Еще не получили код?</string>
     <string name="end_date_format">Окончание: %s</string>
     <string name="enter_amount">Введите сумму</string>
+    <string name="enter_category_name">Введите название категории</string>
     <string name="enter_budget">Введите бюджет</string>
     <string name="error_empty_new_password">Введите новый пароль</string>
     <string name="error_empty_old_password">Введите старый пароль</string>
