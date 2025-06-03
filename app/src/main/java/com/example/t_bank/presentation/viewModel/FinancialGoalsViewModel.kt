@@ -2,6 +2,7 @@ package com.example.t_bank.presentation.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.t_bank.R
 import com.example.t_bank.domain.usecase.DeleteGoalUseCase
@@ -17,10 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FinancialGoalsViewModel @Inject constructor(
-    application: Application,
     private val getGoalsUseCase: GetGoalsUseCase,
     private val deleteGoalUseCase: DeleteGoalUseCase
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     private val _goals = MutableStateFlow<List<Goal>>(emptyList())
     val goals: StateFlow<List<Goal>> = _goals

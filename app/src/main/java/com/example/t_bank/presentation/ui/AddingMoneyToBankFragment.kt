@@ -51,12 +51,8 @@ class AddingMoneyToBankFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
-            if (errorMessage != null) {
-                binding.tlAmount.error = errorMessage
-            } else {
-                binding.tlAmount.error = null
-            }
+        viewModel.errorResId.observe(viewLifecycleOwner) { resId ->
+            binding.tlAmount.error = resId?.let { getString(it) }
         }
     }
 }

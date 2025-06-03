@@ -12,15 +12,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddingMoneyToBankViewModel @Inject constructor(
-    private val context: android.content.Context
-) : ViewModel() {
+class AddingMoneyToBankViewModel @Inject constructor() : ViewModel() {
 
     private val _amount = MutableStateFlow("")
     val amount: StateFlow<String> = _amount
 
-    private val _error = MutableLiveData<String?>()
-    val error: LiveData<String?> = _error
+    private val _errorResId = MutableLiveData<Int?>()
+    val errorResId: LiveData<Int?> = _errorResId
 
     fun updateAmount(newAmount: String) {
         _amount.value = newAmount
@@ -31,7 +29,10 @@ class AddingMoneyToBankViewModel @Inject constructor(
             viewModelScope.launch {
             }
         } else {
-            _error.value = context.getString(R.string.enter_amount)
+            _errorResId.value = R.string.enter_amount
         }
+    }
+    fun onErrorMessageShown() {
+        _errorResId.value = null
     }
 }

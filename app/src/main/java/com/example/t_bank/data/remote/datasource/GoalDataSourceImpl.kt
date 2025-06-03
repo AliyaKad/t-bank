@@ -33,36 +33,36 @@ class GoalDataSourceImpl @Inject constructor(
         }
     }
     //api
-//    override suspend fun getGoals(userId: Int): List<DataGoal>? {
-//        val response = apiService.getGoals(userId)
-//        println("Fetching goals for userId: $userId")
-//        println("Response code: ${response.code()}, message: ${response.message()}")
-//        println("Response body: ${response.body()}")
-//
-//        if (response.isSuccessful) {
-//            return response.body()
-//        } else {
-//            println("Error: ${response.errorBody()?.string()}")
-//            return null
-//        }
-//    }
-
-    //json
     override suspend fun getGoals(userId: Int): List<DataGoal>? {
-        return try {
-            val json = context.assets.open("goals.json").bufferedReader().use { it.readText() }
-            val typeToken = object : TypeToken<List<DataGoal>>() {}.type
-            val goals = Gson().fromJson<List<DataGoal>>(json, typeToken)
+        val response = apiService.getGoals(userId)
+        println("Fetching goals for userId: $userId")
+        println("Response code: ${response.code()}, message: ${response.message()}")
+        println("Response body: ${response.body()}")
 
-            Log.d(TAG, "Fetched goals for userId: $userId")
-            Log.d(TAG, "Goals: $goals")
-
-            goals
-        } catch (e: Exception) {
-            Log.e(TAG, "Error loading goals from JSON: ${e.message}")
-            null
+        if (response.isSuccessful) {
+            return response.body()
+        } else {
+            println("Error: ${response.errorBody()?.string()}")
+            return null
         }
     }
+
+    //json
+//    override suspend fun getGoals(userId: Int): List<DataGoal>? {
+//        return try {
+//            val json = context.assets.open("goals.json").bufferedReader().use { it.readText() }
+//            val typeToken = object : TypeToken<List<DataGoal>>() {}.type
+//            val goals = Gson().fromJson<List<DataGoal>>(json, typeToken)
+//
+//            Log.d(TAG, "Fetched goals for userId: $userId")
+//            Log.d(TAG, "Goals: $goals")
+//
+//            goals
+//        } catch (e: Exception) {
+//            Log.e(TAG, "Error loading goals from JSON: ${e.message}")
+//            null
+//        }
+//    }
 
     override suspend fun updateGoal(userId: Int, goalId: Int, goalRequest: GoalRequest) {
         apiService.updateGoal(userId, goalId, goalRequest)

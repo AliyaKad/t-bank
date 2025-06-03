@@ -146,10 +146,8 @@ class NewGoalMakingFragment : Fragment() {
     }
 
     private fun showSuccess(message: String) {
-        println("Success: $message")
     }
 
     private fun showError(message: String) {
-        println("Error: $message")
     }
 }

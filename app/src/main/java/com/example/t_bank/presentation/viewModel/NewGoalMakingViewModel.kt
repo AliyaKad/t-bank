@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.t_bank.domain.usecase.CreateGoalParams
+import com.example.t_bank.domain.usecase.model.CreateGoalParams
 import com.example.t_bank.domain.usecase.CreateGoalUseCase
 import com.example.t_bank.Result
 import com.example.t_bank.domain.usecase.UpdateGoalUseCase
@@ -23,6 +23,9 @@ class NewGoalMakingViewModel @Inject constructor(
 
     private val _createGoalResult = MutableLiveData<Result<Unit>>()
     val createGoalResult: LiveData<Result<Unit>> = _createGoalResult
+
+    private val _updateGoalResult = MutableLiveData<Result<Unit>>()
+    val updateGoalResult: LiveData<Result<Unit>> get() = _updateGoalResult
 
     fun createGoal(name: String, amount: Double, deadline: String, userId: Int) {
         viewModelScope.launch {
@@ -59,9 +62,6 @@ class NewGoalMakingViewModel @Inject constructor(
             }
         }
     }
-
-    private val _updateGoalResult = MutableLiveData<Result<Unit>>()
-    val updateGoalResult: LiveData<Result<Unit>> get() = _updateGoalResult
 
     private fun UiGoalParams.toDomain(): CreateGoalParams {
         return CreateGoalParams(

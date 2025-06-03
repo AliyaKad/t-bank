@@ -68,19 +68,19 @@ class FinancialGoalsFragment : Fragment() {
 
     private fun showDeleteConfirmationDialog(goal: Goal) {
         AlertDialog.Builder(requireContext())
-            .setTitle("Удалить цель?")
-            .setMessage("Вы уверены, что хотите удалить цель \"${goal.name}\"?")
-            .setPositiveButton("Удалить") { _, _ ->
+            .setTitle(getString(R.string.Do_you_want_delete_goal))
+            .setMessage(getString(R.string.Are_you_shure_delete, goal.name))
+            .setPositiveButton(getString(R.string.delete)) { _, _ ->
                 viewModel.deleteGoal(userId = 1, goalId = goal.id)
             }
-            .setNegativeButton("Отмена", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .show()
     }
 
     private fun showEditOrDeleteDialog(goal: Goal) {
         AlertDialog.Builder(requireContext())
-            .setTitle("Выберите действие")
-            .setItems(arrayOf("Изменить", "Удалить")) { _, which ->
+            .setTitle(getString(R.string.choose_a_move))
+            .setItems(arrayOf(getString(R.string.change), getString(R.string.delete) )) { _, which ->
                 when (which) {
                     0 -> navigateToEditGoal(goal)
                     1 -> showDeleteConfirmationDialog(goal)
