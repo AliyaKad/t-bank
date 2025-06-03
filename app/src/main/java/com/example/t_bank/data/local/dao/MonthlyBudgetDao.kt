@@ -4,7 +4,10 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.t_bank.data.local.entity.CategoryExpenseEntity
 import com.example.t_bank.data.local.entity.MonthlyBudgetEntity
+import com.example.t_bank.domain.usecase.model.BudgetForAllMonths
+import java.time.temporal.TemporalAmount
 
 @Dao
 interface MonthlyBudgetDao {
@@ -29,6 +32,28 @@ interface MonthlyBudgetDao {
         WHERE mb.month = :month
     """)
     suspend fun getBudgetAndCategoriesByMonth(month: String): List<BudgetCategoryResult>
+
+    @Query("""
+        SELECT 
+            mb.totalBudget, 
+            mb.month, 
+            c.name AS categoryName,
+            c.colorResId AS categoryColorResId,
+            ce.budget AS budget,
+            ce.amountSpent AS amountSpent
+        FROM monthly_budgets mb
+        INNER JOIN category_distributions cd ON mb.id = cd.budgetId
+        INNER JOIN categories c ON cd.categoryId = c.id
+        LEFT JOIN category_expenses ce ON c.id = ce.categoryId
+        GROUP BY mb.month, c.id
+    """)
+    suspend fun getAllBudgets(): List<BudgetCategoryResultForMonth>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCategoryExpenses(vararg expenses: CategoryExpenseEntity)
+
+    @Query("SELECT * FROM category_expenses")
+    suspend fun getAllCategoryExpenses(): List<CategoryExpenseEntity>
 }
 
 data class BudgetCategoryResult(
@@ -37,5 +62,14 @@ data class BudgetCategoryResult(
     val categoryIconResId: Int,
     val categoryColorResId: Int,
     val categoryPercentage: Float
+)
+
+data class BudgetCategoryResultForMonth(
+    val totalBudget: Float,
+    val month: String,
+    val categoryName: String,
+    val categoryColorResId: Int,
+    val budget: Float,
+    val amountSpent: Float
 )
 

@@ -24,11 +24,15 @@ class SpendingAdapter(private var spendings: List<Expense>) :
                 0
             }
             binding.progressBar.progress = progress
+
+            binding.progressBar.progressTintList = android.content.res.ColorStateList.valueOf(
+                itemView.context.getColor(spending.colorResId)
+            )
+
             binding.textViewProgressDetailsLeft.text = itemView.context.getString(
                 R.string.spent_amount_format,
                 spending.spentAmount.toInt()
             )
-
             binding.textViewProgressDetailsRight.text = itemView.context.getString(
                 R.string.remaining_amount_format,
                 (spending.totalAmount - spending.spentAmount).toInt()
@@ -49,8 +53,8 @@ class SpendingAdapter(private var spendings: List<Expense>) :
         return spendings.size
     }
 
-    fun updateData(newSpendings: List<Expense>) {
-        this.spendings = newSpendings
+    fun submitList(newExpenses: List<Expense>) {
+        spendings = newExpenses
         notifyDataSetChanged()
     }
 }
