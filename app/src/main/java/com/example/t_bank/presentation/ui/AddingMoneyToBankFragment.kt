@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.t_bank.databinding.FragmentAddingMoneyToBankBinding
 import com.example.t_bank.presentation.viewModel.AddingMoneyToBankViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AddingMoneyToBankFragment : Fragment() {
 
     private var _binding: FragmentAddingMoneyToBankBinding? = null
@@ -49,12 +51,8 @@ class AddingMoneyToBankFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.error.observe(viewLifecycleOwner) { errorMessage ->
-            if (errorMessage != null) {
-                binding.tlAmount.error = errorMessage
-            } else {
-                binding.tlAmount.error = null
-            }
+        viewModel.errorResId.observe(viewLifecycleOwner) { resId ->
+            binding.tlAmount.error = resId?.let { getString(it) }
         }
     }
 }
