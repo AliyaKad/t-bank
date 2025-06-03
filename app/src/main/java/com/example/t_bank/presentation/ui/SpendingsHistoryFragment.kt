@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.t_bank.R
@@ -18,6 +19,8 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Calendar
+import java.util.Locale
 
 @AndroidEntryPoint
 class SpendingsHistoryFragment : Fragment() {
@@ -26,8 +29,8 @@ class SpendingsHistoryFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var currentMonthIndex = 0
-    private lateinit var viewModel: SpendingsHistoryViewModel
     private lateinit var adapter: SpendingAdapter
+    private val viewModel: SpendingsHistoryViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +43,6 @@ class SpendingsHistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this).get(SpendingsHistoryViewModel::class.java)
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -111,25 +113,15 @@ class SpendingsHistoryFragment : Fragment() {
         }
     }
 
-    private fun formatMonth(month: String): String {
-        val parts = month.split("-")
-        val year = parts[0]
-        val monthNumber = parts[1].toIntOrNull() ?: 1
-        val monthName = when (monthNumber) {
-            1 -> "Январь"
-            2 -> "Февраль"
-            3 -> "Март"
-            4 -> "Апрель"
-            5 -> "Май"
-            6 -> "Июнь"
-            7 -> "Июль"
-            8 -> "Август"
-            9 -> "Сентябрь"
-            10 -> "Октябрь"
-            11 -> "Ноябрь"
-            12 -> "Декабрь"
-            else -> "Неизвестный месяц"
-        }
+    fun formatMonth(monthYear: String): String {
+        val parts = monthYear.split("-")
+        val year = parts[0].toInt()
+        val monthNumber = parts[1].toInt()
+
+        val calendar = Calendar.getInstance()
+        calendar.set(year, monthNumber - 1, 1)
+
+        val monthName = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
         return "$monthName $year"
     }
 }
