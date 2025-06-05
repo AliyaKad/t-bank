@@ -1,9 +1,9 @@
 package com.example.t_bank.data.model
 
+import com.google.gson.annotations.SerializedName
+
 data class BudgetRequest(
-    val userId: Int,
-    val income: Double,
-    val categories: List<BudgetCategory>
+    @SerializedName("userId") val userId: Int,
+    @SerializedName("income") val income: Double,
+    @SerializedName("categories") val categories: List<BudgetCategory>
 )
-
-

@@ -3,6 +3,7 @@ package com.example.t_bank.di
 import com.example.t_bank.data.remote.api.BudgetApiService
 import com.example.t_bank.data.remote.api.CategoryApiService
 import com.example.t_bank.data.remote.api.GoalApiService
+import com.example.t_bank.data.remote.api.LoginApiService
 import com.example.t_bank.data.remote.api.NotificationApiService
 import com.example.t_bank.data.remote.api.RuleApiService
 import com.example.t_bank.data.remote.api.TransactionApiService
@@ -51,5 +52,11 @@ object NetworkModule {
     @Singleton
     fun provideTransactionApiService(retrofit: Retrofit): TransactionApiService {
         return retrofit.create(TransactionApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLoginApiService(retrofit: Retrofit): LoginApiService {
+        return retrofit.create(LoginApiService::class.java)
     }
 }

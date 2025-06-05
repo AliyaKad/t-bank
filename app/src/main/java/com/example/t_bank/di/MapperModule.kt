@@ -1,5 +1,6 @@
 package com.example.t_bank.di
 
+import com.example.t_bank.mapper.AuthMapper
 import com.example.t_bank.mapper.CategoryMapper
 import com.example.t_bank.mapper.CategoryUiMapper
 import dagger.Module
@@ -21,5 +22,11 @@ object MapperModule {
     @Singleton
     fun provideCategoryUiMapper(): CategoryUiMapper {
         return CategoryUiMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthMapper(): AuthMapper {
+        return AuthMapper()
     }
 }

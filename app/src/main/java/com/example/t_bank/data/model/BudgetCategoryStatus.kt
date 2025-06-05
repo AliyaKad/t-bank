@@ -1,8 +1,10 @@
 package com.example.t_bank.data.model
 
+import com.google.gson.annotations.SerializedName
+
 data class BudgetCategoryStatus(
-    val name: String,
-    val spent: Double,
-    val remaining: Double,
-    val limit: Double
+    @SerializedName("name") val name: String,
+    @SerializedName("spent") val spent: Double,
+    @SerializedName("remaining") val remaining: Double,
+    @SerializedName("limit") val limit: Double
 )
