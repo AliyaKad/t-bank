@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
 
-    private const val BASE_URL = "https://virtserver.swaggerhub.com/LizaMusina/Smart_Budget/1.0.0/api/v1/ "
+    private const val BASE_URL = "http://46.29.161.201:8080/"
 
     @Provides
     @Singleton
