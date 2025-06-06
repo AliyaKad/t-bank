@@ -1,5 +1,6 @@
 package com.example.t_bank.presentation.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -113,6 +114,11 @@ class PercentageDistributionFragment : Fragment() {
             val totalBudget = arguments?.getFloat("totalBudget") ?: 0f
             val month = getCurrentMonth()
             viewModel.saveDataToDatabase(month, totalBudget)
+
+            val sharedPreferences = requireContext().getSharedPreferences("app_data", Context.MODE_PRIVATE)
+            sharedPreferences.edit().putBoolean("settings_completed", true).apply()
+
+            findNavController().navigate(R.id.action_percentageDistributionFragment_to_expensesFragment)
         }
     }
 }
