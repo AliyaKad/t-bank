@@ -62,17 +62,20 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tvDate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:background="@drawable/rounded_button_background"
+        android:backgroundTint="@color/gray"
         android:layout_marginTop="16dp"
         android:clickable="true"
         android:focusable="true"
         android:text="@string/text_select_date"
         android:textColor="@color/black"
         android:textSize="16sp"
+        android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/tlAmount"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:paddingHorizontal="16dp" />
 
 
     <Button

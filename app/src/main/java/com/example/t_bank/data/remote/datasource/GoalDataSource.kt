@@ -9,3 +9,4 @@ interface GoalDataSource {
     suspend fun updateGoal(userId: Int, goalId: Int, goalRequest: GoalRequest)
     suspend fun deleteGoal(userId: Int, goalId: Int)
 }
+

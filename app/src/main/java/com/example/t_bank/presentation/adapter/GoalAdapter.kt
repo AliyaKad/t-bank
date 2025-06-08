@@ -2,37 +2,52 @@ package com.example.t_bank.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.t_bank.presentation.model.Goal
 import com.example.t_bank.R
 import com.example.t_bank.databinding.ItemGoalBinding
 
-class GoalAdapter(private val goals: List<Goal>) :
-    RecyclerView.Adapter<GoalAdapter.GoalViewHolder>() {
+class GoalAdapter(
+    private var goals: List<Goal>,
+    private val onLongClick: (Goal) -> Unit,
+    private val onItemClick: (Goal) -> Unit
+) : RecyclerView.Adapter<GoalAdapter.GoalViewHolder>() {
 
     class GoalViewHolder(private val binding: ItemGoalBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(goal: Goal) {
+        fun bind(
+            goal: Goal,
+            onLongClick: (Goal) -> Unit,
+            onItemClick: (Goal) -> Unit
+        ) {
             binding.textViewGoalName.text = goal.name
 
-            binding.textViewAmount.text = "%s"
+            binding.textViewAmount.text = binding.root.context.getString(
+                R.string.amount_format_float,
                 goal.amount
+            )
 
-
-            binding.textViewEndDate.text = itemView.context.getString(
+            binding.textViewEndDate.text = binding.root.context.getString(
                 R.string.end_date_format,
                 goal.endDate
             )
 
-            binding.progressBar.progress = if (goal.isAchieved) 100 else 50
+            binding.progressBar.progress = goal.progress
 
             if (goal.isAchieved) {
-                binding.textViewStatus.text = itemView.context.getString(R.string.goal_achieved)
-                binding.textViewStatus.setTextColor(itemView.context.getColor(R.color.green))
+                binding.textViewStatus.text = binding.root.context.getString(R.string.goal_achieved)
+                binding.textViewStatus.setTextColor(binding.root.context.getColor(R.color.green))
             } else {
-                binding.textViewStatus.text = itemView.context.getString(R.string.goal_not_achieved)
-                binding.textViewStatus.setTextColor(itemView.context.getColor(R.color.red))
+                binding.textViewStatus.text = binding.root.context.getString(R.string.goal_not_achieved)
+                binding.textViewStatus.setTextColor(binding.root.context.getColor(R.color.red))
+            }
+
+            itemView.setOnClickListener { onItemClick(goal) }
+            itemView.setOnLongClickListener {
+                onLongClick(goal)
+                true
             }
         }
     }
@@ -43,10 +58,29 @@ class GoalAdapter(private val goals: List<Goal>) :
     }
 
     override fun onBindViewHolder(holder: GoalViewHolder, position: Int) {
-        holder.bind(goals[position])
+        holder.bind(goals[position], onLongClick, onItemClick)
     }
 
     override fun getItemCount(): Int {
         return goals.size
+    }
+
+    fun updateData(newGoals: List<Goal>) {
+        val diffCallback = object : DiffUtil.Callback() {
+            override fun getOldListSize(): Int = goals.size
+            override fun getNewListSize(): Int = newGoals.size
+
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return goals[oldItemPosition].id == newGoals[newItemPosition].id
+            }
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return goals[oldItemPosition] == newGoals[newItemPosition]
+            }
+        }
+
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        goals = newGoals
+        diffResult.dispatchUpdatesTo(this)
     }
 }
