@@ -60,8 +60,11 @@ class PercentageDistributionViewModel @Inject constructor(
         }
     }
 
-    private fun getUserId(): Int {
-        return sharedPreferences.getInt("user_id", -1).takeIf { it != -1 }
-            ?: throw IllegalStateException("User ID not found in SharedPreferences")
+    private fun getUserId(): Long {
+        val userId = sharedPreferences.getLong("user_id", -1L)
+        if (userId == -1L) {
+            throw IllegalStateException("User ID not found in SharedPreferences")
+        }
+        return userId
     }
 }

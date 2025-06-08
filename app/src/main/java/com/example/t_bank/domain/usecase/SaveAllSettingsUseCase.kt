@@ -8,7 +8,7 @@ class SaveAllSettingsUseCase @Inject constructor(
     private val repository: SettingsRepository
 ) {
     suspend operator fun invoke(
-        userId: Int,
+        userId: Long,
         month: String,
         totalBudget: Float,
         categories: List<Category>

@@ -1,5 +1,6 @@
 package com.example.t_bank.di
 
+import android.content.Context
 import com.example.t_bank.data.remote.datasource.*
 import com.example.t_bank.data.remote.api.*
 import dagger.Module
@@ -14,8 +15,8 @@ object DataSourceModule {
 
     @Provides
     @Singleton
-    fun provideBudgetRemoteDataSource(apiService: BudgetApiService): BudgetRemoteDataSource {
-        return BudgetRemoteDataSourceImpl(apiService)
+    fun provideBudgetRemoteDataSource(context: Context, apiService: BudgetApiService): BudgetRemoteDataSource {
+        return BudgetRemoteDataSourceImpl(apiService, context)
     }
 
     @Provides
