@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.t_bank.data.local.entity.CategoryExpenseEntity
 import com.example.t_bank.data.local.entity.MonthlyBudgetEntity
 import com.example.t_bank.domain.usecase.model.BudgetForAllMonths
@@ -16,6 +17,15 @@ interface MonthlyBudgetDao {
 
     @Query("SELECT * FROM monthly_budgets WHERE month = :month")
     suspend fun getMonthlyBudget(month: String): MonthlyBudgetEntity?
+
+    @Query("SELECT * FROM monthly_budgets WHERE month = :month LIMIT 1")
+    suspend fun getBudgetByMonth(month: String): MonthlyBudgetEntity?
+
+    @Query("DELETE FROM category_distributions WHERE budgetId = :budgetId")
+    suspend fun deleteDistributionsForBudget(budgetId: Int)
+
+    @Update
+    suspend fun updateMonthlyBudget(budget: MonthlyBudgetEntity)
 
     @Query("DELETE FROM monthly_budgets WHERE month = :month")
     suspend fun deleteMonthlyBudget(month: String)

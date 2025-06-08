@@ -3,7 +3,7 @@ package com.example.t_bank.data.model
 import com.google.gson.annotations.SerializedName
 
 data class DataGoal(
-    @SerializedName("id") val id: Int,
+    @SerializedName("goalId") val id: Int,
     @SerializedName("name") val name: String,
     @SerializedName("targetAmount") val targetAmount: Double,
     @SerializedName("savedAmount") val savedAmount: Double,

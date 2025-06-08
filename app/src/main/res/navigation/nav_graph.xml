@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/financialGoalsFragment">
 
     <fragment
         android:id="@+id/expensesFragment"
@@ -46,18 +46,15 @@
         <argument
             android:name="updatedCategory"
             app:argType="com.example.t_bank.presentation.model.Category" />
-        <argument
-            android:name="newCategory"
-            app:argType="com.example.t_bank.presentation.model.Category" />
-        <action
-            android:id="@+id/action_firstSettingsFragment_to_percentageDistributionFragment"
-            app:destination="@id/percentageDistributionFragment" />
         <action
             android:id="@+id/action_firstSettingsFragment_to_newCategoryFragment"
             app:destination="@id/newCategoryFragment" />
         <action
             android:id="@+id/action_firstSettingsFragment_to_changeCategorySettingsFragment"
             app:destination="@id/changeCategorySettingsFragment" />
+        <action
+            android:id="@+id/action_firstSettingsFragment_to_percentageDistributionFragment"
+            app:destination="@id/percentageDistributionFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -118,7 +115,11 @@
         android:id="@+id/distributionOfFinancesFragment"
         android:name="com.example.t_bank.presentation.ui.DistributionOfFinancesFragment"
         android:label="fragment_distribution_of_finances"
-        tools:layout="@layout/fragment_distribution_of_finances" />
+        tools:layout="@layout/fragment_distribution_of_finances" >
+        <action
+            android:id="@+id/action_distributionOfFinancesFragment_to_firstSettingsFragment"
+            app:destination="@id/firstSettingsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/newGoalMakingFragment"
         android:name="com.example.t_bank.presentation.ui.NewGoalMakingFragment"

@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.t_bank.presentation.model.Category
 import com.example.t_bank.presentation.adapter.DistributionCategoryAdapter
@@ -42,6 +43,8 @@ class DistributionOfFinancesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         observeData()
+        setupBackButton()
+        setupSettingsButton()
     }
 
     override fun onDestroyView() {
@@ -74,19 +77,43 @@ class DistributionOfFinancesFragment : Fragment() {
         val entries = categories.map { PieEntry(it.percentage, it.name) }
 
         with(binding.pieChart) {
-            setUsePercentValues(true)
             description.isEnabled = false
             legend.isEnabled = false
 
             holeRadius = 70f
+            setUsePercentValues(false)
+            setDrawEntryLabels(false)
+            setDrawMarkers(false)
+            setCenterTextSize(18f)
 
             val dataSet = PieDataSet(entries, "").apply {
                 colors = categories.map { requireContext().getColor(it.colorResId) }
+                valueTextSize = 0f
             }
             data = PieData(dataSet)
             invalidate()
         }
     }
+
+    private fun setupBackButton() {
+        binding.imgBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
+
+    private fun setupSettingsButton() {
+        val emptyCategory = Category(
+            name = "",
+            colorResId = 0,
+            iconResId = 0,
+            percentage = 0f
+        )
+        binding.imgSettings.setOnClickListener {
+            val action = DistributionOfFinancesFragmentDirections.actionDistributionOfFinancesFragmentToFirstSettingsFragment(emptyCategory)
+            findNavController().navigate(action)
+        }
+    }
+
 
     private fun setupRecyclerView(categories: List<Category>) {
         val adapter = DistributionCategoryAdapter(categories)

@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.t_bank.presentation.model.Goal
 import com.example.t_bank.R
 import com.example.t_bank.databinding.ItemGoalBinding
+import android.util.Log
+
 
 class GoalAdapter(
     private var goals: List<Goal>,
@@ -22,13 +24,14 @@ class GoalAdapter(
             onLongClick: (Goal) -> Unit,
             onItemClick: (Goal) -> Unit
         ) {
+
+            Log.d("adapter", goal.id.toString())
             binding.textViewGoalName.text = goal.name
 
             binding.textViewAmount.text = binding.root.context.getString(
                 R.string.amount_format_float,
                 goal.amount
             )
-
             binding.textViewEndDate.text = binding.root.context.getString(
                 R.string.end_date_format,
                 goal.endDate

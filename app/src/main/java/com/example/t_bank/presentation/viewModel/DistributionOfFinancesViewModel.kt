@@ -3,6 +3,7 @@ package com.example.t_bank.presentation.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.t_bank.data.repository.SettingsRepository
 import com.example.t_bank.domain.usecase.GetBudgetAndCategoriesUseCase
 import com.example.t_bank.presentation.model.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,7 @@ import java.util.Calendar
 
 @HiltViewModel
 class DistributionOfFinancesViewModel @Inject constructor(
-    private val getBudgetAndCategoriesUseCase: GetBudgetAndCategoriesUseCase
+    private val getBudgetAndCategoriesUseCase: GetBudgetAndCategoriesUseCase,
 ) : ViewModel() {
 
     private val _categories = MutableStateFlow<List<Category>>(emptyList())

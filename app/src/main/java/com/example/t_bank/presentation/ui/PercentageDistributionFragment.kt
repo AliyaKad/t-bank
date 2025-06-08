@@ -113,6 +113,7 @@ class PercentageDistributionFragment : Fragment() {
         return dateFormat.format(calendar.time)
     }
 
+
     private fun setupSaveButton() {
         binding.btnFinish.setOnClickListener {
             val totalBudget = arguments?.getFloat("totalBudget") ?: 0f
@@ -121,7 +122,7 @@ class PercentageDistributionFragment : Fragment() {
             val categories = viewModel.getCategories()
             if (viewModel.validatePercentages(categories)) {
                 viewModel.saveDataToDatabase(month, totalBudget)
-                findNavController().navigateUp()
+                //findNavController().navigateUp()
             } else {
             }
         }

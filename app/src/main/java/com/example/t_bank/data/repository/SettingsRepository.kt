@@ -10,40 +10,65 @@ import com.example.t_bank.data.local.entity.MonthlyBudgetEntity
 import javax.inject.Inject
 import android.util.Log
 import androidx.room.Transaction
+import com.example.t_bank.data.local.entity.CategoryExpenseEntity
 import com.example.t_bank.data.remote.datasource.BudgetRemoteDataSource
 import com.example.t_bank.data.model.BudgetRequest
 import com.example.t_bank.domain.usecase.model.Category
 import com.example.t_bank.toApiModel
 import com.example.t_bank.toEntity
 
+
 class SettingsRepository @Inject constructor(
     private val monthlyBudgetDao: MonthlyBudgetDao,
     private val categoryDao: CategoryDao,
     private val categoryDistributionDao: CategoryDistributionDao,
-    private val budgetRemoteDataSource: BudgetRemoteDataSource,
+    private val budgetRemoteDataSource: BudgetRemoteDataSource
 ) {
 
     @Transaction
     suspend fun saveMonthlyBudget(
-        userId: Int,
+        userId: Long,
         month: String,
         totalBudget: Float,
         categories: List<Category>
     ) {
         try {
             Log.d("SettingsRepository", "Saving monthly budget for month: $month, totalBudget: $totalBudget")
+            val existingBudget = monthlyBudgetDao.getBudgetByMonth(month)
 
-            val monthlyBudget = MonthlyBudgetEntity(id = 0, month = month, totalBudget = totalBudget)
-            val budgetId = monthlyBudgetDao.insertMonthlyBudget(monthlyBudget)
-            Log.d("SettingsRepository", "Inserted monthly budget with ID: $budgetId")
+            var budgetId: Long
 
+            if (existingBudget != null) {
+                val updatedBudget = existingBudget.copy(totalBudget = totalBudget)
+                monthlyBudgetDao.updateMonthlyBudget(updatedBudget)
+                Log.d("SettingsRepository", "Updated existing budget with ID: ${existingBudget.id}")
+                budgetId = existingBudget.id.toLong()
+                categoryDistributionDao.deleteByBudgetId(budgetId.toInt())
+
+            } else {
+                val newBudget = MonthlyBudgetEntity(id = 0, month = month, totalBudget = totalBudget)
+                budgetId = monthlyBudgetDao.insertMonthlyBudget(newBudget)
+                Log.d("SettingsRepository", "Inserted new budget with ID: $budgetId")
+            }
+            val allCategoriesInDb = categoryDao.getAllCategories()
+            val categoryMapInDb = allCategoriesInDb.associateBy { it.name }
             val categoryEntities = categories.map { it.toEntity() }
-            categoryDao.insertCategories(*categoryEntities.toTypedArray())
-            Log.d("SettingsRepository", "Inserted ${categories.size} categories.")
+
+            categoryEntities.forEach { newCategory ->
+                val existingCategory = categoryMapInDb[newCategory.name]
+                if (existingCategory == null) {
+                    categoryDao.insertCategories(newCategory)
+                    Log.d("SettingsRepository", "Inserted new category: ${newCategory.name}")
+                } else {
+                    if (newCategory != existingCategory) {
+                        categoryDao.updateCategory(newCategory.copy(id = existingCategory.id))
+                        Log.d("SettingsRepository", "Updated category: ${newCategory.name}")
+                    }
+                }
+            }
 
             val allCategories = categoryDao.getAllCategories()
             val categoryMap = allCategories.associateBy { it.name }
-
             val distributions = categoryEntities.mapNotNull { category ->
                 categoryMap[category.name]?.let { savedCategory ->
                     CategoryDistributionEntity(
@@ -62,7 +87,7 @@ class SettingsRepository @Inject constructor(
                 return
             }
 
-            Log.d("SettingsRepository", "Saved monthly budget and distributions.")
+            Log.d("SettingsRepository", "Saved or updated monthly budget and distributions.")
 
             logDatabaseContent()
 
@@ -71,11 +96,12 @@ class SettingsRepository @Inject constructor(
                 income = totalBudget.toDouble(),
                 categories = categories.map { it.toApiModel() }
             )
-            budgetRemoteDataSource.setBudget(apiBudget)
+            //budgetRemoteDataSource.setBudget(apiBudget)
             Log.d("SettingsRepository", "Saved monthly budget to API.")
+
         } catch (e: Exception) {
             Log.e("SettingsRepository", "Error while saving monthly budget", e)
-            throw RuntimeException("Failed to save budget", e)
+            throw RuntimeException("Failed to save or update budget", e)
         }
     }
 
@@ -85,9 +111,8 @@ class SettingsRepository @Inject constructor(
         val categories = categoryDao.getAllCategories()
         Log.d("SettingsRepository", "Categories:")
         categories.forEach { category ->
-            Log.d("SettingsRepository", "Category ID: ${category.id}, Name: ${category.name}")
+            Log.d("SettingsRepository", "Category ID: ${category.id}, Name: ${category.name}, color ${category.colorResId}")
         }
-
         val monthlyBudgets = monthlyBudgetDao.getAllMonthlyBudgets()
         Log.d("SettingsRepository", "Monthly Budgets:")
         monthlyBudgets.forEach { budget ->
@@ -99,7 +124,14 @@ class SettingsRepository @Inject constructor(
         distributions.forEach { distribution ->
             Log.d("SettingsRepository", "Distribution ID: ${distribution.id}, Budget ID: ${distribution.budgetId}, Category ID: ${distribution.categoryId}")
         }
+
+        val expenses = monthlyBudgetDao.getAllCategoryExpenses()
+        Log.d("SettingsRepository", "Category Expenses:")
+        expenses.forEach { expense ->
+            Log.d("SettingsRepository", "Expense ID: ${expense.id}, Category ID: ${expense.categoryId}, Budget: ${expense.budget}, Amount Spent: ${expense.amountSpent}")
+        }
     }
+
 
     fun getDefaultCategories(): List<CategoryEntity> {
         return listOf(
@@ -107,7 +139,8 @@ class SettingsRepository @Inject constructor(
             CategoryEntity(2, "Транспорт", R.drawable.ic_transport, R.color.blue, 15f),
             CategoryEntity(3, "Коммунальные услуги", R.drawable.ic_utilities, R.color.green, 10f),
             CategoryEntity(4, "Развлечения", R.drawable.ic_entertainment, R.color.yellow, 20f),
-            CategoryEntity(5, "Другое", R.drawable.ic_other, R.color.purple, 30f)
+            CategoryEntity(5, "Накопления", R.drawable.ic_goals, R.color.dark_gray, 15f),
+            CategoryEntity(6, "Другое", R.drawable.ic_other, R.color.purple, 15f)
         )
     }
 }

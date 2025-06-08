@@ -1,6 +1,7 @@
 package com.example.t_bank.presentation.viewModel
 
 import android.app.Application
+import android.content.SharedPreferences
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,13 +20,16 @@ import javax.inject.Inject
 @HiltViewModel
 class FinancialGoalsViewModel @Inject constructor(
     private val getGoalsUseCase: GetGoalsUseCase,
-    private val deleteGoalUseCase: DeleteGoalUseCase
+    private val deleteGoalUseCase: DeleteGoalUseCase,
+    private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
 
     private val _goals = MutableStateFlow<List<Goal>>(emptyList())
     val goals: StateFlow<List<Goal>> = _goals
 
-    fun loadGoals(userId: Int) {
+    val userId = sharedPreferences.getInt("user_id", -1)
+
+    fun loadGoals() {
         viewModelScope.launch {
             try {
                 val domainGoals = getGoalsUseCase(userId)
@@ -37,7 +41,7 @@ class FinancialGoalsViewModel @Inject constructor(
         }
     }
 
-    fun deleteGoal(userId: Int, goalId: Int) {
+    fun deleteGoal(goalId: Int) {
         viewModelScope.launch {
             try {
                 deleteGoalUseCase(userId, goalId)

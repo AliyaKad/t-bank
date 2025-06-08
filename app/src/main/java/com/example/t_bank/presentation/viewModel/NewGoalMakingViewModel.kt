@@ -1,5 +1,6 @@
 package com.example.t_bank.presentation.viewModel
 
+import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NewGoalMakingViewModel @Inject constructor(
     private val createGoalUseCase: CreateGoalUseCase,
-    private val updateGoalUseCase: UpdateGoalUseCase
+    private val updateGoalUseCase: UpdateGoalUseCase,
+    private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
 
     private val _createGoalResult = MutableLiveData<Result<Unit>>()
@@ -27,7 +29,9 @@ class NewGoalMakingViewModel @Inject constructor(
     private val _updateGoalResult = MutableLiveData<Result<Unit>>()
     val updateGoalResult: LiveData<Result<Unit>> get() = _updateGoalResult
 
-    fun createGoal(name: String, amount: Double, deadline: String, userId: Int) {
+    val userId = sharedPreferences.getInt("user_id", -1)
+
+    fun createGoal(name: String, amount: Double, deadline: String) {
         viewModelScope.launch {
             val uiParams = UiGoalParams(
                 name = name,
@@ -43,7 +47,7 @@ class NewGoalMakingViewModel @Inject constructor(
         }
     }
 
-    fun updateGoal(goalId: Int, name: String, targetAmount: Double, endDate: String, userId: Int) {
+    fun updateGoal(goalId: Int, name: String, targetAmount: Double, endDate: String) {
         viewModelScope.launch {
             try {
                 val presentationGoal = Goal(

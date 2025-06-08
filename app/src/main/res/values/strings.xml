@@ -1,7 +1,7 @@
 <resources>
     <string name="add_amount">внести сумму</string>
     <string name="amount_format">%d ₽</string>
-    <string name="amount_format_float">%.2s ₽</string>
+    <string name="amount_format_float">%.2f ₽</string>
     <string name="amount_hint">0 ₽</string>
     <string name="apply_changes">Внести изменения</string>
     <string name="app_name">t-bank</string>
