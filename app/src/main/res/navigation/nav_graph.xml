@@ -46,6 +46,9 @@
         <argument
             android:name="updatedCategory"
             app:argType="com.example.t_bank.presentation.model.Category" />
+        <argument
+            android:name="newCategory"
+            app:argType="com.example.t_bank.presentation.model.Category" />
         <action
             android:id="@+id/action_firstSettingsFragment_to_percentageDistributionFragment"
             app:destination="@id/percentageDistributionFragment" />
