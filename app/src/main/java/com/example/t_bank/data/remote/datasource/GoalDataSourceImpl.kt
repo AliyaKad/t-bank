@@ -1,6 +1,6 @@
 package com.example.t_bank.data.remote.datasource
 
-import com.example.t_bank.data.model.Goal
+import com.example.t_bank.data.model.DataGoal
 import com.example.t_bank.data.model.GoalRequest
 import com.example.t_bank.data.remote.api.GoalApiService
 
@@ -10,7 +10,7 @@ class GoalDataSourceImpl(private val apiService: GoalApiService): GoalDataSource
         apiService.createGoal(goalRequest)
     }
 
-    override suspend fun getGoals(userId: Int): List<Goal>? {
+    override suspend fun getGoals(userId: Int): List<DataGoal>? {
         val response = apiService.getGoals(userId)
         return if (response.isSuccessful) response.body() else null
     }
