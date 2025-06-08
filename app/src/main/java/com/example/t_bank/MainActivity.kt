@@ -16,6 +16,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        applySavedTheme()
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -29,11 +31,23 @@ class MainActivity : AppCompatActivity() {
         setupBottomNavigationVisibility(navController)
     }
 
+    private fun applySavedTheme() {
+        val sharedPreferences = getSharedPreferences("app_preferences", MODE_PRIVATE)
+        val isDarkTheme = sharedPreferences.getBoolean("is_dark_theme", false)
+        setTheme(if (isDarkTheme) R.style.Theme_Tbank_Dark else R.style.Theme_Tbank)
+    }
+
     private fun setupBottomNavigationVisibility(navController: NavController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.firstSettingsFragment -> binding.bottomNavigation.visibility = View.GONE
-                else -> binding.bottomNavigation.visibility = View.VISIBLE
+                R.id.expensesFragment,
+                R.id.profileFragment,
+                R.id.financialGoalsFragment -> {
+                    binding.bottomNavigation.visibility = View.VISIBLE
+                }
+                else -> {
+                    binding.bottomNavigation.visibility = View.GONE
+                }
             }
         }
     }
