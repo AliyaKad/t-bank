@@ -7,13 +7,15 @@ import com.example.t_bank.data.local.dao.CategoryDistributionDao
 import com.example.t_bank.data.local.dao.MonthlyBudgetDao
 import com.example.t_bank.data.local.entity.CategoryDistributionEntity
 import com.example.t_bank.data.local.entity.CategoryEntity
+import com.example.t_bank.data.local.entity.CategoryExpenseEntity
 import com.example.t_bank.data.local.entity.MonthlyBudgetEntity
 
 @Database(
     entities = [
         CategoryEntity::class,
         CategoryDistributionEntity::class,
-        MonthlyBudgetEntity::class
+        MonthlyBudgetEntity::class,
+        CategoryExpenseEntity::class
     ],
     version = 1,
     exportSchema = false
