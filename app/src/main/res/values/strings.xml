@@ -68,6 +68,7 @@
     <string name="password_hint">Пароль</string>
     <string name="percentage_format">%1$d%%</string>
     <string name="phone_hint">Номер телефона</string>
+    <string name="pie_chart_center_text">%1$s\n%2$f ₽</string>
     <string name="please_fill_all_fields_correctly">Пожалуйста, заполните поля корректно</string>
     <string name="products">Продукты</string>
     <string name="registration_title">Регистрация</string>
