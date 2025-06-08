@@ -48,4 +48,8 @@ object DataSourceModule {
     fun provideTransactionDataSource(apiService: TransactionApiService): TransactionDataSource {
         return TransactionDataSourceImpl(apiService)
     }
+
+    @Provides
+    @Singleton
+    fun provideLoginDataSource(dataSource: LoginDataSourceImpl): LoginDataSource = dataSource
 }

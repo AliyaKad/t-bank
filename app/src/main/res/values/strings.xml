@@ -42,6 +42,7 @@
     <string name="error_invalid_phone">Некорректный номер телефона</string>
     <string name="failed_to_create_goal">Не удалось создать цель: %1$s</string>
     <string name="failed_to_update_goal">Не удалось изменить цель</string>
+    <string name="fill_all_fields">Заполните все поля</string>
     <string name="forgot_password">Забыли пароль?</string>
     <string name="forgot_password_subtitle">Введите свой номер телефона, чтобы сбросить пароль</string>
     <string name="get_code_button">Получить код</string>
@@ -57,7 +58,9 @@
     <string name="hint_old_password">Введите старый пароль</string>
     <string name="hint_phone_number">+7-XXX-XXX-XX-XX</string>
     <string name="language">Язык</string>
+    <string name="login_error">Ошибка входа</string>
     <string name="login_existing_account_button">Войти в аккаунт</string>
+    <string name="login_success">Вход успешен</string>
     <string name="login_title">Войдите в свой профиль</string>
     <string name="login_with_button">Войти с T-id</string>
     <string name="my_financial_goals">Мои финансовые цели</string>

@@ -7,6 +7,8 @@ import com.example.t_bank.data.local.dao.MonthlyBudgetDao
 import com.example.t_bank.data.remote.datasource.GoalDataSourceImpl
 import com.example.t_bank.data.repository.GoalRepository
 import com.example.t_bank.data.remote.datasource.BudgetRemoteDataSource
+import com.example.t_bank.data.repository.AuthRepository
+import com.example.t_bank.data.repository.AuthRepositoryImpl
 import com.example.t_bank.data.repository.SettingsRepository
 import dagger.Module
 import dagger.Provides
@@ -53,4 +55,9 @@ object AppModule {
     ): SettingsRepository {
         return SettingsRepository(monthlyBudgetDao, categoryDao, categoryDistributionDao, budgetRemoteDataSource)
     }
+
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository(repository: AuthRepositoryImpl): AuthRepository = repository
 }
