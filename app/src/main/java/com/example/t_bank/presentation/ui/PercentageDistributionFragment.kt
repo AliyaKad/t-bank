@@ -1,5 +1,6 @@
 package com.example.t_bank.presentation.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -85,12 +86,7 @@ class PercentageDistributionFragment : Fragment() {
     }
 
     private fun updatePieChart(categories: List<Category>) {
-        val totalPercentage = categories.sumOf { it.percentage.toDouble() }
-        val entries = categories.map { PieEntry(it.percentage, it.name) }.toMutableList()
-
-        if (totalPercentage < 100.0) {
-            entries.add(PieEntry((100 - totalPercentage).toFloat(), "Нераспределено"))
-        }
+        val entries = categories.map { PieEntry(it.percentage, it.name) }
 
         with(binding.pieChart) {
             setUsePercentValues(true)
@@ -100,7 +96,7 @@ class PercentageDistributionFragment : Fragment() {
             holeRadius = 70f
 
             val dataSet = PieDataSet(entries, "").apply {
-                colors = categories.map { requireContext().getColor(it.colorResId) } + listOf(requireContext().getColor(R.color.gray)) // Серый цвет для "Нераспределено"
+                colors = categories.map { requireContext().getColor(it.colorResId) }
             }
             data = PieData(dataSet)
             invalidate()
@@ -117,13 +113,12 @@ class PercentageDistributionFragment : Fragment() {
         binding.btnFinish.setOnClickListener {
             val totalBudget = arguments?.getFloat("totalBudget") ?: 0f
             val month = getCurrentMonth()
+            viewModel.saveDataToDatabase(month, totalBudget)
 
-            val categories = viewModel.getCategories()
-            if (viewModel.validatePercentages(categories)) {
-                viewModel.saveDataToDatabase(month, totalBudget)
-                findNavController().navigateUp()
-            } else {
-            }
+            val sharedPreferences = requireContext().getSharedPreferences("app_data", Context.MODE_PRIVATE)
+            sharedPreferences.edit().putBoolean("settings_completed", true).apply()
+
+            findNavController().navigate(R.id.action_percentageDistributionFragment_to_expensesFragment)
         }
     }
 }

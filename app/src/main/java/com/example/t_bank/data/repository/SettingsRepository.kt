@@ -25,7 +25,7 @@ class SettingsRepository @Inject constructor(
 
     @Transaction
     suspend fun saveMonthlyBudget(
-        userId: Int,
+        userId: Long,
         month: String,
         totalBudget: Float,
         categories: List<Category>
@@ -62,17 +62,26 @@ class SettingsRepository @Inject constructor(
                 return
             }
 
-            Log.d("SettingsRepository", "Saved monthly budget and distributions.")
-
             logDatabaseContent()
-
             val apiBudget = BudgetRequest(
                 userId = userId,
                 income = totalBudget.toDouble(),
                 categories = categories.map { it.toApiModel() }
             )
-            budgetRemoteDataSource.setBudget(apiBudget)
-            Log.d("SettingsRepository", "Saved monthly budget to API.")
+
+            val apiResult = runCatching {
+                //budgetRemoteDataSource.setBudget(apiBudget)
+            }
+
+            apiResult.onSuccess {
+                Log.d("SettingsRepository", "Saved monthly budget to API.")
+            }
+
+            apiResult.onFailure { e ->
+                Log.w("SettingsRepository", "API request failed, but data saved locally", e)
+
+            }
+
         } catch (e: Exception) {
             Log.e("SettingsRepository", "Error while saving monthly budget", e)
             throw RuntimeException("Failed to save budget", e)

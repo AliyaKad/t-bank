@@ -18,4 +18,7 @@ interface CategoryDao {
     @Query("SELECT * FROM categories")
     suspend fun getAllCategories(): List<CategoryEntity>
 
+    @Query("SELECT * FROM categories WHERE id IN (SELECT MAX(id) FROM categories GROUP BY name)")
+    suspend fun getLatestCategories(): List<CategoryEntity>
+
 }

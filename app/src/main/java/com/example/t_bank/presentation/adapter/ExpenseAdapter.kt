@@ -1,13 +1,15 @@
 package com.example.t_bank.presentation.adapter
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.t_bank.presentation.model.Expense
 import com.example.t_bank.R
 import com.example.t_bank.databinding.ItemExpenseBinding
 
-class ExpenseAdapter(private val expenses: List<Expense>) :
+class ExpenseAdapter(private var expenses: List<Expense>) :
     RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
 
     class ExpenseViewHolder(private val binding: ItemExpenseBinding) :
@@ -26,7 +28,11 @@ class ExpenseAdapter(private val expenses: List<Expense>) :
             } else {
                 0
             }
+
             binding.progressBar.progress = progress
+            binding.progressBar.progressTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(itemView.context, expense.colorResId)
+            )
 
             binding.textViewProgressDetailsLeft.text = itemView.context.getString(
                 R.string.spent_amount_format,
@@ -52,5 +58,9 @@ class ExpenseAdapter(private val expenses: List<Expense>) :
     override fun getItemCount(): Int {
         return expenses.size
     }
-}
 
+    fun submitList(newExpenses: List<Expense>) {
+        expenses = newExpenses
+        notifyDataSetChanged()
+    }
+}

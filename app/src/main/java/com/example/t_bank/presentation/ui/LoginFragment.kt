@@ -1,6 +1,8 @@
 package com.example.t_bank.presentation.ui
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +37,23 @@ class LoginFragment : Fragment() {
 
         viewModel = viewModels<LoginViewModel>().value
 
+        val sharedPreferences = requireContext().getSharedPreferences("app_data", Context.MODE_PRIVATE)
+        val areSettingsCompleted = sharedPreferences.getBoolean("settings_completed", false)
+        val userId = sharedPreferences.getInt("user_id", -1)
+
+        Log.d("LoginFragment", "userId: $userId")
+        Log.d("LoginFragment", "areSettingsCompleted: $areSettingsCompleted")
+
+        if (sharedPreferences.contains("user_id") && !sharedPreferences.getBoolean("settings_completed", false)) {
+            findNavController().navigate(R.id.firstSettingsFragment)
+            return
+        }
+
+        if (sharedPreferences.getBoolean("settings_completed", false)) {
+            findNavController().navigate(R.id.expensesFragment)
+            return
+        }
+
         setupObservers()
         setupClickListeners()
     }
@@ -43,11 +62,23 @@ class LoginFragment : Fragment() {
         viewModel.loginState.observe(viewLifecycleOwner, Observer { result ->
             when (result) {
                 is LoginViewModel.LoginResult.Loading -> {
-                    binding.btnLoginWith.text = ""
                     binding.btnLoginWith.isEnabled = false
                 }
                 is LoginViewModel.LoginResult.Success -> {
                     Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
+
+                    val sharedPreferences = requireContext().getSharedPreferences("app_data", Context.MODE_PRIVATE)
+                    val areSettingsCompleted = sharedPreferences.getBoolean("settings_completed", false)
+
+                    Log.d("NavigationCheck", "settings_completed = $areSettingsCompleted")
+
+                    if (areSettingsCompleted) {
+                        Log.d("NavigationCheck", "Navigating to ExpensesFragment")
+                        findNavController().navigate(R.id.action_loginFragment_to_expensesFragment)
+                    } else {
+                        Log.d("NavigationCheck", "Navigating to FirstSettingsFragment")
+                        findNavController().navigate(R.id.action_loginFragment_to_firstSettingsFragment)
+                    }
                 }
                 is LoginViewModel.LoginResult.Error -> {
                     Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()

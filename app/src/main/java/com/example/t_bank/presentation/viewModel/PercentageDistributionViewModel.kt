@@ -1,5 +1,6 @@
 package com.example.t_bank.presentation.viewModel
 
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.t_bank.domain.usecase.SaveAllSettingsUseCase
@@ -14,6 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PercentageDistributionViewModel @Inject constructor(
     private val saveAllDataUseCase: SaveAllSettingsUseCase,
+    private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
 
     private val _categories = MutableStateFlow<List<Category>>(emptyList())
@@ -56,8 +58,17 @@ class PercentageDistributionViewModel @Inject constructor(
 
     fun saveDataToDatabase(month: String, totalBudget: Float) {
         viewModelScope.launch {
+            val userId = getUserId()
             val categories = _categories.value.map { it.toDomainModel() }
-            saveAllDataUseCase(1, month, totalBudget, categories)
+            saveAllDataUseCase(userId, month, totalBudget, categories)
         }
+    }
+
+    private fun getUserId(): Long {
+        val userId = sharedPreferences.getLong("user_id", -1L)
+        if (userId == -1L) {
+            throw IllegalStateException("User ID not found in SharedPreferences")
+        }
+        return userId
     }
 }
