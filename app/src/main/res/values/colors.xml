@@ -13,4 +13,5 @@
     <color name="purple">#9C27B0</color>
     <color name="brown">#795548</color>
     <color name="dark_gray">#424242</color>
+    <color name="darkest_gray">#2D2B31</color>
 </resources>
