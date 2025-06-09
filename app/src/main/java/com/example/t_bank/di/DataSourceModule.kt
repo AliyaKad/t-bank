@@ -27,8 +27,8 @@ object DataSourceModule {
 
     @Provides
     @Singleton
-    fun provideGoalDataSource(apiService: GoalApiService): GoalDataSource {
-        return GoalDataSourceImpl(apiService)
+    fun provideGoalDataSource(apiService: GoalApiService, context: Context): GoalDataSource {
+        return GoalDataSourceImpl(apiService, context)
     }
 
     @Provides

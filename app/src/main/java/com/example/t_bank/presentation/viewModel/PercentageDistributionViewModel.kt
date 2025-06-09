@@ -37,20 +37,24 @@ class PercentageDistributionViewModel @Inject constructor(
                 if (validatePercentages(currentCategories)) {
                     _categories.value = currentCategories
                 } else {
-                    throw IllegalArgumentException("Сумма процентов должна быть равна 100%")
+                    val excess = currentCategories.sumOf { it.percentage.toDouble() } - 100
+                    currentCategories[index] = updatedCategory.copy(percentage = updatedCategory.percentage - excess.toFloat())
+                    _categories.value = currentCategories
                 }
             }
         }
+    }
+
+    fun validatePercentages(categories: List<Category>): Boolean {
+        val totalPercentage = categories.sumOf { it.percentage.toDouble() }
+        return totalPercentage <= 100.0
     }
 
     fun getCategories(): List<Category> {
         return _categories.value
     }
 
-    private fun validatePercentages(categories: List<Category>): Boolean {
-        val totalPercentage = categories.sumOf { it.percentage.toDouble() }
-        return totalPercentage == 100.0
-    }
+
 
     fun saveDataToDatabase(month: String, totalBudget: Float) {
         viewModelScope.launch {

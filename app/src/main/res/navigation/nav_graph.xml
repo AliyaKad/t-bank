@@ -30,6 +30,9 @@
         <argument
             android:name="updatedCategory"
             app:argType="com.example.t_bank.presentation.model.Category" />
+        <argument
+            android:name="newCategory"
+            app:argType="com.example.t_bank.presentation.model.Category" />
         <action
             android:id="@+id/action_firstSettingsFragment_to_percentageDistributionFragment"
             app:destination="@id/percentageDistributionFragment" />
@@ -55,7 +58,20 @@
         android:id="@+id/addingMoneyToBankFragment"
         android:name="com.example.t_bank.presentation.ui.AddingMoneyToBankFragment"
         android:label="fragment_adding_money_to_bank"
-        tools:layout="@layout/fragment_adding_money_to_bank" />
+        tools:layout="@layout/fragment_adding_money_to_bank">
+    <argument
+        android:name="goalId"
+        app:argType="integer" />
+    <argument
+        android:name="goalName"
+        app:argType="string" />
+    <argument
+        android:name="goalAmount"
+        app:argType="float" />
+    <argument
+        android:name="goalDate"
+        app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/distributionOfFinancesFragment"
         android:name="com.example.t_bank.presentation.ui.DistributionOfFinancesFragment"
@@ -65,7 +81,21 @@
         android:id="@+id/newGoalMakingFragment"
         android:name="com.example.t_bank.presentation.ui.NewGoalMakingFragment"
         android:label="fragment_new_goal_making"
-        tools:layout="@layout/fragment_new_goal_making" />
+        tools:layout="@layout/fragment_new_goal_making">
+        <argument
+            android:name="goalId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <argument
+            android:name="goalName"
+            app:argType="string" />
+        <argument
+            android:name="goalAmount"
+            app:argType="float" />
+        <argument
+            android:name="goalDate"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/profileRedactionFragment"
         android:name="com.example.t_bank.presentation.ui.ProfileRedactionFragment"

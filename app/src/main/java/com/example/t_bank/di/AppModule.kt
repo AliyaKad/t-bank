@@ -4,6 +4,8 @@ import com.example.t_bank.data.local.AppDatabase
 import com.example.t_bank.data.local.dao.CategoryDao
 import com.example.t_bank.data.local.dao.CategoryDistributionDao
 import com.example.t_bank.data.local.dao.MonthlyBudgetDao
+import com.example.t_bank.data.remote.datasource.GoalDataSourceImpl
+import com.example.t_bank.data.repository.GoalRepository
 import com.example.t_bank.data.remote.datasource.BudgetRemoteDataSource
 import com.example.t_bank.data.repository.AuthRepository
 import com.example.t_bank.data.repository.AuthRepositoryImpl
@@ -36,6 +38,13 @@ object AppModule {
     @Singleton
     fun provideMonthlyBudgetDao(appDatabase: AppDatabase): MonthlyBudgetDao {
         return appDatabase.monthlyBudgetDao()
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideGoalRepository(goalDataSource: GoalDataSourceImpl): GoalRepository {
+        return GoalRepository(goalDataSource)
     }
 
     @Provides
