@@ -7,13 +7,15 @@ import com.example.t_bank.presentation.model.Expense
 import com.example.t_bank.R
 import com.example.t_bank.databinding.ItemExpenseBinding
 
-class ExpenseAdapter(private val expenses: List<Expense>) :
-    RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
+class ExpenseAdapter(
+    private val expenses: List<Expense>,
+    private val onItemClick: (String) -> Unit
+) : RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
 
     class ExpenseViewHolder(private val binding: ItemExpenseBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(expense: Expense) {
+        fun bind(expense: Expense, onItemClick: (String) -> Unit) {
             binding.textViewCategoryName.text = expense.category
 
             binding.textViewAmount.text = itemView.context.getString(
@@ -37,6 +39,10 @@ class ExpenseAdapter(private val expenses: List<Expense>) :
                 R.string.remaining_amount_format,
                 (expense.totalAmount - expense.spentAmount).toInt()
             )
+
+            binding.root.setOnClickListener {
+                onItemClick(expense.category)
+            }
         }
     }
 
@@ -46,7 +52,7 @@ class ExpenseAdapter(private val expenses: List<Expense>) :
     }
 
     override fun onBindViewHolder(holder: ExpenseViewHolder, position: Int) {
-        holder.bind(expenses[position])
+        holder.bind(expenses[position], onItemClick) // ✅ Передаем onItemClick
     }
 
     override fun getItemCount(): Int {

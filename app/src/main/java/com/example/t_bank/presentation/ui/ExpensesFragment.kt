@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.t_bank.presentation.model.Expense
 import com.example.t_bank.R
@@ -71,7 +72,14 @@ class ExpensesFragment : Fragment() {
     private fun setupRecyclerView() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = ExpenseAdapter(getExpenseData())
+            adapter = ExpenseAdapter(getExpenseData()) { categoryName ->
+                findNavController().navigate(
+                    R.id.action_expensesFragment_to_transactionsByCategoryFragment,
+                    Bundle().apply {
+                        putString("categoryName", categoryName)
+                    }
+                )
+            }
         }
     }
 

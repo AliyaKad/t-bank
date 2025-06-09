@@ -8,7 +8,11 @@
     <fragment
         android:id="@+id/expensesFragment"
         android:name="com.example.t_bank.presentation.ui.ExpensesFragment"
-        android:label="ExpensesFragment" />
+        android:label="ExpensesFragment" >
+        <action
+            android:id="@+id/action_expensesFragment_to_transactionsByCategoryFragment"
+            app:destination="@id/transactionsByCategoryFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.t_bank.presentation.ui.ProfileFragment"
@@ -190,4 +194,8 @@
             android:id="@+id/action_changeCategorySettingsFragment_to_firstSettingsFragment"
             app:destination="@id/firstSettingsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/transactionsByCategoryFragment"
+        android:name="com.example.t_bank.presentation.ui.TransactionsByCategoryFragment"
+        android:label="TransactionsByCategoryFragment" />
 </navigation>

@@ -45,8 +45,8 @@ object DataSourceModule {
 
     @Provides
     @Singleton
-    fun provideTransactionDataSource(apiService: TransactionApiService): TransactionDataSource {
-        return TransactionDataSourceImpl(apiService)
+    fun provideTransactionDataSource(apiService: TransactionApiService, context: Context): TransactionDataSource {
+        return TransactionDataSourceImpl(apiService, context)
     }
 
     @Provides

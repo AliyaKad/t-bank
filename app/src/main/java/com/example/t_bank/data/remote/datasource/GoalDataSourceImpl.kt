@@ -19,7 +19,7 @@ class GoalDataSourceImpl @Inject constructor(
     override suspend fun createGoal(goalRequest: GoalRequest) {
         try {
             Log.d(TAG, "Creating goal with request: $goalRequest")
-            val response = apiService.createGoal(goalRequest)
+            val response = apiService.createGoal(goalRequest.userId, goalRequest)
 
             if (response.isSuccessful) {
                 Log.d(TAG, "Goal created successfully")

@@ -10,9 +10,13 @@ import com.example.t_bank.data.remote.datasource.BudgetRemoteDataSource
 import com.example.t_bank.data.repository.AuthRepository
 import com.example.t_bank.data.repository.AuthRepositoryImpl
 import com.example.t_bank.data.repository.SettingsRepository
+import com.example.t_bank.data.repository.TransactionRepositoryImpl
+import com.example.t_bank.domain.repository.TransactionRepository
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -60,4 +64,8 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAuthRepository(repository: AuthRepositoryImpl): AuthRepository = repository
+
+    @Provides
+    @Singleton
+    fun provideTransactionRepository(repository: TransactionRepositoryImpl): TransactionRepository = repository
 }

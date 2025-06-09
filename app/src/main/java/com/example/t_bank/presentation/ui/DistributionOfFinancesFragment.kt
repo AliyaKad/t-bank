@@ -66,7 +66,8 @@ class DistributionOfFinancesFragment : Fragment() {
                 launch {
                     viewModel.totalBudget.collect { totalBudget ->
                         Log.d("DistributionFragment", "Observed totalBudget: $totalBudget")
-                        binding.pieChart.centerText = "${viewModel.currentMonth.value}\n${totalBudget.toInt()} ₽"
+                        binding.pieChart.centerText =
+                            "${viewModel.currentMonth.value}\n${totalBudget.toInt()} ₽"
                     }
                 }
             }
@@ -109,7 +110,10 @@ class DistributionOfFinancesFragment : Fragment() {
             percentage = 0f
         )
         binding.imgSettings.setOnClickListener {
-            val action = DistributionOfFinancesFragmentDirections.actionDistributionOfFinancesFragmentToFirstSettingsFragment(emptyCategory)
+            val action =
+                DistributionOfFinancesFragmentDirections.actionDistributionOfFinancesFragmentToFirstSettingsFragment(
+                    emptyCategory
+                )
             findNavController().navigate(action)
         }
     }
