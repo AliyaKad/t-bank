@@ -1,5 +1,6 @@
 package com.example.t_bank
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -27,7 +28,6 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
 
         binding.bottomNavigation.setupWithNavController(navController)
-
         setupBottomNavigationVisibility(navController)
     }
 

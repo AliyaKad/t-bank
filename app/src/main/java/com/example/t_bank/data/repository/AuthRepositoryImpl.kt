@@ -17,7 +17,7 @@ class AuthRepositoryImpl @Inject constructor(
         val response = dataSource.login(phoneNumber, password)
 
         with(sharedPreferences.edit()) {
-            putInt("user_id", response.userId)
+            putLong("user_id", response.userId.toLong())
             putString("access_token", response.jwtTokenPairDto.accessToken)
             putString("refresh_token", response.jwtTokenPairDto.refreshToken)
             apply()
@@ -26,6 +26,18 @@ class AuthRepositoryImpl @Inject constructor(
         Log.d("AuthRepository", "Saved user_id: ${response.userId}")
         Log.d("AuthRepository", "Saved access_token: ${response.jwtTokenPairDto.accessToken}")
         Log.d("AuthRepository", "Saved refresh_token: ${response.jwtTokenPairDto.refreshToken}")
+
+        return authMapper.mapToDomain(response)
+    }
+
+    override suspend fun refreshToken(refreshToken: String): AuthModel {
+        val response = dataSource.refreshToken(refreshToken)
+
+        with(sharedPreferences.edit()) {
+            putString("access_token", response.jwtTokenPairDto.accessToken)
+            putString("refresh_token", response.jwtTokenPairDto.accessToken)
+            apply()
+        }
 
         return authMapper.mapToDomain(response)
     }

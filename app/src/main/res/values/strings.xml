@@ -81,6 +81,7 @@
     <string name="reset_password_title">Придумайте новый пароль</string>
     <string name="resend_code">Отправить код повторно</string>
     <string name="set_password_title">Придумайте новый пароль</string>
+    <string name="spended">%1$d ₽\nпотрачено</string>
     <string name="sms_verification_subtitle">Мы отправили СМС с кодом на номер +7 (XXX) XXX-XX-XX. Введите 5-значный код, указанный в СМС.</string>
     <string name="spent_amount_format">%d ₽ потрачено</string>
     <string name="spending_history">История расходов</string>
