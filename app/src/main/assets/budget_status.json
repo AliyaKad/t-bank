@@ -1,0 +1,23 @@
+{
+  "income": 100000,
+  "categories": [
+    {
+      "name": "Развлечения",
+      "spent": 10000,
+      "remaining": 20000,
+      "limit": 30000
+    },
+    {
+      "name": "Транспорт",
+      "spent": 5000,
+      "remaining": 25000,
+      "limit": 30000
+    },
+    {
+      "name": "Другое",
+      "spent": 5000,
+      "remaining": 20000,
+      "limit": 25000
+    }
+  ]
+}

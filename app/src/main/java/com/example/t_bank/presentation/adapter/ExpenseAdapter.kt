@@ -1,7 +1,9 @@
 package com.example.t_bank.presentation.adapter
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.t_bank.presentation.model.Expense
 import com.example.t_bank.R
@@ -28,7 +30,11 @@ class ExpenseAdapter(
             } else {
                 0
             }
+
             binding.progressBar.progress = progress
+            binding.progressBar.progressTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(itemView.context, expense.colorResId)
+            )
 
             binding.textViewProgressDetailsLeft.text = itemView.context.getString(
                 R.string.spent_amount_format,
@@ -52,11 +58,15 @@ class ExpenseAdapter(
     }
 
     override fun onBindViewHolder(holder: ExpenseViewHolder, position: Int) {
-        holder.bind(expenses[position], onItemClick) // ✅ Передаем onItemClick
+        holder.bind(expenses[position], onItemClick)
     }
 
     override fun getItemCount(): Int {
         return expenses.size
     }
-}
 
+    fun submitList(newExpenses: List<Expense>) {
+        expenses = newExpenses
+        notifyDataSetChanged()
+    }
+}

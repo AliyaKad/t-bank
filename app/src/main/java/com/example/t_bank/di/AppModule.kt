@@ -9,6 +9,8 @@ import com.example.t_bank.data.repository.GoalRepository
 import com.example.t_bank.data.remote.datasource.BudgetRemoteDataSource
 import com.example.t_bank.data.repository.AuthRepository
 import com.example.t_bank.data.repository.AuthRepositoryImpl
+import com.example.t_bank.data.repository.BudgetRepository
+import com.example.t_bank.data.repository.BudgetRepositoryImpl
 import com.example.t_bank.data.repository.SettingsRepository
 import com.example.t_bank.data.repository.TransactionRepositoryImpl
 import com.example.t_bank.domain.repository.TransactionRepository
@@ -59,6 +61,11 @@ object AppModule {
     ): SettingsRepository {
         return SettingsRepository(monthlyBudgetDao, categoryDao, categoryDistributionDao, budgetRemoteDataSource)
     }
+
+    @Provides
+    @Singleton
+    fun provideBudgetRepository(repository: BudgetRepositoryImpl): BudgetRepository = repository
+
 
 
     @Provides

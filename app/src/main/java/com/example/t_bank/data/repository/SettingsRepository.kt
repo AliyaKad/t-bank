@@ -90,7 +90,6 @@ class SettingsRepository @Inject constructor(
             Log.d("SettingsRepository", "Saved or updated monthly budget and distributions.")
 
             logDatabaseContent()
-
             val apiBudget = BudgetRequest(
                 userId = userId,
                 income = totalBudget.toDouble(),

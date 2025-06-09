@@ -28,22 +28,6 @@
             app:destination="@id/distributionOfFinancesFragment" />
     </fragment>
     <fragment
-        android:id="@+id/numberCheckingFragment"
-        android:name="com.example.t_bank.presentation.ui.NumberCheckingFragment"
-        android:label="NumberCheckingFragment" >
-        <action
-            android:id="@+id/action_numberCheckingFragment_to_passwordCreatingFragment"
-            app:destination="@id/passwordCreatingFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/passwordCreatingFragment"
-        android:name="com.example.t_bank.presentation.ui.PasswordCreatingFragment"
-        android:label="PasswordCreatingFragment" >
-        <action
-            android:id="@+id/action_passwordCreatingFragment_to_firstSettingsFragment"
-            app:destination="@id/firstSettingsFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/firstSettingsFragment"
         android:name="com.example.t_bank.presentation.ui.FirstSettingsFragment"
         android:label="FirstSettingsFragment" >
@@ -65,37 +49,11 @@
         android:name="com.example.t_bank.presentation.ui.LoginFragment"
         android:label="LoginFragment" >
         <action
-            android:id="@+id/action_loginFragment_to_passwordRecoveryFragment"
-            app:destination="@id/passwordRecoveryFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/passwordRecoveryFragment"
-        android:name="com.example.t_bank.presentation.ui.PasswordRecoveryFragment"
-        android:label="fragment_password_recovery"
-        tools:layout="@layout/fragment_password_recovery" >
-        <action
-            android:id="@+id/action_passwordRecoveryFragment_to_resetPasswordFragment"
-            app:destination="@id/resetPasswordFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/resetPasswordFragment"
-        android:name="com.example.t_bank.presentation.ui.ResetPasswordFragment"
-        android:label="fragment_reset_password"
-        tools:layout="@layout/fragment_reset_password" >
-        <action
-            android:id="@+id/action_resetPasswordFragment_to_firstSettingsFragment"
+            android:id="@+id/action_loginFragment_to_firstSettingsFragment"
             app:destination="@id/firstSettingsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/registrationFragment"
-        android:name="com.example.t_bank.presentation.ui.RegistrationFragment"
-        android:label="RegistrationFragment" >
         <action
-            android:id="@+id/action_registrationFragment_to_numberCheckingFragment"
-            app:destination="@id/numberCheckingFragment" />
-        <action
-            android:id="@+id/action_registrationFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            android:id="@+id/action_loginFragment_to_expensesFragment"
+            app:destination="@id/expensesFragment" />
     </fragment>
     <fragment
         android:id="@+id/addingMoneyToBankFragment"

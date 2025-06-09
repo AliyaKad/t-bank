@@ -17,4 +17,13 @@ class LoginDataSourceImpl @Inject constructor(
             throw Exception("Login failed")
         }
     }
+
+    override suspend fun refreshToken(refreshToken: String): AuthResponse {
+        val request = mapOf("refreshToken" to refreshToken)
+        val response = loginApiService.refreshToken()
+        if (!response.isSuccessful || response.body() == null) {
+            throw Exception("Не удалось обновить токен")
+        }
+        return response.body()!!
+    }
 }

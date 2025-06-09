@@ -15,8 +15,8 @@ object DataSourceModule {
 
     @Provides
     @Singleton
-    fun provideBudgetRemoteDataSource(apiService: BudgetApiService): BudgetRemoteDataSource {
-        return BudgetRemoteDataSourceImpl(apiService)
+    fun provideBudgetRemoteDataSource(context: Context, apiService: BudgetApiService): BudgetRemoteDataSource {
+        return BudgetRemoteDataSourceImpl(apiService, context)
     }
 
     @Provides
