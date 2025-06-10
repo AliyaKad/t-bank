@@ -1,6 +1,7 @@
 package com.example.t_bank.presentation.viewModel
 
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.t_bank.domain.usecase.GetTransactionsUseCase
 import com.example.t_bank.mapper.TransactionMapper
@@ -16,7 +17,7 @@ class TransactionsByCategoryViewModel @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
 
-    val userId = sharedPreferences.getInt("userId", -1)
+    val userId = getUserId().toInt()
 
     private val _transactions = MutableStateFlow<List<Transaction>>(emptyList())
     val transactions: StateFlow<List<Transaction>> = _transactions
@@ -29,4 +30,10 @@ class TransactionsByCategoryViewModel @Inject constructor(
     }
 
     fun getFilteredTransactions(): List<Transaction> = _transactions.value
+
+    private fun getUserId(): Long {
+        val id = sharedPreferences.getLong("user_id", -1)
+        Log.d("ExpensesViewModel", "UserId из SharedPreferences: $id")
+        return id
+    }
 }

@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class BudgetCategory(
     @SerializedName("name") val name: String,
-    @SerializedName("percentage") val percentage: Double
+    @SerializedName("percentage") val percentage: Int
 )

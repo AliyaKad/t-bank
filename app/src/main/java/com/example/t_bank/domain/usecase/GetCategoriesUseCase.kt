@@ -1,16 +1,13 @@
 package com.example.t_bank.domain.usecase
 
-import com.example.t_bank.mapper.CategoryMapper
-import com.example.t_bank.data.repository.SettingsRepository
-import com.example.t_bank.presentation.model.Category
+import com.example.t_bank.domain.repository.CategoryRepository
+import com.example.t_bank.domain.usecase.model.Category
 import javax.inject.Inject
 
 class GetCategoriesUseCase @Inject constructor(
-    private val repository: SettingsRepository,
-    private val categoryMapper: CategoryMapper
+    private val repository: CategoryRepository
 ) {
     suspend operator fun invoke(): List<Category> {
-        val entities = repository.getDefaultCategories()
-        return entities.map { categoryMapper.toDomainModel(it) }
+        return repository.getDefaultCategories()
     }
 }

@@ -112,4 +112,6 @@ dependencies {
     implementation(libs.logger)
     implementation(libs.okhttp)
 
+    implementation(libs.shimmer)
+
 }

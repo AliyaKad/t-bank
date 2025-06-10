@@ -4,39 +4,9 @@ import com.example.t_bank.data.model.DataGoal
 import com.example.t_bank.data.model.GoalRequest
 import com.example.t_bank.domain.usecase.model.CreateGoalParams
 import com.example.t_bank.domain.usecase.model.DomainGoal
-import com.example.t_bank.presentation.model.Goal
+import com.example.t_bank.presentation.model.Goal as PresentationGoal
 
 object GoalMapper {
-
-    fun mapToData(domainGoal: DomainGoal): GoalRequest {
-        return GoalRequest(
-            userId = domainGoal.id,
-            name = domainGoal.name,
-            targetAmount = domainGoal.targetAmount,
-            deadline = domainGoal.deadline
-        )
-    }
-
-    fun mapToDomain(presentationGoal: Goal): DomainGoal {
-        return DomainGoal(
-            id = presentationGoal.id,
-            name = presentationGoal.name,
-            targetAmount = presentationGoal.amount,
-            savedAmount = 0.0,
-            deadline = presentationGoal.endDate,
-            status = DomainGoal.Status.COMPLETED,
-            recommendedMonthlySaving = 0.0
-        )
-    }
-
-    fun mapToData(params: CreateGoalParams): GoalRequest {
-        return GoalRequest(
-            userId = params.userId,
-            name = params.name,
-            targetAmount = params.targetAmount,
-            deadline = params.deadline
-        )
-    }
 
     fun mapToDomain(dataGoal: DataGoal): DomainGoal {
         return DomainGoal(
@@ -55,5 +25,32 @@ object GoalMapper {
 
     fun mapToDomainList(dataGoals: List<DataGoal>): List<DomainGoal> {
         return dataGoals.map { mapToDomain(it) }
+    }
+
+    fun mapToData(domainGoal: DomainGoal): GoalRequest {
+        return GoalRequest(
+            userId = domainGoal.id,
+            name = domainGoal.name,
+            targetAmount = domainGoal.targetAmount,
+            deadline = domainGoal.deadline
+        )
+    }
+
+    fun mapToData(params: CreateGoalParams): GoalRequest {
+        return GoalRequest(
+            userId = params.userId,
+            name = params.name,
+            targetAmount = params.targetAmount,
+            deadline = params.deadline
+        )
+    }
+
+    fun mapToPresentation(domainGoal: DomainGoal): PresentationGoal {
+        return PresentationGoal(
+            id = domainGoal.id,
+            name = domainGoal.name,
+            amount = domainGoal.targetAmount,
+            endDate = domainGoal.deadline
+        )
     }
 }

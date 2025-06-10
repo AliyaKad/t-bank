@@ -37,6 +37,7 @@
     <string name="enter_amount">Введите сумму</string>
     <string name="enter_category_name">Введите название категории</string>
     <string name="enter_budget">Введите бюджет</string>
+    <string name="enter_valid_amount">Введите корректную сумму</string>
     <string name="error_empty_new_password">Введите новый пароль</string>
     <string name="error_empty_old_password">Введите старый пароль</string>
     <string name="error_empty_phone">Введите номер телефона</string>
@@ -86,7 +87,7 @@
     <string name="resend_code">Отправить код повторно</string>
     <string name="russian">Русский</string>
     <string name="set_password_title">Придумайте новый пароль</string>
-    <string name="spended">%1$d ₽\nпотрачено</string>
+    <string name="spended">%1$.2f ₽\nпотрачено</string>
     <string name="sms_verification_subtitle">Мы отправили СМС с кодом на номер +7 (XXX) XXX-XX-XX. Введите 5-значный код, указанный в СМС.</string>
     <string name="spent_amount_format">%d ₽ потрачено</string>
     <string name="spending_history">История расходов</string>
@@ -101,4 +102,5 @@
     <string name="title_new_goal">Новая цель</string>
     <string name="title_setup_category">Настройте категорию</string>
     <string name="update_goal">Обновить цель</string>
+    <string name="total">%1$s ₽</string>
 </resources>

@@ -1,8 +1,8 @@
 package com.example.t_bank.data.repository
 
 import android.content.SharedPreferences
-import android.util.Log
 import com.example.t_bank.data.remote.datasource.LoginDataSource
+import com.example.t_bank.domain.repository.AuthRepository
 import com.example.t_bank.domain.usecase.model.AuthModel
 import com.example.t_bank.mapper.AuthMapper
 import javax.inject.Inject
@@ -23,10 +23,6 @@ class AuthRepositoryImpl @Inject constructor(
             apply()
         }
 
-        Log.d("AuthRepository", "Saved user_id: ${response.userId}")
-        Log.d("AuthRepository", "Saved access_token: ${response.jwtTokenPairDto.accessToken}")
-        Log.d("AuthRepository", "Saved refresh_token: ${response.jwtTokenPairDto.refreshToken}")
-
         return authMapper.mapToDomain(response)
     }
 
@@ -35,7 +31,7 @@ class AuthRepositoryImpl @Inject constructor(
 
         with(sharedPreferences.edit()) {
             putString("access_token", response.jwtTokenPairDto.accessToken)
-            putString("refresh_token", response.jwtTokenPairDto.accessToken)
+            putString("refresh_token", response.jwtTokenPairDto.refreshToken)
             apply()
         }
 

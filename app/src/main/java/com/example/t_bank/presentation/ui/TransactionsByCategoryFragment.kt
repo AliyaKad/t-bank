@@ -7,14 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.t_bank.R
 import com.example.t_bank.databinding.FragmentTransactionsByCategoryBinding
 import com.example.t_bank.presentation.adapter.TransactionAdapter
 import com.example.t_bank.presentation.viewModel.TransactionsByCategoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class TransactionsByCategoryFragment : Fragment() {
@@ -38,16 +36,18 @@ class TransactionsByCategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val categoryName = arguments?.getString("categoryName")
-
         binding.categoryTitleTextView.text = categoryName
 
         viewModel = ViewModelProvider(this)[TransactionsByCategoryViewModel::class.java]
 
         setupRecyclerView()
+        showShimmer()
+        setupBackButton()
 
         lifecycleScope.launchWhenStarted {
             viewModel.loadTransactionsByCategory(categoryName)
             adapter.submitList(viewModel.getFilteredTransactions())
+            hideShimmer()
         }
     }
 
@@ -57,8 +57,26 @@ class TransactionsByCategoryFragment : Fragment() {
         binding.recyclerView.adapter = adapter
     }
 
+    private fun showShimmer() {
+        binding.shimmerRecyclerView.visibility = View.VISIBLE
+        binding.shimmerRecyclerView.startShimmer()
+        binding.recyclerView.visibility = View.GONE
+    }
+
+    private fun hideShimmer() {
+        binding.shimmerRecyclerView.stopShimmer()
+        binding.shimmerRecyclerView.visibility = View.GONE
+        binding.recyclerView.visibility = View.VISIBLE
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setupBackButton() {
+        binding.imgBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 }

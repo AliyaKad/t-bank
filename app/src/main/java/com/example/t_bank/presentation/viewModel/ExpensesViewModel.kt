@@ -11,6 +11,7 @@ import com.example.t_bank.domain.usecase.GetBudgetStatusUseCase
 import com.example.t_bank.presentation.model.CategoryForMonths
 import com.example.t_bank.presentation.model.Expense
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,6 +31,10 @@ class ExpensesViewModel @Inject constructor(
     val error: LiveData<String?> = _error
 
     fun loadBudgetStatus() {
+        if (_expenses.value != null) {
+            return
+        }
+
         viewModelScope.launch {
             try {
                 val userId = getUserId()
@@ -44,7 +49,8 @@ class ExpensesViewModel @Inject constructor(
                     )
                 }
 
-                val categoryList = status.categories.map { category ->
+                _expenses.value = expenseList
+                _categoriesForMonths.value = status.categories.map { category ->
                     CategoryForMonths(
                         name = category.name,
                         colorResId = category.colorResId,
@@ -54,8 +60,6 @@ class ExpensesViewModel @Inject constructor(
                     )
                 }
 
-                _expenses.value = expenseList
-                _categoriesForMonths.value = categoryList
             } catch (e: Exception) {
                 _error.value = e.message
             }
@@ -64,7 +68,6 @@ class ExpensesViewModel @Inject constructor(
 
     private fun getUserId(): Long {
         val id = sharedPreferences.getLong("user_id", -1)
-        Log.d("ExpensesViewModel", "UserId из SharedPreferences: $id")
         return id
     }
 }

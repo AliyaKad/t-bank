@@ -3,7 +3,6 @@ package com.example.t_bank.presentation.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.t_bank.data.repository.SettingsRepository
 import com.example.t_bank.domain.usecase.GetBudgetAndCategoriesUseCase
 import com.example.t_bank.presentation.model.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,11 +33,8 @@ class DistributionOfFinancesViewModel @Inject constructor(
     private fun loadBudgetAndCategories() {
         viewModelScope.launch {
             val month = getCurrentMonth()
-            Log.d("DistributionViewModel", "Loading data for month: $month")
             val data = getBudgetAndCategoriesUseCase(month)
             if (data != null) {
-                Log.d("DistributionViewModel", "Loaded totalBudget: ${data.totalBudget}")
-                Log.d("DistributionViewModel", "Loaded categories: ${data.categories}")
                 _totalBudget.value = data.totalBudget
                 _categories.value = data.categories
                 _currentMonth.value = month

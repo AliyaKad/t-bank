@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.t_bank.R
 import com.example.t_bank.presentation.model.Category
 import com.example.t_bank.presentation.adapter.DistributionCategoryAdapter
 import com.example.t_bank.databinding.FragmentDistributionOfFinancesBinding
@@ -32,7 +33,8 @@ class DistributionOfFinancesFragment : Fragment() {
     private val viewModel: DistributionOfFinancesViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentDistributionOfFinancesBinding.inflate(inflater, container, false)
@@ -56,8 +58,9 @@ class DistributionOfFinancesFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
+                    showShimmers()
+
                     viewModel.categories.collect { categories ->
-                        Log.d("DistributionFragment", "Observed categories: $categories")
                         setupPieChart(categories)
                         setupRecyclerView(categories)
                     }
@@ -65,13 +68,32 @@ class DistributionOfFinancesFragment : Fragment() {
 
                 launch {
                     viewModel.totalBudget.collect { totalBudget ->
-                        Log.d("DistributionFragment", "Observed totalBudget: $totalBudget")
                         binding.pieChart.centerText =
-                            "${viewModel.currentMonth.value}\n${totalBudget.toInt()} ₽"
+                            getString(R.string.total, totalBudget.toString())
                     }
                 }
             }
         }
+    }
+
+    private fun showShimmers() {
+        binding.shimmerPieChart.visibility = View.VISIBLE
+        binding.shimmerRecyclerView.visibility = View.VISIBLE
+        binding.shimmerPieChart.startShimmer()
+        binding.shimmerRecyclerView.startShimmer()
+
+        binding.pieChart.visibility = View.GONE
+        binding.recyclerView.visibility = View.GONE
+    }
+
+    private fun hideShimmers() {
+        binding.shimmerPieChart.stopShimmer()
+        binding.shimmerRecyclerView.stopShimmer()
+        binding.shimmerPieChart.visibility = View.GONE
+        binding.shimmerRecyclerView.visibility = View.GONE
+
+        binding.pieChart.visibility = View.VISIBLE
+        binding.recyclerView.visibility = View.VISIBLE
     }
 
     private fun setupPieChart(categories: List<Category>) {
@@ -80,12 +102,11 @@ class DistributionOfFinancesFragment : Fragment() {
         with(binding.pieChart) {
             description.isEnabled = false
             legend.isEnabled = false
-
             holeRadius = 70f
             setUsePercentValues(false)
             setDrawEntryLabels(false)
-            setDrawMarkers(false)
             setCenterTextSize(18f)
+            setDrawMarkers(false)
 
             val dataSet = PieDataSet(entries, "").apply {
                 colors = categories.map { requireContext().getColor(it.colorResId) }
@@ -94,6 +115,16 @@ class DistributionOfFinancesFragment : Fragment() {
             data = PieData(dataSet)
             invalidate()
         }
+    }
+
+    private fun setupRecyclerView(categories: List<Category>) {
+        val adapter = DistributionCategoryAdapter(categories)
+
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            this.adapter = adapter
+        }
+        hideShimmers()
     }
 
     private fun setupBackButton() {
@@ -115,16 +146,6 @@ class DistributionOfFinancesFragment : Fragment() {
                     emptyCategory
                 )
             findNavController().navigate(action)
-        }
-    }
-
-
-    private fun setupRecyclerView(categories: List<Category>) {
-        val adapter = DistributionCategoryAdapter(categories)
-
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            this.adapter = adapter
         }
     }
 }

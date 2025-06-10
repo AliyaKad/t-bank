@@ -11,7 +11,7 @@
     <style name="CustomTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxBackgroundMode">none</item>
         <item name="hintTextAppearance">@style/CenteredHintTextAppearance</item>
-        <item name="endIconMode">password_toggle</item>
+        <item name="endIconMode">none</item>
         <item name="endIconTint">@color/black</item>
         <item name="android:background">@drawable/rounded_edittext_background</item>
     </style>

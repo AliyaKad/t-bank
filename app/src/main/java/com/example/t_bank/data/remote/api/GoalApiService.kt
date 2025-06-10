@@ -1,5 +1,6 @@
 package com.example.t_bank.data.remote.api
 
+import com.example.t_bank.data.model.AddAmountRequest
 import com.example.t_bank.data.model.DataGoal
 import com.example.t_bank.data.model.GoalRequest
 import com.example.t_bank.data.model.MessageResponse
@@ -26,4 +27,11 @@ interface GoalApiService {
         @Path("userId") userId: Int,
         @Path("goalId") goalId: Int
     ): Response<MessageResponse>
+
+    @PATCH("/api/v1/goals/{userId}/{goalId}")
+    suspend fun addAmountToGoal(
+        @Path("userId") userId: Int,
+        @Path("goalId") goalId: Int,
+        @Body request: AddAmountRequest
+    ): Response<DataGoal>
 }

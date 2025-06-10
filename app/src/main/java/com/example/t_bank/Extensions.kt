@@ -33,6 +33,6 @@ fun com.example.t_bank.domain.usecase.model.Category.toEntity(id: Int = 0): Cate
 fun com.example.t_bank.domain.usecase.model.Category.toApiModel(): BudgetCategory {
     return BudgetCategory(
         name = this.name,
-        percentage = this.percentage.toDouble()
+        percentage = this.percentage.toInt()
     )
 }

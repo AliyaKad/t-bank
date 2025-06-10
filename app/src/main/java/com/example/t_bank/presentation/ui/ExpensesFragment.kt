@@ -1,6 +1,7 @@
 package com.example.t_bank.presentation.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,10 +9,6 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.t_bank.R
@@ -23,7 +20,6 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ExpensesFragment : Fragment() {
@@ -46,17 +42,23 @@ class ExpensesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        showShimmers()
         setupRecyclerView()
         observeData()
         viewModel.loadBudgetStatus()
     }
 
     private fun setupRecyclerView() {
-        adapter = ExpenseAdapter(emptyList())
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = this@ExpensesFragment.adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        adapter = ExpenseAdapter { categoryName ->
+            findNavController().navigate(
+                R.id.action_expensesFragment_to_transactionsByCategoryFragment,
+                Bundle().apply {
+                    putString("categoryName", categoryName)
+                }
+            )
         }
+        binding.recyclerView.adapter = adapter
     }
 
     private fun observeData() {
@@ -66,40 +68,43 @@ class ExpensesFragment : Fragment() {
         }
 
         viewModel.error.observe(viewLifecycleOwner) { errorMsg ->
-            Toast.makeText(requireContext(), errorMsg ?: "Ошибка", Toast.LENGTH_SHORT).show()
+            Log.d("Exp", "${errorMsg}")
         }
+        hideShimmers()
     }
 
     private fun updatePieChart(expenses: List<Expense>) {
+        if (expenses.isEmpty()) {
+            return
+        }
+
         val totalSpent = expenses.sumOf { it.spentAmount.toDouble() }
         val totalBudget = expenses.sumOf { it.totalAmount.toDouble() }
         val remaining = totalBudget - totalSpent
 
-        val entries = mutableListOf<PieEntry>()
+        val entries = expenses.map { expense ->
+            PieEntry(expense.spentAmount, expense.category)
+        }.toMutableList()
 
-        entries.addAll(
-            expenses.map { expense ->
-                PieEntry(expense.spentAmount, expense.category)
-            }
-        )
         if (remaining > 0) {
             entries.add(PieEntry(remaining.toFloat()))
         }
 
         with(binding.pieChart) {
+            clear()
+
             description.isEnabled = false
             legend.isEnabled = false
             holeRadius = 70f
-            centerText = context.getString(R.string.spended, totalSpent)
+            centerText = getString(R.string.spended, totalSpent)
             setUsePercentValues(false)
             setDrawEntryLabels(false)
-            setDrawMarkers(false)
             setCenterTextSize(18f)
 
             val dataSet = PieDataSet(entries, "").apply {
-                colors = expenses.map { requireContext().getColor(it.colorResId) } + listOf(
-                    ContextCompat.getColor(requireContext(), R.color.gray)
-                )
+                colors = expenses.map { requireContext().getColor(it.colorResId) } + R.color.gray.let {
+                    ContextCompat.getColor(requireContext(), it)
+                }
                 valueTextSize = 0f
             }
 
@@ -108,17 +113,28 @@ class ExpensesFragment : Fragment() {
         }
     }
 
-    private fun setupRecyclerView() {
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = ExpenseAdapter(getExpenseData()) { categoryName ->
-                findNavController().navigate(
-                    R.id.action_expensesFragment_to_transactionsByCategoryFragment,
-                    Bundle().apply {
-                        putString("categoryName", categoryName)
-                    }
-                )
-            }
-        }
+    private fun showShimmers() {
+        binding.shimmerPieChart.startShimmer()
+        binding.shimmerRecyclerView.startShimmer()
+        binding.shimmerPieChart.visibility = View.VISIBLE
+        binding.shimmerRecyclerView.visibility = View.VISIBLE
+
+        binding.pieChart.visibility = View.GONE
+        binding.recyclerView.visibility = View.GONE
+    }
+
+    private fun hideShimmers() {
+        binding.shimmerPieChart.stopShimmer()
+        binding.shimmerRecyclerView.stopShimmer()
+        binding.shimmerPieChart.visibility = View.GONE
+        binding.shimmerRecyclerView.visibility = View.GONE
+
+        binding.pieChart.visibility = View.VISIBLE
+        binding.recyclerView.visibility = View.VISIBLE
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

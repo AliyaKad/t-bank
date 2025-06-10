@@ -1,8 +1,6 @@
 package com.example.t_bank.data.local.entity
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(
     tableName = "category_expenses",
@@ -13,6 +11,9 @@ import androidx.room.PrimaryKey
             childColumns = ["categoryId"],
             onDelete = ForeignKey.CASCADE
         )
+    ],
+    indices = [
+        Index(value = ["categoryId"])
     ]
 )
 data class CategoryExpenseEntity(

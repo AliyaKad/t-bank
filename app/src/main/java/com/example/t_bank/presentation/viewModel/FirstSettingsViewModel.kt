@@ -1,10 +1,8 @@
 package com.example.t_bank.presentation.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.t_bank.domain.usecase.GetCategoriesUseCase
-import com.example.t_bank.presentation.adapter.FirstSettingsAdapter
 import com.example.t_bank.presentation.model.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,9 +24,16 @@ class FirstSettingsViewModel @Inject constructor(
 
     private fun loadCategories() {
         viewModelScope.launch {
-            val savedCategories = getCategoriesUseCase()
-            _categories.value = savedCategories
-            Log.d("FirstSettingsViewModel", "Loaded initial categories: $savedCategories")
+            val domainCategories = getCategoriesUseCase()
+            val presentationCategories = domainCategories.map { category ->
+                com.example.t_bank.presentation.model.Category(
+                    name = category.name,
+                    iconResId = category.iconResId,
+                    colorResId = category.colorResId,
+                    percentage = category.percentage
+                )
+            }
+            _categories.value = presentationCategories
         }
     }
 

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.t_bank.R
@@ -81,7 +80,6 @@ class SpendingsHistoryFragment : Fragment() {
             setupPieChart(budgets, categoriesWithPercentages)
 
             val expenses = viewModel.getSpendingData(currentMonthData.categories)
-            Log.d("SpendingsHistoryFrag", "Setting up RecyclerView with ${expenses.size} expenses.")
 
             if (!::adapter.isInitialized) {
                 adapter = SpendingAdapter(expenses)
@@ -103,6 +101,9 @@ class SpendingsHistoryFragment : Fragment() {
             setUsePercentValues(true)
             description.isEnabled = false
             legend.isEnabled = false
+            setDrawEntryLabels(false)
+            setCenterTextSize(18f)
+            setDrawMarkers(false)
 
             val formattedMonth = formatMonth(currentMonthData?.month ?: "2025-05")
             centerText = getString(R.string.pie_chart_center_text, formattedMonth, totalSpent)
@@ -110,6 +111,7 @@ class SpendingsHistoryFragment : Fragment() {
 
             val dataSet = PieDataSet(entries, "").apply {
                 colors = categories.map { requireContext().getColor(it.colorResId) }
+                valueTextSize = 0f
             }
             data = PieData(dataSet)
             invalidate()

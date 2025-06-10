@@ -1,6 +1,6 @@
 package com.example.t_bank.domain.usecase
 
-import com.example.t_bank.data.repository.SettingsRepository
+import com.example.t_bank.domain.repository.SettingsRepository
 import com.example.t_bank.domain.usecase.model.Category
 import javax.inject.Inject
 
@@ -16,3 +16,4 @@ class SaveAllSettingsUseCase @Inject constructor(
         repository.saveMonthlyBudget(userId, month, totalBudget, categories)
     }
 }
+

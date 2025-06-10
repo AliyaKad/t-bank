@@ -8,5 +8,6 @@ interface GoalDataSource {
     suspend fun getGoals(userId: Int): List<DataGoal>?
     suspend fun updateGoal(userId: Int, goalId: Int, goalRequest: GoalRequest)
     suspend fun deleteGoal(userId: Int, goalId: Int)
+    suspend fun addAmountToGoal(userId: Int, goalId: Int, amount: Double): DataGoal?
 }
 

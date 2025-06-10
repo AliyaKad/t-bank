@@ -37,6 +37,7 @@
     <string name="enter_amount">Enter amount</string>
     <string name="enter_category_name">Enter category name</string>
     <string name="enter_budget">Enter budget</string>
+    <string name="enter_valid_amount">Enter valid amount</string>
     <string name="error_empty_new_password">Enter new password</string>
     <string name="error_empty_old_password">Enter old password</string>
     <string name="error_empty_phone">Enter phone number</string>
@@ -88,6 +89,7 @@
     <string name="set_password_title">Create a new password</string>
     <string name="sms_verification_subtitle">We sent an SMS with a code to +7 (XXX) XXX-XX-XX. Enter the 5-digit code provided in the SMS.</string>
     <string name="spent_amount_format">%d ₽ spent</string>
+    <string name="spended">1$.2f ₽\nspended</string>
     <string name="spending_history">Spending history</string>
     <string name="submit_button">Submit code</string>
     <string name="text_select_date">Select date</string>
@@ -100,4 +102,6 @@
     <string name="title_new_goal">New goal</string>
     <string name="title_setup_category">Set up category</string>
     <string name="update_goal">Update goal</string>
+    <string name="amount">%1$s ₽</string>
+    <string name="total">%1$s ₽</string>
 </resources>

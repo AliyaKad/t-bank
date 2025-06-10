@@ -1,11 +1,8 @@
 package com.example.t_bank.presentation.viewModel
 
-import android.app.Application
 import android.content.SharedPreferences
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.t_bank.R
 import com.example.t_bank.domain.usecase.DeleteGoalUseCase
 import com.example.t_bank.domain.usecase.GetGoalsUseCase
 import com.example.t_bank.domain.usecase.model.DomainGoal
@@ -27,7 +24,7 @@ class FinancialGoalsViewModel @Inject constructor(
     private val _goals = MutableStateFlow<List<Goal>>(emptyList())
     val goals: StateFlow<List<Goal>> = _goals
 
-    val userId = sharedPreferences.getInt("user_id", -1)
+    val userId = sharedPreferences.getLong("user_id", -1).toInt()
 
     fun loadGoals() {
         viewModelScope.launch {

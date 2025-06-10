@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.t_bank.databinding.FragmentAddingMoneyToBankBinding
 import com.example.t_bank.presentation.viewModel.AddingMoneyToBankViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,6 +17,15 @@ class AddingMoneyToBankFragment : Fragment() {
     private var _binding: FragmentAddingMoneyToBankBinding? = null
     private val binding get() = requireNotNull(_binding) { "Binding is null" }
     private val viewModel: AddingMoneyToBankViewModel by viewModels()
+
+    private var goalId: Int = -1
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val args = AddingMoneyToBankFragmentArgs.fromBundle(requireArguments())
+        goalId = args.goalId
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,26 +43,27 @@ class AddingMoneyToBankFragment : Fragment() {
         observeViewModel()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     private fun setupClickListeners() {
         binding.btnAddAmount.setOnClickListener {
             handleAddAmount()
+            findNavController().popBackStack()
         }
     }
 
     private fun handleAddAmount() {
         val amount = binding.tlAmount.editText?.text.toString()
         viewModel.updateAmount(amount)
-        viewModel.onAddAmountClicked()
+        viewModel.onAddAmountClicked(goalId)
     }
 
     private fun observeViewModel() {
         viewModel.errorResId.observe(viewLifecycleOwner) { resId ->
             binding.tlAmount.error = resId?.let { getString(it) }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

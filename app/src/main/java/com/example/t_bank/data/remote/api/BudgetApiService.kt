@@ -10,7 +10,7 @@ import retrofit2.http.*
 interface BudgetApiService {
 
     @POST("/api/v1/budget")
-    suspend fun setBudget(@Body budgetRequest: BudgetRequest): Response<String>
+    suspend fun setBudget(@Body budgetRequest: BudgetRequest): Response<BudgetStatus>
 
     @GET("/api/v1/budget/status/{userId}")
     suspend fun getBudgetStatus(@Path("userId") userId: Long): Response<BudgetStatus>
