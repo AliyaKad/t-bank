@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.t_bank.data.repository.AllBudgetsRepository
+import com.example.t_bank.domain.usecase.GetAllBudgetsUseCase
 import com.example.t_bank.domain.usecase.model.BudgetForAllMonths
 import com.example.t_bank.presentation.model.CategoryForMonths
 import com.example.t_bank.presentation.model.Expense
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SpendingsHistoryViewModel @Inject constructor(
-    private val allBudgetsRepository: AllBudgetsRepository
+    private val getAllBudgetsUseCase: GetAllBudgetsUseCase
 ) : ViewModel() {
 
     private val _budgetsForAllMonths = MutableLiveData<List<BudgetForAllMonths>>()
@@ -28,13 +28,8 @@ class SpendingsHistoryViewModel @Inject constructor(
     private fun loadAllBudgets() {
         viewModelScope.launch {
             try {
-                val allBudgets = allBudgetsRepository.getAllBudgets()
-                Log.d("SpendingsHistoryVM", "Loaded ${allBudgets.size} budgets from repository.")
+                val allBudgets = getAllBudgetsUseCase()
                 allBudgets.forEach { budget ->
-                    Log.d(
-                        "SpendingsHistoryVM",
-                        "Budget: month=${budget.month}, totalBudget=${budget.totalBudget}, categories=${budget.categories.size}"
-                    )
                     budget.categories.forEach { category ->
                         Log.d(
                             "SpendingsHistoryVM",
@@ -51,15 +46,8 @@ class SpendingsHistoryViewModel @Inject constructor(
 
     fun getCategoryData(categories: List<CategoryForMonths>): List<CategoryForMonths> {
         val totalSpent = categories.sumOf { it.amountSpent.toDouble() }
-        Log.d("SpendingsHistoryVM", "Total spent for categories: $totalSpent")
         val updatedCategories = categories.map { category ->
             category.copy(percentage = (category.amountSpent / totalSpent) * 100)
-        }
-        updatedCategories.forEach { category ->
-            Log.d(
-                "SpendingsHistoryVM",
-                "Updated category: name=${category.name}, percentage=${category.percentage}"
-            )
         }
         return updatedCategories
     }
@@ -71,12 +59,6 @@ class SpendingsHistoryViewModel @Inject constructor(
                 totalAmount = category.budget,
                 spentAmount = category.amountSpent,
                 colorResId = category.colorResId
-            )
-        }
-        expenses.forEach { expense ->
-            Log.d(
-                "SpendingsHistoryVM",
-                "Expense: category=${expense.category}, total=${expense.totalAmount}, spent=${expense.spentAmount}"
             )
         }
         return expenses

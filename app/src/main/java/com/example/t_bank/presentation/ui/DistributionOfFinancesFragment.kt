@@ -10,7 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.t_bank.R
 import com.example.t_bank.presentation.model.Category
 import com.example.t_bank.presentation.adapter.DistributionCategoryAdapter
 import com.example.t_bank.databinding.FragmentDistributionOfFinancesBinding
@@ -31,7 +33,8 @@ class DistributionOfFinancesFragment : Fragment() {
     private val viewModel: DistributionOfFinancesViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentDistributionOfFinancesBinding.inflate(inflater, container, false)
@@ -42,6 +45,8 @@ class DistributionOfFinancesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         observeData()
+        setupBackButton()
+        setupSettingsButton()
     }
 
     override fun onDestroyView() {
@@ -53,8 +58,9 @@ class DistributionOfFinancesFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
+                    showShimmers()
+
                     viewModel.categories.collect { categories ->
-                        Log.d("DistributionFragment", "Observed categories: $categories")
                         setupPieChart(categories)
                         setupRecyclerView(categories)
                     }
@@ -62,26 +68,49 @@ class DistributionOfFinancesFragment : Fragment() {
 
                 launch {
                     viewModel.totalBudget.collect { totalBudget ->
-                        Log.d("DistributionFragment", "Observed totalBudget: $totalBudget")
-                        binding.pieChart.centerText = "${viewModel.currentMonth.value}\n${totalBudget.toInt()} ₽"
+                        binding.pieChart.centerText =
+                            getString(R.string.total, totalBudget.toString())
                     }
                 }
             }
         }
     }
 
+    private fun showShimmers() {
+        binding.shimmerPieChart.visibility = View.VISIBLE
+        binding.shimmerRecyclerView.visibility = View.VISIBLE
+        binding.shimmerPieChart.startShimmer()
+        binding.shimmerRecyclerView.startShimmer()
+
+        binding.pieChart.visibility = View.GONE
+        binding.recyclerView.visibility = View.GONE
+    }
+
+    private fun hideShimmers() {
+        binding.shimmerPieChart.stopShimmer()
+        binding.shimmerRecyclerView.stopShimmer()
+        binding.shimmerPieChart.visibility = View.GONE
+        binding.shimmerRecyclerView.visibility = View.GONE
+
+        binding.pieChart.visibility = View.VISIBLE
+        binding.recyclerView.visibility = View.VISIBLE
+    }
+
     private fun setupPieChart(categories: List<Category>) {
         val entries = categories.map { PieEntry(it.percentage, it.name) }
 
         with(binding.pieChart) {
-            setUsePercentValues(true)
             description.isEnabled = false
             legend.isEnabled = false
-
             holeRadius = 70f
+            setUsePercentValues(false)
+            setDrawEntryLabels(false)
+            setCenterTextSize(18f)
+            setDrawMarkers(false)
 
             val dataSet = PieDataSet(entries, "").apply {
                 colors = categories.map { requireContext().getColor(it.colorResId) }
+                valueTextSize = 0f
             }
             data = PieData(dataSet)
             invalidate()
@@ -94,6 +123,29 @@ class DistributionOfFinancesFragment : Fragment() {
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             this.adapter = adapter
+        }
+        hideShimmers()
+    }
+
+    private fun setupBackButton() {
+        binding.imgBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
+
+    private fun setupSettingsButton() {
+        val emptyCategory = Category(
+            name = "",
+            colorResId = 0,
+            iconResId = 0,
+            percentage = 0f
+        )
+        binding.imgSettings.setOnClickListener {
+            val action =
+                DistributionOfFinancesFragmentDirections.actionDistributionOfFinancesFragmentToFirstSettingsFragment(
+                    emptyCategory
+                )
+            findNavController().navigate(action)
         }
     }
 }

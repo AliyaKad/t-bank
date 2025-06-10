@@ -5,10 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.t_bank.R
 import com.example.t_bank.databinding.FragmentProfileBinding
+import java.util.Locale
 
 class ProfileFragment : Fragment() {
 
@@ -28,7 +31,9 @@ class ProfileFragment : Fragment() {
         val isDarkTheme = loadTheme()
         binding.switchDarkTheme.isChecked = isDarkTheme
 
+        setAppLocale(getCurrentLanguage())
         setupClickListeners()
+        setupLanguageSpinner()
     }
 
     override fun onDestroyView() {
@@ -72,6 +77,53 @@ class ProfileFragment : Fragment() {
     private fun setAppTheme(themeResId: Int) {
         saveTheme(themeResId == R.style.Theme_Tbank_Dark)
         activity?.recreate()
+    }
+
+    private fun setAppLocale(language: String) {
+        val locale = Locale(language)
+        Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
+    }
+
+    private fun saveLanguage(lang: String) {
+        val sharedPreferences = requireActivity().getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        sharedPreferences.edit().putString("app_language", lang).apply()
+    }
+
+    private fun getCurrentLanguage(): String {
+        val sharedPreferences = requireActivity().getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("app_language", "ru")!!
+    }
+
+    private fun setupLanguageSpinner() {
+        val languages = listOf(getString(R.string.russian), getString(R.string.english))
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, languages).apply {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+
+        binding.spinnerLanguage.adapter = adapter
+        val currentLang = getCurrentLanguage()
+        val position = when (currentLang) {
+            "ru" -> 0
+            "en" -> 1
+            else -> 0
+        }
+        binding.spinnerLanguage.setSelection(position)
+
+        binding.spinnerLanguage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedLang = if (position == 0) "ru" else "en"
+                if (selectedLang != currentLang) {
+                    saveLanguage(selectedLang)
+                    setAppLocale(selectedLang)
+                    requireActivity().recreate()
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
     }
 }
 

@@ -40,14 +40,14 @@ class NewGoalMakingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         arguments?.let {
-            val goalId = it.getInt("goalId", -1)
+            goalId = it.getInt("goalId", -1)
             val goalName = it.getString("goalName")
             val goalAmount = it.getFloat("goalAmount", 0f)
             val goalDate = it.getString("goalDate")
 
             Log.d("NewGoalMakingFragment", "Received arguments: goalId=$goalId, goalName=$goalName, goalAmount=$goalAmount, goalDate=$goalDate")
 
-            if (goalId != -1 && goalName != null && goalDate != null) {
+            if (goalName != null && goalDate != null) {
                 isEditMode = true
                 setupEditMode(goalName, goalAmount.toDouble(), goalDate)
             }
@@ -71,12 +71,11 @@ class NewGoalMakingFragment : Fragment() {
         val goalName = binding.tlGoalName.editText?.text.toString()
         val amount = binding.tlAmount.editText?.text.toString().toDoubleOrNull()
         val date = binding.tvDate.text.toString()
-
         if (goalName.isNotEmpty() && amount != null && date.isNotEmpty()) {
             if (isEditMode && goalId != null) {
-                viewModel.updateGoal(goalId!!, goalName, amount, date, userId = 1)
+                viewModel.updateGoal(goalId!!, goalName, amount, date)
             } else {
-                viewModel.createGoal(goalName, amount, date, userId = 1)
+                viewModel.createGoal(goalName, amount, date)
             }
         } else {
             showError(getString(R.string.please_fill_all_fields_correctly))
@@ -109,7 +108,7 @@ class NewGoalMakingFragment : Fragment() {
             .build()
 
         datePicker.addOnPositiveButtonClickListener { dateInMillis ->
-            val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val selectedDate = dateFormat.format(dateInMillis).toString()
 
             binding.tvDate.text = selectedDate

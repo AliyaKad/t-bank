@@ -1,12 +1,11 @@
 package com.example.t_bank.mapper
 
-import com.example.t_bank.presentation.model.Category
 import javax.inject.Inject
 
 class CategoryUiMapper @Inject constructor() {
 
-    fun toUiModel(domain: Category): Category {
-        return Category(
+    fun toUiModel(domain: com.example.t_bank.domain.usecase.model.Category): com.example.t_bank.presentation.model.Category {
+        return com.example.t_bank.presentation.model.Category(
             name = domain.name,
             iconResId = domain.iconResId,
             colorResId = domain.colorResId,
@@ -14,8 +13,8 @@ class CategoryUiMapper @Inject constructor() {
         )
     }
 
-    fun toDomainModel(ui: Category): Category {
-        return Category(
+    fun toDomainModel(ui: com.example.t_bank.presentation.model.Category): com.example.t_bank.domain.usecase.model.Category {
+        return com.example.t_bank.domain.usecase.model.Category(
             name = ui.name,
             iconResId = ui.iconResId,
             colorResId = ui.colorResId,

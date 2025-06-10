@@ -48,7 +48,6 @@ class FirstSettingsFragment : Fragment() {
         setupRecyclerView()
         observeCategories()
         setupNextButton()
-        setupAddCategoryButton()
     }
 
     private fun updateCategoryList(newCategory: Category) {
@@ -87,12 +86,6 @@ class FirstSettingsFragment : Fragment() {
         }
     }
 
-    private fun setupAddCategoryButton() {
-        binding.btnAddCategory.setOnClickListener {
-            val action = FirstSettingsFragmentDirections.actionFirstSettingsFragmentToNewCategoryFragment()
-            findNavController().navigate(action)
-        }
-    }
 
     private fun validateBudgetInput(input: String): Float? {
         return input.toFloatOrNull() ?: run {

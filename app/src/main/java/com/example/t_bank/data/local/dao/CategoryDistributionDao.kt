@@ -8,6 +8,10 @@ import com.example.t_bank.data.local.entity.CategoryDistributionEntity
 
 @Dao
 interface CategoryDistributionDao {
+
+    @Query("DELETE FROM category_distributions WHERE budgetId = :budgetId")
+    suspend fun deleteByBudgetId(budgetId: Int)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCategoryDistributions(distributions: List<CategoryDistributionEntity>)
 

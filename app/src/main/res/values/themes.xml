@@ -7,15 +7,23 @@
         <item name="colorOnSecondary">@color/black</item>
         <item name="materialButtonStyle">@style/YellowButtonStyle</item>
         <item name="textInputStyle">@style/CustomTextInputLayout</item>
+        <item name="bottomNavBackground">@android:color/white</item>
+        <item name="bottomNavSelectedItem">@color/light_blue</item>
+        <item name="bottomNavUnselectedItem">@color/light_blue</item>
+        <item name="listItemBackground">@color/white</item>
     </style>
 
     <style name="Theme.Tbank.Dark" parent="Theme.Material3.Dark.NoActionBar">
         <item name="colorPrimary">@color/light_blue</item>
         <item name="colorPrimaryVariant">@color/blue</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/yellow</item>
+        <item name="colorSecondary">@color/light_blue</item>
         <item name="colorOnSecondary">@color/black</item>
         <item name="materialButtonStyle">@style/YellowButtonStyle</item>
         <item name="textInputStyle">@style/CustomTextInputLayout</item>
+        <item name="bottomNavBackground">@color/darkest_gray</item>
+        <item name="bottomNavSelectedItem">@color/light_blue</item>
+        <item name="bottomNavUnselectedItem">@color/light_blue</item>
+        <item name="listItemBackground">@color/darkest_gray</item>
     </style>
 </resources>

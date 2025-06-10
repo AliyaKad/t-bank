@@ -1,5 +1,6 @@
 package com.example.t_bank.data.remote.api
 
+import com.example.t_bank.data.model.AddAmountRequest
 import com.example.t_bank.data.model.DataGoal
 import com.example.t_bank.data.model.GoalRequest
 import com.example.t_bank.data.model.MessageResponse
@@ -8,8 +9,8 @@ import retrofit2.http.*
 
 interface GoalApiService {
 
-    @POST("/api/v1/goals")
-    suspend fun createGoal(@Body goalRequest: GoalRequest): Response<MessageResponse>
+    @POST("/api/v1/goals/{userId}")
+    suspend fun createGoal(@Path("userId") userId: Int, @Body goalRequest: GoalRequest): Response<MessageResponse>
 
     @GET("/api/v1/goals/{userId}")
     suspend fun getGoals(@Path("userId") userId: Int): Response<List<DataGoal>>
@@ -26,4 +27,11 @@ interface GoalApiService {
         @Path("userId") userId: Int,
         @Path("goalId") goalId: Int
     ): Response<MessageResponse>
+
+    @PATCH("/api/v1/goals/{userId}/{goalId}")
+    suspend fun addAmountToGoal(
+        @Path("userId") userId: Int,
+        @Path("goalId") goalId: Int,
+        @Body request: AddAmountRequest
+    ): Response<DataGoal>
 }

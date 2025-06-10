@@ -1,7 +1,7 @@
 package com.example.t_bank.mapper
 
 import com.example.t_bank.data.local.entity.CategoryEntity
-import com.example.t_bank.presentation.model.Category
+import com.example.t_bank.domain.usecase.model.Category
 
 class CategoryMapper {
 

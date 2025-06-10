@@ -1,6 +1,6 @@
 package com.example.t_bank.domain.usecase
 
-import com.example.t_bank.data.repository.BudgetRepository
+import com.example.t_bank.domain.repository.BudgetRepository
 import com.example.t_bank.domain.usecase.model.BudgetStatus
 import javax.inject.Inject
 

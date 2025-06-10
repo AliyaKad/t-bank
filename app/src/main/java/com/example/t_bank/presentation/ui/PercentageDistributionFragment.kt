@@ -53,6 +53,7 @@ class PercentageDistributionFragment : Fragment() {
         binding.pieChart.centerText = context?.getString(R.string.amount_format, totalBudget.toInt())
         viewModel.loadCategories(categories)
 
+        setupBackButton()
         setupRecyclerView()
         observeCategories()
         setupSaveButton()
@@ -108,6 +109,13 @@ class PercentageDistributionFragment : Fragment() {
         val dateFormat = SimpleDateFormat("yyyy-MM", Locale.getDefault())
         return dateFormat.format(calendar.time)
     }
+
+    private fun setupBackButton() {
+        binding.imgBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
+
 
     private fun setupSaveButton() {
         binding.btnFinish.setOnClickListener {

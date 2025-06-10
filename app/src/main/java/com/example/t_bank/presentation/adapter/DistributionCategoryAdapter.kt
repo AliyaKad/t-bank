@@ -17,12 +17,20 @@ class DistributionCategoryAdapter(private val categories: List<Category>) :
         fun bind(category: Category) {
             binding.ivIcon.setImageResource(category.iconResId)
             binding.tvCategoryName.text = category.name
-            binding.tvPercentage.text = binding.root.context.getString(R.string.percentage_format, category.percentage.toInt())
+            binding.tvPercentage.text = binding.root.context.getString(
+                R.string.percentage_format, category.percentage.toInt()
+            )
+
+            binding.cvIconContainer.setCardBackgroundColor(
+                binding.root.context.getColor(category.colorResId)
+            )
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemDistributionCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemDistributionCategoryBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
         return ViewHolder(binding)
     }
 

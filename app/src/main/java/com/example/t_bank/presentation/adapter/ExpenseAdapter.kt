@@ -9,15 +9,35 @@ import com.example.t_bank.presentation.model.Expense
 import com.example.t_bank.R
 import com.example.t_bank.databinding.ItemExpenseBinding
 
-class ExpenseAdapter(private var expenses: List<Expense>) :
-    RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
+class ExpenseAdapter(
+    private val onItemClick: (String) -> Unit
+) : RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
 
-    class ExpenseViewHolder(private val binding: ItemExpenseBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    private var items: List<Expense> = emptyList()
+
+    fun submitList(list: List<Expense>) {
+        items = list
+        notifyDataSetChanged()
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpenseViewHolder {
+        val binding = ItemExpenseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ExpenseViewHolder(binding, onItemClick)
+    }
+
+    override fun onBindViewHolder(holder: ExpenseViewHolder, position: Int) {
+        holder.bind(items[position])
+    }
+
+    override fun getItemCount(): Int = items.size
+
+    class ExpenseViewHolder(
+        private val binding: ItemExpenseBinding,
+        private val onItemClick: (String) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(expense: Expense) {
             binding.textViewCategoryName.text = expense.category
-
             binding.textViewAmount.text = itemView.context.getString(
                 R.string.amount_format,
                 expense.totalAmount.toInt()
@@ -28,39 +48,24 @@ class ExpenseAdapter(private var expenses: List<Expense>) :
             } else {
                 0
             }
-
             binding.progressBar.progress = progress
-            binding.progressBar.progressTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(itemView.context, expense.colorResId)
-            )
 
             binding.textViewProgressDetailsLeft.text = itemView.context.getString(
                 R.string.spent_amount_format,
                 expense.spentAmount.toInt()
+            )
+            binding.progressBar.progressTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(itemView.context, expense.colorResId)
             )
 
             binding.textViewProgressDetailsRight.text = itemView.context.getString(
                 R.string.remaining_amount_format,
                 (expense.totalAmount - expense.spentAmount).toInt()
             )
+
+            binding.root.setOnClickListener {
+                onItemClick(expense.category)
+            }
         }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpenseViewHolder {
-        val binding = ItemExpenseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ExpenseViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: ExpenseViewHolder, position: Int) {
-        holder.bind(expenses[position])
-    }
-
-    override fun getItemCount(): Int {
-        return expenses.size
-    }
-
-    fun submitList(newExpenses: List<Expense>) {
-        expenses = newExpenses
-        notifyDataSetChanged()
     }
 }

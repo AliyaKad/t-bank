@@ -2,14 +2,15 @@ package com.example.t_bank.data.repository
 
 import com.example.t_bank.data.local.dao.BudgetCategoryResult
 import com.example.t_bank.data.local.dao.MonthlyBudgetDao
+import com.example.t_bank.domain.repository.MonthlyBudgetRepository
 import com.example.t_bank.domain.usecase.model.BudgetWithCategories
 import com.example.t_bank.presentation.model.Category
 import javax.inject.Inject
 
-class MonthlyBudgetRepository @Inject constructor(
+class MonthlyBudgetRepositoryImpl @Inject constructor(
     private val monthlyBudgetDao: MonthlyBudgetDao
-) {
-    suspend fun getBudgetAndCategoriesByMonth(month: String): BudgetWithCategories? {
+) : MonthlyBudgetRepository {
+    override suspend fun getBudgetAndCategoriesByMonth(month: String): BudgetWithCategories? {
         val results = monthlyBudgetDao.getBudgetAndCategoriesByMonth(month)
         return mapToBudgetWithCategories(results)
     }

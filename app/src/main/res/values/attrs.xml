@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AppTheme">
+        <attr name="bottomNavBackground" format="color" />
+        <attr name="bottomNavSelectedItem" format="color" />
+        <attr name="bottomNavUnselectedItem" format="color" />
+        <attr name="listItemBackground" format="color" />
+    </declare-styleable>
+</resources>

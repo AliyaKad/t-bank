@@ -1,7 +1,7 @@
 package com.example.t_bank.domain.usecase
 
 import com.example.t_bank.Result
-import com.example.t_bank.data.repository.GoalRepository
+import com.example.t_bank.domain.repository.GoalRepository
 import javax.inject.Inject
 
 class DeleteGoalUseCase @Inject constructor(

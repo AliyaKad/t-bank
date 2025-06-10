@@ -4,14 +4,22 @@ import com.example.t_bank.data.local.AppDatabase
 import com.example.t_bank.data.local.dao.CategoryDao
 import com.example.t_bank.data.local.dao.CategoryDistributionDao
 import com.example.t_bank.data.local.dao.MonthlyBudgetDao
-import com.example.t_bank.data.remote.datasource.GoalDataSourceImpl
-import com.example.t_bank.data.repository.GoalRepository
-import com.example.t_bank.data.remote.datasource.BudgetRemoteDataSource
-import com.example.t_bank.data.repository.AuthRepository
+import com.example.t_bank.data.repository.AllBudgetsRepositoryImpl
+import com.example.t_bank.domain.repository.AuthRepository
 import com.example.t_bank.data.repository.AuthRepositoryImpl
-import com.example.t_bank.data.repository.BudgetRepository
+import com.example.t_bank.domain.repository.BudgetRepository
 import com.example.t_bank.data.repository.BudgetRepositoryImpl
-import com.example.t_bank.data.repository.SettingsRepository
+import com.example.t_bank.data.repository.CategoryRepositoryImpl
+import com.example.t_bank.data.repository.GoalRepositoryImpl
+import com.example.t_bank.data.repository.MonthlyBudgetRepositoryImpl
+import com.example.t_bank.data.repository.SettingsRepositoryImpl
+import com.example.t_bank.data.repository.TransactionRepositoryImpl
+import com.example.t_bank.domain.repository.AllBudgetsRepository
+import com.example.t_bank.domain.repository.CategoryRepository
+import com.example.t_bank.domain.repository.GoalRepository
+import com.example.t_bank.domain.repository.MonthlyBudgetRepository
+import com.example.t_bank.domain.repository.SettingsRepository
+import com.example.t_bank.domain.repository.TransactionRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,23 +51,6 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGoalRepository(goalDataSource: GoalDataSourceImpl): GoalRepository {
-        return GoalRepository(goalDataSource)
-    }
-
-    @Provides
-    @Singleton
-    fun provideSettingsRepository(
-        categoryDao: CategoryDao,
-        monthlyBudgetDao: MonthlyBudgetDao,
-        categoryDistributionDao: CategoryDistributionDao,
-        budgetRemoteDataSource: BudgetRemoteDataSource,
-    ): SettingsRepository {
-        return SettingsRepository(monthlyBudgetDao, categoryDao, categoryDistributionDao, budgetRemoteDataSource)
-    }
-
-    @Provides
-    @Singleton
     fun provideBudgetRepository(repository: BudgetRepositoryImpl): BudgetRepository = repository
 
 
@@ -67,4 +58,28 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAuthRepository(repository: AuthRepositoryImpl): AuthRepository = repository
+
+    @Provides
+    @Singleton
+    fun provideTransactionRepository(repository: TransactionRepositoryImpl): TransactionRepository = repository
+
+    @Provides
+    @Singleton
+    fun provideSettingsRepository(repository: SettingsRepositoryImpl): SettingsRepository = repository
+
+    @Provides
+    @Singleton
+    fun provideAllBudgetsRepository(repository: AllBudgetsRepositoryImpl): AllBudgetsRepository = repository
+
+    @Provides
+    @Singleton
+    fun provideCategoryRepository(repository: CategoryRepositoryImpl): CategoryRepository = repository
+
+    @Provides
+    @Singleton
+    fun provideGoalRepository(repository: GoalRepositoryImpl): GoalRepository = repository
+
+    @Provides
+    @Singleton
+    fun provideMonthlyRepository(repository: MonthlyBudgetRepositoryImpl): MonthlyBudgetRepository = repository
 }

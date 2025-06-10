@@ -14,7 +14,7 @@ import java.util.Calendar
 
 @HiltViewModel
 class DistributionOfFinancesViewModel @Inject constructor(
-    private val getBudgetAndCategoriesUseCase: GetBudgetAndCategoriesUseCase
+    private val getBudgetAndCategoriesUseCase: GetBudgetAndCategoriesUseCase,
 ) : ViewModel() {
 
     private val _categories = MutableStateFlow<List<Category>>(emptyList())
@@ -33,11 +33,8 @@ class DistributionOfFinancesViewModel @Inject constructor(
     private fun loadBudgetAndCategories() {
         viewModelScope.launch {
             val month = getCurrentMonth()
-            Log.d("DistributionViewModel", "Loading data for month: $month")
             val data = getBudgetAndCategoriesUseCase(month)
             if (data != null) {
-                Log.d("DistributionViewModel", "Loaded totalBudget: ${data.totalBudget}")
-                Log.d("DistributionViewModel", "Loaded categories: ${data.categories}")
                 _totalBudget.value = data.totalBudget
                 _categories.value = data.categories
                 _currentMonth.value = month

@@ -1,39 +1,20 @@
 package com.example.t_bank.data.repository
 
-import android.util.Log
 import com.example.t_bank.data.local.dao.BudgetCategoryResultForMonth
 import com.example.t_bank.data.local.dao.MonthlyBudgetDao
+import com.example.t_bank.domain.repository.AllBudgetsRepository
 import com.example.t_bank.domain.usecase.model.BudgetForAllMonths
 import com.example.t_bank.presentation.model.CategoryForMonths
 import javax.inject.Inject
 
-class AllBudgetsRepository @Inject constructor(
+class AllBudgetsRepositoryImpl @Inject constructor(
     private val monthlyBudgetDao: MonthlyBudgetDao
-) {
-    suspend fun getAllBudgets(): List<BudgetForAllMonths> {
+) : AllBudgetsRepository {
+
+    override suspend fun getAllBudgets(): List<BudgetForAllMonths> {
         val allResults = monthlyBudgetDao.getAllBudgets()
-        Log.d("AllBudgetsRepository", "Fetched ${allResults.size} raw results from DAO.")
-        allResults.forEach { result ->
-            Log.d(
-                "AllBudgetsRepository",
-                "Raw result: month=${result.month}, category=${result.categoryName}, budget=${result.budget}, spent=${result.amountSpent}"
-            )
-        }
 
         val groupedResults = groupResultsByMonth(allResults)
-        Log.d("AllBudgetsRepository", "Grouped ${groupedResults.size} budgets by month.")
-        groupedResults.forEach { budget ->
-            Log.d(
-                "AllBudgetsRepository",
-                "Grouped budget: month=${budget.month}, totalBudget=${budget.totalBudget}, categories=${budget.categories.size}"
-            )
-            budget.categories.forEach { category ->
-                Log.d(
-                    "AllBudgetsRepository",
-                    "Category: name=${category.name}, budget=${category.budget}, spent=${category.amountSpent}"
-                )
-            }
-        }
         return groupedResults
     }
 

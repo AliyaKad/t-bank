@@ -96,16 +96,9 @@ class ChangeCategorySettingsFragment : Fragment() {
         binding.btnApplyChanges.setOnClickListener {
             val updatedCategory = viewModel.selectedCategory.value
             if (updatedCategory != null) {
-                val emptyCategory = Category(
-                    name = "",
-                    colorResId = 0,
-                    iconResId = 0,
-                    percentage = 0f
-                )
                 val action =
                     ChangeCategorySettingsFragmentDirections.actionChangeCategorySettingsFragmentToFirstSettingsFragment(
-                        updatedCategory = updatedCategory,
-                        newCategory = emptyCategory
+                        updatedCategory = updatedCategory
                     )
                 findNavController().navigate(action)
             }

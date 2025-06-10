@@ -1,0 +1,30 @@
+[
+  {
+    "userId": 1,
+    "date": "2025-04-01",
+    "description": "Супермаркет",
+    "amount": 1500.0,
+    "category": "Продукты"
+  },
+  {
+    "userId": 1,
+    "date": "2025-04-02",
+    "description": "Проезд",
+    "amount": 300.0,
+    "category": "Транспорт"
+  },
+  {
+    "userId": 1,
+    "date": "2025-04-01",
+    "description": "Супермаркет",
+    "amount": 1500.0,
+    "category": "Продукты"
+  },
+  {
+    "userId": 1,
+    "date": "2025-04-01",
+    "description": "Супермаркет",
+    "amount": 1500.0,
+    "category": "Продукты"
+  }
+]

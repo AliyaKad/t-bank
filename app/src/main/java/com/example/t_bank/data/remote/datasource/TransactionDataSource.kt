@@ -6,4 +6,5 @@ interface TransactionDataSource {
     suspend fun getTransactions(userId: Int): List<Transaction>?
     suspend fun updateTransactionCategory(userId: Int, transactionId: Int, category: String)
     suspend fun importTransactions(transactions: List<Transaction>)
+
 }

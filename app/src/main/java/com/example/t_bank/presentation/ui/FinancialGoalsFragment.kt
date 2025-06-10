@@ -71,7 +71,7 @@ class FinancialGoalsFragment : Fragment() {
             .setTitle(getString(R.string.Do_you_want_delete_goal))
             .setMessage(getString(R.string.Are_you_shure_delete, goal.name))
             .setPositiveButton(getString(R.string.delete)) { _, _ ->
-                viewModel.deleteGoal(userId = 1, goalId = goal.id)
+                viewModel.deleteGoal(goalId = goal.id)
             }
             .setNegativeButton(getString(R.string.cancel), null)
             .show()
@@ -116,7 +116,7 @@ class FinancialGoalsFragment : Fragment() {
 
     private fun loadGoals() {
         lifecycleScope.launch {
-            viewModel.loadGoals(userId = 1)
+            viewModel.loadGoals()
             viewModel.goals.collect { goals ->
                 (binding.recyclerView.adapter as? GoalAdapter)?.updateData(goals)
             }
